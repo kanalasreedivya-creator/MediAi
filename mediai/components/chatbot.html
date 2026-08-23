@@ -1,0 +1,337 @@
+<!-- Chatbot Widget Component -->
+<div id="chatbotWidget" class="chatbot-widget">
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-robot"></i>
+        <span class="chatbot-badge">1</span>
+    </button>
+    
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <h4>MediAI Assistant</h4>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">
+                <div class="message-content">
+                    <p>Hello! I'm your AI health assistant. How can I help you today?</p>
+                </div>
+                <span class="message-time">Just now</span>
+            </div>
+        </div>
+        
+        <div class="chatbot-input">
+            <div class="chatbot-quick">
+                <button class="quick-btn" onclick="sendChatbotMessage('What are common flu symptoms?')">🤒 Flu</button>
+                <button class="quick-btn" onclick="sendChatbotMessage('Healthy diet tips')">🥗 Diet</button>
+                <button class="quick-btn" onclick="sendChatbotMessage('Stress relief tips')">🧘 Stress</button>
+            </div>
+            <div class="input-group">
+                <input type="text" id="chatbotInput" placeholder="Type your health question..." onkeypress="if(event.key==='Enter') sendChatbotMessage()">
+                <button onclick="sendChatbotMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chatbot-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+}
+
+.chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(37, 99, 235, 0.5);
+}
+
+.chatbot-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chatbot-container {
+    display: none;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 380px;
+    height: 500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    overflow: hidden;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+.chatbot-container.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chatbot-header {
+    padding: 16px 20px;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatbot-title i {
+    font-size: 20px;
+}
+
+.chatbot-title h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.chatbot-close:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.chatbot-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #f8fafc;
+}
+
+.chatbot-messages .message {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+.chatbot-messages .message.bot {
+    align-self: flex-start;
+}
+
+.chatbot-messages .message.user {
+    align-self: flex-end;
+}
+
+.chatbot-messages .message-content {
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.chatbot-messages .message.user .message-content {
+    background: var(--primary-color);
+    color: white;
+}
+
+.chatbot-messages .message-time {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.chatbot-input {
+    padding: 12px 16px;
+    border-top: 1px solid #e2e8f0;
+    background: white;
+}
+
+.chatbot-quick {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.chatbot-quick .quick-btn {
+    padding: 4px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.chatbot-quick .quick-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 8px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 24px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+}
+
+.input-group button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 24px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.input-group button:hover {
+    background: var(--primary-dark);
+}
+
+@media (max-width: 480px) {
+    .chatbot-container {
+        width: calc(100vw - 40px);
+        height: 400px;
+        right: -10px;
+    }
+}
+</style>
+
+<script>
+// Chatbot functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('chatbotToggle');
+    const container = document.getElementById('chatbotContainer');
+    const closeBtn = document.getElementById('chatbotClose');
+    const input = document.getElementById('chatbotInput');
+    
+    if (toggle) {
+        toggle.addEventListener('click', function() {
+            container.classList.toggle('active');
+        });
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            container.classList.remove('active');
+        });
+    }
+    
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+        const widget = document.getElementById('chatbotWidget');
+        if (widget && !widget.contains(e.target) && container.classList.contains('active')) {
+            container.classList.remove('active');
+        }
+    });
+});
+
+// Send message function
+function sendChatbotMessage(message) {
+    const input = document.getElementById('chatbotInput');
+    const container = document.getElementById('chatbotMessages');
+    
+    if (!message && input) {
+        message = input.value.trim();
+        if (message) {
+            input.value = '';
+        } else {
+            return;
+        }
+    }
+    
+    if (!message) return;
+    
+    // Add user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.innerHTML = `
+        <div class="message-content"><p>${message}</p></div>
+        <span class="message-time">Just now</span>
+    `;
+    container.appendChild(userMsg);
+    container.scrollTop = container.scrollHeight;
+    
+    // Simulate bot response
+    setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        const responses = [
+            'I understand your concern. Based on what you\'ve shared, I recommend consulting with a healthcare professional for a proper diagnosis. Would you like me to help you find a doctor?',
+            'That\'s a great question! For more personalized advice, I suggest scheduling a consultation with one of our specialists. Would you like me to help you book an appointment?',
+            'Thank you for sharing that information. It\'s important to monitor your symptoms. If they persist, please seek medical attention. Can I help you find a nearby hospital?',
+            'I hear you. Taking care of your health is important. I\'d recommend keeping track of your symptoms and staying hydrated. Is there anything specific you\'d like to know?'
+        ];
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        botMsg.innerHTML = `
+            <div class="message-content"><p>${randomResponse}</p></div>
+            <span class="message-time">Just now</span>
+        `;
+        container.appendChild(botMsg);
+        container.scrollTop = container.scrollHeight;
+    }, 1000 + Math.random() * 1000);
+}
+</script>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/forms.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li class="active"><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Book Appointment</h1>
+                    <p>Schedule a visit with a healthcare professional</p>
+                </div>
+            </header>
+
+            <section class="appointment-section">
+                <div class="card">
+                    <form id="appointmentForm">
+                        <div class="form-group">
+                            <label>Select Doctor</label>
+                            <select required>
+                                <option value="">Choose a doctor</option>
+                                <option value="1">Dr. Sarah Johnson - Cardiologist</option>
+                                <option value="2">Dr. Michael Chen - Neurologist</option>
+                                <option value="3">Dr. Emily Rodriguez - Dermatologist</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Hospital</label>
+                            <select required>
+                                <option value="">Choose a hospital</option>
+                                <option value="1">New York General Hospital</option>
+                                <option value="2">Los Angeles Medical Center</option>
+                                <option value="3">Chicago Health Institute</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" id="appointmentDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <select id="appointmentTime" required>
+                                    <option value="">Select time</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="09:30">9:30 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="10:30">10:30 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="14:30">2:30 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="15:30">3:30 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                    <option value="16:30">4:30 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Reason for Visit</label>
+                            <textarea rows="4" placeholder="Describe your symptoms or reason for visit..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Visit Type</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="visitType" value="in-person" checked> In-Person</label>
+                                <label><input type="radio" name="visitType" value="virtual"> Virtual</label>
+                                <label><input type="radio" name="visitType" value="home"> Home Visit</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Book Appointment</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/appointments.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Predictions - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li class="active"><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Health Predictions</h1>
+                    <p>AI-powered health risk assessment</p>
+                </div>
+            </header>
+
+            <section class="prediction-section">
+                <div class="prediction-form-container">
+                    <div class="card">
+                        <h3>Health Risk Assessment</h3>
+                        <p>Provide your health data for AI analysis</p>
+                        <form id="predictionForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Age</label>
+                                    <input type="number" id="age" placeholder="Enter age" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select id="gender">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Weight (kg)</label>
+                                    <input type="number" id="weight" placeholder="Enter weight" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Height (cm)</label>
+                                    <input type="number" id="height" placeholder="Enter height" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Blood Pressure (Systolic)</label>
+                                    <input type="number" id="systolic" placeholder="e.g., 120">
+                                </div>
+                                <div class="form-group">
+                                    <label>Blood Pressure (Diastolic)</label>
+                                    <input type="number" id="diastolic" placeholder="e.g., 80">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Medical History</label>
+                                <select id="medicalHistory">
+                                    <option value="none">None</option>
+                                    <option value="diabetes">Diabetes</option>
+                                    <option value="hypertension">Hypertension</option>
+                                    <option value="heart-disease">Heart Disease</option>
+                                    <option value="asthma">Asthma</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Lifestyle Factors</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" value="smoking"> Smoking</label>
+                                    <label><input type="checkbox" value="alcohol"> Alcohol</label>
+                                    <label><input type="checkbox" value="sedentary"> Sedentary Lifestyle</label>
+                                    <label><input type="checkbox" value="stress"> High Stress</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">Generate Prediction</button>
+                        </form>
+                    </div>
+
+                    <div class="prediction-results" id="predictionResults" style="display:none;">
+                        <div class="card">
+                            <h3>Prediction Results</h3>
+                            <div class="result-chart">
+                                <div class="risk-meter">
+                                    <div class="risk-bar">
+                                        <div class="risk-fill" style="width: 35%;"></div>
+                                    </div>
+                                    <span class="risk-label">Low Risk</span>
+                                </div>
+                            </div>
+                            <div class="result-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Diabetes Risk</span>
+                                    <span class="detail-value low">Low (15%)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Heart Disease Risk</span>
+                                    <span class="detail-value moderate">Moderate (45%)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Hypertension Risk</span>
+                                    <span class="detail-value low">Low (20%)</span>
+                                </div>
+                            </div>
+                            <div class="result-recommendations">
+                                <h4>Recommendations</h4>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Maintain a healthy diet</li>
+                                    <li><i class="fas fa-check-circle"></i> Exercise regularly</li>
+                                    <li><i class="fas fa-check-circle"></i> Monitor blood pressure</li>
+                                    <li><i class="fas fa-check-circle"></i> Schedule regular check-ups</li>
+                                </ul>
+                            </div>
+                            <button class="btn-secondary" onclick="document.getElementById('predictionResults').style.display='none'">New Prediction</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('predictionResults').style.display = 'block';
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

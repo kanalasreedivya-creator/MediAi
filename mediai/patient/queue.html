@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Status - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li class="active"><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Queue Status</h1>
+                    <p>Real-time waiting room updates</p>
+                </div>
+            </header>
+
+            <section class="queue-section">
+                <div class="queue-summary">
+                    <div class="queue-stat">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>12</h3>
+                            <p>Patients in Queue</p>
+                        </div>
+                    </div>
+                    <div class="queue-stat">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>15 min</h3>
+                            <p>Average Wait Time</p>
+                        </div>
+                    </div>
+                    <div class="queue-stat">
+                        <i class="fas fa-user-md"></i>
+                        <div>
+                            <h3>4</h3>
+                            <p>Doctors Available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Current Queue</h3>
+                    <div class="queue-list">
+                        <div class="queue-item">
+                            <div class="queue-position">1</div>
+                            <div class="queue-info">
+                                <h4>John Doe</h4>
+                                <p>Cardiology - Dr. Sarah Johnson</p>
+                            </div>
+                            <span class="queue-status in-progress">In Progress</span>
+                        </div>
+                        <div class="queue-item">
+                            <div class="queue-position">2</div>
+                            <div class="queue-info">
+                                <h4>Jane Smith</h4>
+                                <p>Neurology - Dr. Michael Chen</p>
+                            </div>
+                            <span class="queue-status waiting">Waiting</span>
+                        </div>
+                        <div class="queue-item">
+                            <div class="queue-position">3</div>
+                            <div class="queue-info">
+                                <h4>Robert Brown</h4>
+                                <p>Dermatology - Dr. Emily Rodriguez</p>
+                            </div>
+                            <span class="queue-status waiting">Waiting</span>
+                        </div>
+                        <div class="queue-item">
+                            <div class="queue-position">4</div>
+                            <div class="queue-info">
+                                <h4>Mary Wilson</h4>
+                                <p>Cardiology - Dr. Sarah Johnson</p>
+                            </div>
+                            <span class="queue-status waiting">Waiting</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Your Position</h3>
+                    <div class="your-position">
+                        <div class="position-number">2</div>
+                        <div class="position-info">
+                            <p>You are next in line</p>
+                            <span class="estimated-time">Estimated wait: 5 minutes</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>

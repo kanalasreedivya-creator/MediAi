@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Services - MediAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-bg: #eff6ff;
+            --primary-gradient: linear-gradient(135deg, #1a56db 0%, #3b82f6 100%);
+            --text: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --shadow: 0 4px 6px rgba(26, 86, 219, 0.07);
+            --shadow-lg: 0 10px 40px rgba(26, 86, 219, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --orange: #f97316;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(26, 86, 219, 0.06);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 2px 20px rgba(26, 86, 219, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo .stethoscope-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo .stethoscope-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+
+        .nav-logo .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo .logo-text .medi { color: var(--text); }
+        .nav-logo .logo-text .ai { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary); }
+
+        .btn-login {
+            padding: 8px 24px;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary) !important;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-login:hover {
+            background: var(--primary);
+            color: var(--white) !important;
+        }
+
+        .btn-register {
+            padding: 8px 24px;
+            background: var(--primary-gradient);
+            border-radius: 50px;
+            color: var(--white) !important;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 86, 219, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 120px 0 40px;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-header .emergency-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: var(--red);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            animation: pulse 2s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 span {
+            color: var(--red);
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== EMERGENCY CONTACT BANNER ===== */
+        .emergency-banner {
+            background: var(--red);
+            color: var(--white);
+            padding: 20px 0;
+            position: sticky;
+            top: 80px;
+            z-index: 98;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .emergency-banner .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .emergency-banner .emergency-number {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .emergency-banner .emergency-number i {
+            font-size: 2rem;
+        }
+
+        .emergency-banner .emergency-number a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .emergency-banner .emergency-number a:hover {
+            text-decoration: underline;
+        }
+
+        .emergency-banner .emergency-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .emergency-banner .btn-emergency {
+            padding: 10px 24px;
+            border: 2px solid white;
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .emergency-banner .btn-emergency:hover {
+            background: white;
+            color: var(--red);
+        }
+
+        .emergency-banner .btn-emergency.primary {
+            background: white;
+            color: var(--red);
+        }
+
+        .emergency-banner .btn-emergency.primary:hover {
+            background: rgba(255,255,255,0.9);
+        }
+
+        /* ===== EMERGENCY STATS ===== */
+        .stats-section {
+            padding: 40px 0;
+            background: var(--white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .stat-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            transition: var(--transition);
+            border-left: 4px solid var(--red);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 2.5rem;
+            color: var(--red);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .stat-card .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ===== EMERGENCY SERVICES ===== */
+        .services-section {
+            padding: 60px 0;
+            background: var(--bg);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header .badge {
+            display: inline-block;
+            padding: 4px 16px;
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header h2 span {
+            color: var(--red);
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .service-card .service-icon {
+            width: 72px;
+            height: 72px;
+            background: #fef2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--red);
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--red);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .service-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ===== EMERGENCY CONTACTS ===== */
+        .contacts-section {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .contact-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: var(--transition);
+            border-left: 4px solid var(--red);
+        }
+
+        .contact-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card .contact-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-card .contact-info h4 {
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .contact-card .contact-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .contact-card .contact-info a {
+            color: var(--red);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .contact-card .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== EMERGENCY TIPS ===== */
+        .tips-section {
+            padding: 60px 0;
+            background: var(--bg);
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .tip-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .tip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tip-card .tip-number {
+            width: 40px;
+            height: 40px;
+            background: var(--red);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .tip-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== NEARBY HOSPITALS ===== */
+        .nearby-section {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .nearby-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .nearby-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+        .nearby-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--red);
+        }
+
+        .nearby-card .hospital-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .nearby-card .hospital-header h3 {
+            font-size: 1.1rem;
+        }
+
+        .nearby-card .hospital-header .distance {
+            padding: 4px 12px;
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .nearby-card .hospital-address {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .nearby-card .hospital-address i {
+            margin-right: 6px;
+        }
+
+        .nearby-card .hospital-info {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 12px;
+        }
+
+        .nearby-card .hospital-info span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .nearby-card .hospital-info span i {
+            margin-right: 4px;
+            color: var(--primary);
+        }
+
+        .nearby-card .btn-direction {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nearby-card .btn-direction:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 1.5rem;
+                box-shadow: var(--shadow-lg);
+                gap: 1rem;
+                border-radius: 0 0 var(--radius) var(--radius);
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: flex; }
+
+            .emergency-banner .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .emergency-banner .emergency-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .emergency-banner .emergency-number {
+                font-size: 1rem;
+            }
+            .emergency-banner .emergency-number i {
+                font-size: 1.5rem;
+            }
+            .contacts-grid {
+                grid-template-columns: 1fr;
+            }
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            .nearby-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="stethoscope-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                        <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                        <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                        <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                        <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                        <circle cx="19" cy="8" r="1"/>
+                        <circle cx="8.5" cy="8" r="1"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="medi">Medi</span><span class="ai">AI</span>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="emergency.html" class="active">Emergency</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+                <li><a href="register.html" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="emergency-badge">
+                <i class="fas fa-ambulance"></i> 24/7 Emergency Services
+            </div>
+            <h1>Emergency <span>Care</span></h1>
+            <p>Immediate medical assistance when you need it most. Our emergency services are available 24/7.</p>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY CONTACT BANNER ===== -->
+    <section class="emergency-banner">
+        <div class="container">
+            <div class="emergency-number">
+                <i class="fas fa-phone-volume"></i>
+                <span>Emergency Hotline: <a href="tel:+1234567890">+1 234 567 890</a></span>
+            </div>
+            <div class="emergency-actions">
+                <button class="btn-emergency primary" onclick="callEmergency()">
+                    <i class="fas fa-phone"></i> Call Now
+                </button>
+                <button class="btn-emergency" onclick="findNearestHospital()">
+                    <i class="fas fa-map-marker-alt"></i> Find Nearest Hospital
+                </button>
+                <button class="btn-emergency" onclick="shareLocation()">
+                    <i class="fas fa-share-alt"></i> Share Location
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY STATS ===== -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-ambulance"></i></div>
+                <div class="stat-number" id="statAmbulances">150+</div>
+                <div class="stat-label">Ambulances Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-number" id="statResponse">8 min</div>
+                <div class="stat-label">Average Response Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+                <div class="stat-number" id="statDoctors">200+</div>
+                <div class="stat-label">Emergency Doctors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="stat-number" id="statPatients">98%</div>
+                <div class="stat-label">Patient Survival Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY SERVICES ===== -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-star"></i> Our Services</span>
+                <h2>Emergency <span>Services</span></h2>
+                <p>Comprehensive emergency care services available 24/7</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Cardiac Emergency</h3>
+                    <p>Immediate care for heart attacks, cardiac arrest, and other heart-related emergencies.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Stroke Care</h3>
+                    <p>Rapid response and treatment for stroke patients with specialized neurology teams.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-bone"></i></div>
+                    <h3>Trauma Care</h3>
+                    <p>Advanced trauma care for accidents, falls, fractures, and severe injuries.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-lungs"></i></div>
+                    <h3>Respiratory Emergency</h3>
+                    <p>Emergency care for breathing difficulties, asthma attacks, and respiratory distress.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-baby"></i></div>
+                    <h3>Pediatric Emergency</h3>
+                    <p>Specialized emergency care for children and infants with experienced pediatricians.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-ambulance"></i></div>
+                    <h3>Ambulance Services</h3>
+                    <p>24/7 ambulance services with advanced life support and trained paramedics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY CONTACTS ===== -->
+    <section class="contacts-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-phone"></i> Quick Contacts</span>
+                <h2>Emergency <span>Contacts</span></h2>
+                <p>Important emergency numbers to keep handy</p>
+            </div>
+            <div class="contacts-grid">
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-ambulance"></i></div>
+                    <div class="contact-info">
+                        <h4>Emergency Ambulance</h4>
+                        <p><a href="tel:+1234567890">+1 234 567 890</a></p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);">24/7 Available</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-fire"></i></div>
+                    <div class="contact-info">
+                        <h4>Fire Department</h4>
+                        <p><a href="tel:+1234567891">+1 234 567 891</a></p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);">24/7 Available</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="contact-info">
+                        <h4>Police Department</h4>
+                        <p><a href="tel:+1234567892">+1 234 567 892</a></p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);">24/7 Available</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-hospital"></i></div>
+                    <div class="contact-info">
+                        <h4>Poison Control Center</h4>
+                        <p><a href="tel:+1234567893">+1 234 567 893</a></p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);">24/7 Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY TIPS ===== -->
+    <section class="tips-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-lightbulb"></i> Know What To Do</span>
+                <h2>Emergency <span>Tips</span></h2>
+                <p>Important steps to take during medical emergencies</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-number">1</div>
+                    <h3>Stay Calm</h3>
+                    <p>Take a deep breath and stay calm. Panic can make the situation worse. Assess the situation carefully before taking action.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">2</div>
+                    <h3>Call Emergency Services</h3>
+                    <p>Dial the emergency number immediately. Provide clear information about the location, the nature of the emergency, and the patient's condition.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">3</div>
+                    <h3>Provide First Aid</h3>
+                    <p>If you're trained, provide basic first aid. Stop bleeding, perform CPR if needed, and keep the patient warm and comfortable while waiting for help.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">4</div>
+                    <h3>Stay with the Patient</h3>
+                    <p>Stay with the patient until help arrives. Keep them calm, monitor their breathing and consciousness, and provide reassurance.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">5</div>
+                    <h3>Have Information Ready</h3>
+                    <p>Keep important medical information handy: allergies, medications, medical conditions, and emergency contacts.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">6</div>
+                    <h3>Follow Instructions</h3>
+                    <p>Listen to the emergency dispatcher and follow their instructions. They are trained to guide you through emergency situations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NEARBY HOSPITALS ===== -->
+    <section class="nearby-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-map-marker-alt"></i> Find Help</span>
+                <h2>Nearby <span>Hospitals</span></h2>
+                <p>Emergency-ready hospitals near you</p>
+            </div>
+            <div class="nearby-grid">
+                <div class="nearby-card">
+                    <div class="hospital-header">
+                        <h3>New York General Hospital</h3>
+                        <span class="distance">1.2 km</span>
+                    </div>
+                    <div class="hospital-address">
+                        <i class="fas fa-map-pin"></i> 123 Main St, New York, NY
+                    </div>
+                    <div class="hospital-info">
+                        <span><i class="fas fa-ambulance"></i> Emergency 24/7</span>
+                        <span><i class="fas fa-bed"></i> 450 Beds</span>
+                        <span><i class="fas fa-clock"></i> 5 min</span>
+                    </div>
+                    <button class="btn-direction" onclick="getDirections(40.7128, -74.0060)">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </button>
+                </div>
+                <div class="nearby-card">
+                    <div class="hospital-header">
+                        <h3>Medical Center of NY</h3>
+                        <span class="distance">2.4 km</span>
+                    </div>
+                    <div class="hospital-address">
+                        <i class="fas fa-map-pin"></i> 456 Health Ave, New York, NY
+                    </div>
+                    <div class="hospital-info">
+                        <span><i class="fas fa-ambulance"></i> Emergency 24/7</span>
+                        <span><i class="fas fa-bed"></i> 380 Beds</span>
+                        <span><i class="fas fa-clock"></i> 10 min</span>
+                    </div>
+                    <button class="btn-direction" onclick="getDirections(40.7158, -73.9950)">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </button>
+                </div>
+                <div class="nearby-card">
+                    <div class="hospital-header">
+                        <h3>NYU Langone Health</h3>
+                        <span class="distance">3.8 km</span>
+                    </div>
+                    <div class="hospital-address">
+                        <i class="fas fa-map-pin"></i> 789 Care Blvd, New York, NY
+                    </div>
+                    <div class="hospital-info">
+                        <span><i class="fas fa-ambulance"></i> Emergency 24/7</span>
+                        <span><i class="fas fa-bed"></i> 520 Beds</span>
+                        <span><i class="fas fa-clock"></i> 15 min</span>
+                    </div>
+                    <button class="btn-direction" onclick="getDirections(40.7288, -74.0080)">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ===== MOBILE MENU =====
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('.nav-container');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== EMERGENCY ACTIONS =====
+        function callEmergency() {
+            if (confirm('Emergency: Call +1 234 567 890?')) {
+                window.location.href = 'tel:+1234567890';
+            }
+        }
+
+        function findNearestHospital() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const url = `https://www.google.com/maps/search/hospitals/@${lat},${lng},15z`;
+                        window.open(url, '_blank');
+                    },
+                    function() {
+                        alert('Unable to get your location. Please enable GPS or search manually.');
+                        window.open('https://www.google.com/maps/search/hospitals', '_blank');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+                window.open('https://www.google.com/maps/search/hospitals', '_blank');
+            }
+        }
+
+        function shareLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const url = `https://www.google.com/maps?q=${lat},${lng}`;
+                        
+                        if (navigator.share) {
+                            navigator.share({
+                                title: 'My Location - Emergency',
+                                text: 'I need emergency assistance! My location:',
+                                url: url
+                            }).catch(() => {});
+                        } else {
+                            navigator.clipboard.writeText(url).then(() => {
+                                alert('Location copied to clipboard! You can share it now.');
+                            }).catch(() => {
+                                alert(`Share this location: ${url}`);
+                            });
+                        }
+                    },
+                    function() {
+                        alert('Unable to get your location. Please share manually.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+
+        function getDirections(lat, lng) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
+                        window.open(url, '_blank');
+                    },
+                    function() {
+                        const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                        window.open(url, '_blank');
+                    }
+                );
+            } else {
+                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounters() {
+            const counters = [
+                { id: 'statAmbulances', target: 150, suffix: '+', text: '150+' },
+                { id: 'statResponse', target: 8, suffix: ' min', text: '8 min' },
+                { id: 'statDoctors', target: 200, suffix: '+', text: '200+' },
+                { id: 'statPatients', target: 98, suffix: '%', text: '98%' }
+            ];
+
+            counters.forEach(counter => {
+                const el = document.getElementById(counter.id);
+                if (!el) return;
+                
+                const target = counter.target;
+                let current = 0;
+                const increment = target / 60;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    if (counter.id === 'statResponse') {
+                        el.textContent = Math.floor(current) + counter.suffix;
+                    } else {
+                        el.textContent = Math.floor(current) + counter.suffix;
+                    }
+                }, 30);
+            });
+        }
+
+        // ===== INTERSECTION OBSERVER =====
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', function(e) {
+            // Press 'E' for emergency call
+            if (e.key === 'e' || e.key === 'E') {
+                if (e.ctrlKey || e.metaKey) return;
+                callEmergency();
+            }
+            // Press 'H' for nearest hospital
+            if (e.key === 'h' || e.key === 'H') {
+                if (e.ctrlKey || e.metaKey) return;
+                findNearestHospital();
+            }
+        });
+
+        console.log('✅ Emergency page loaded successfully!');
+        console.log('📌 Keyboard Shortcuts:');
+        console.log('  Press "E" - Call Emergency');
+        console.log('  Press "H" - Find Nearest Hospital');
+        console.log('📞 Emergency Number: +1 234 567 890');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - MediAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-gradient: linear-gradient(135deg, #1a56db 0%, #3b82f6 100%);
+            --text: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --shadow: 0 4px 6px rgba(26, 86, 219, 0.07);
+            --shadow-lg: 0 10px 40px rgba(26, 86, 219, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #f59e0b;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            z-index: 999;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header .stethoscope-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+        }
+
+        .sidebar-header .stethoscope-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .sidebar-header .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-header .logo-text .medi { color: var(--text); }
+        .sidebar-header .logo-text .ai { color: var(--primary); }
+
+        .sidebar-user {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-user .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-user .user-info h4 { font-size: 1rem; }
+        .sidebar-user .user-info p { font-size: 0.85rem; color: var(--text-light); }
+
+        .sidebar-nav-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .sidebar-nav {
+            padding: 12px 0;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 24px;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .sidebar-nav ul li a:hover {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+
+        .sidebar-nav ul li a.active {
+            background: #eff6ff;
+            color: var(--primary);
+            border-right: 3px solid var(--primary);
+        }
+
+        .sidebar-nav ul li a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .sidebar-nav ul li a .badge {
+            margin-left: auto;
+            background: var(--red);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            background: var(--white);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--red);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .sidebar-footer a:hover { opacity: 0.8; }
+        .sidebar-footer a i { width: 20px; text-align: center; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 24px 32px;
+            min-height: 100vh;
+        }
+
+        /* ===== TOP HEADER ===== */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .top-header .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .top-header .header-left h1 span { color: var(--primary); }
+        .top-header .header-left p { color: var(--text-light); }
+
+        .top-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-header .header-right .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .top-header .header-right .notification-btn:hover { background: #e2e8f0; }
+
+        .top-header .header-right .notification-btn .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--red);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .top-header .header-right .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO BANNER ===== */
+        .hero-banner {
+            background: var(--primary-gradient);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 24px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-banner .banner-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-banner .banner-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .hero-banner .banner-content p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .hero-banner .banner-image {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-banner .banner-image svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-icon.blue { background: var(--primary-gradient); }
+        .stat-card .stat-icon.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .stat-card .stat-icon.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .stat-card .stat-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .stat-card .stat-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-info p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* ===== DASHBOARD GRID ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card .card-header h3 { font-size: 1.1rem; }
+
+        .card .card-header .view-all {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .card .card-header .view-all:hover { text-decoration: underline; }
+
+        .appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .appointment-item:last-child { border-bottom: none; }
+
+        .appointment-item .appointment-info h4 { font-size: 0.95rem; }
+        .appointment-item .appointment-info p { color: var(--text-light); font-size: 0.85rem; }
+        .appointment-item .appointment-info .time { font-size: 0.8rem; color: var(--text-light); }
+
+        .appointment-status {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .appointment-status.confirmed { background: #dcfce7; color: #166534; }
+        .appointment-status.pending { background: #fef3c7; color: #92400e; }
+        .appointment-status.completed { background: #dbeafe; color: #1e40af; }
+        .appointment-status.cancelled { background: #fef2f2; color: #991b1b; }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .insight-item:last-child { border-bottom: none; }
+
+        .insight-item .insight-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .insight-item .insight-content p { font-size: 0.9rem; }
+        .insight-item .insight-content .insight-time { font-size: 0.75rem; color: var(--text-light); }
+
+        /* ===== ACTIVITY TIMELINE ===== */
+        .activity-timeline {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .activity-timeline h3 { margin-bottom: 16px; }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-item .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .activity-item .activity-content p { font-size: 0.9rem; }
+        .activity-item .activity-content .activity-time { font-size: 0.75rem; color: var(--text-light); }
+
+        /* ===== HAMBURGER MENU ===== */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger-menu.active span:nth-child(2) { opacity: 0; }
+        .hamburger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 998;
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .hamburger-menu { display: flex !important; }
+            .hero-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-banner .banner-image svg {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- Stethoscope Logo -->
+            <div class="stethoscope-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                    <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                    <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                    <circle cx="19" cy="8" r="1"/>
+                    <circle cx="8.5" cy="8" r="1"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span class="medi">Medi</span><span class="ai">AI</span>
+            </div>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <h4 id="userName">John Doe</h4>
+                <p>Patient</p>
+            </div>
+        </div>
+
+        <div class="sidebar-nav-wrapper">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctors.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders <span class="badge">3</span></a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications <span class="badge">5</span></a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" onclick="toggleSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1>Welcome back, <span id="welcomeName">John!</span></h1>
+                <p>Here's your health summary for today</p>
+            </div>
+            <div class="header-right">
+                <button class="notification-btn" onclick="window.location.href='notifications.html'">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-badge">5</span>
+                </button>
+                <div class="user-avatar" id="headerAvatar" onclick="window.location.href='profile.html'">JD</div>
+            </div>
+        </div>
+
+        <!-- Hero Banner with Image -->
+        <div class="hero-banner">
+            <div class="banner-content">
+                <h2>🏥 Your Health Journey Starts Here</h2>
+                <p>Track your health, book appointments, and get AI-powered insights</p>
+                <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <a href="appointment.html" style="padding:8px 20px; background:rgba(255,255,255,0.2); border-radius:50px; color:white; text-decoration:none; font-weight:500; font-size:0.9rem;">
+                        <i class="fas fa-calendar-plus"></i> Book Appointment
+                    </a>
+                    <a href="symptom-checker.html" style="padding:8px 20px; background:rgba(255,255,255,0.2); border-radius:50px; color:white; text-decoration:none; font-weight:500; font-size:0.9rem;">
+                        <i class="fas fa-brain"></i> Check Symptoms
+                    </a>
+                </div>
+            </div>
+            <div class="banner-image">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="rgba(255,255,255,0.1)"/>
+                    <circle cx="100" cy="100" r="70" fill="rgba(255,255,255,0.05)"/>
+                    <!-- Stethoscope Illustration -->
+                    <g transform="translate(100, 100) scale(0.8)">
+                        <path d="M-30 -20 L-30 -5 L30 -5 L30 -20" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+                        <path d="M-35 -5 C-35 25, -20 40, 0 40 C20 40, 35 25, 35 -5" stroke="white" stroke-width="4" fill="none"/>
+                        <circle cx="0" cy="-25" r="15" stroke="white" stroke-width="4" fill="none"/>
+                        <circle cx="0" cy="-25" r="8" fill="rgba(255,255,255,0.3)"/>
+                        <line x1="0" y1="-15" x2="0" y2="-8" stroke="white" stroke-width="3"/>
+                        <line x1="-8" y1="-20" x2="8" y2="-20" stroke="white" stroke-width="3"/>
+                        <!-- Heart beat -->
+                        <path d="M-15 25 L-10 25 L-8 18 L-4 30 L0 18 L4 30 L8 18 L10 25 L15 25" stroke="white" stroke-width="2" fill="none" opacity="0.5"/>
+                    </g>
+                    <!-- Decorative dots -->
+                    <circle cx="30" cy="40" r="4" fill="rgba(255,255,255,0.2)"/>
+                    <circle cx="170" cy="40" r="4" fill="rgba(255,255,255,0.2)"/>
+                    <circle cx="30" cy="160" r="4" fill="rgba(255,255,255,0.2)"/>
+                    <circle cx="170" cy="160" r="4" fill="rgba(255,255,255,0.2)"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3>72</h3>
+                    <p>Heart Rate (bpm)</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3>75 kg</h3>
+                    <p>Weight</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3>7.5 hrs</h3>
+                    <p>Sleep Duration</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7z"/>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3>8,542</h3>
+                    <p>Steps Today</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Upcoming Appointments</h3>
+                    <a href="appointments.html" class="view-all">View All →</a>
+                </div>
+                <div class="appointment-item">
+                    <div class="appointment-info">
+                        <h4>Dr. Sarah Johnson</h4>
+                        <p>Cardiology Checkup</p>
+                        <span class="time">Today, 3:00 PM</span>
+                    </div>
+                    <span class="appointment-status confirmed">Confirmed</span>
+                </div>
+                <div class="appointment-item">
+                    <div class="appointment-info">
+                        <h4>Dr. Michael Chen</h4>
+                        <p>Follow-up Visit</p>
+                        <span class="time">Tomorrow, 10:30 AM</span>
+                    </div>
+                    <span class="appointment-status pending">Pending</span>
+                </div>
+                <div class="appointment-item">
+                    <div class="appointment-info">
+                        <h4>Dr. Emily Rodriguez</h4>
+                        <p>Dermatology Consultation</p>
+                        <span class="time">Jan 20, 2:00 PM</span>
+                    </div>
+                    <span class="appointment-status confirmed">Confirmed</span>
+                </div>
+            </div>
+
+            <!-- Health Insights -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>AI Health Insights</h3>
+                    <span style="font-size:0.8rem; color:var(--text-light);">Powered by AI</span>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="insight-content">
+                        <p>Based on your recent symptoms, consider staying hydrated and getting more rest.</p>
+                        <span class="insight-time">2 hours ago</span>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="insight-content">
+                        <p>Your blood pressure readings are within normal range. Keep up the good work!</p>
+                        <span class="insight-time">1 day ago</span>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon"><i class="fas fa-heart"></i></div>
+                    <div class="insight-content">
+                        <p>Remember to schedule your annual checkup. It's been 11 months since your last visit.</p>
+                        <span class="insight-time">3 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-timeline">
+            <h3>Recent Activity</h3>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-calendar-check"></i></div>
+                <div class="activity-content">
+                    <p>Booked appointment with Dr. Sarah Johnson</p>
+                    <span class="activity-time">2 hours ago</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-brain"></i></div>
+                <div class="activity-content">
+                    <p>Completed symptom check - No issues detected</p>
+                    <span class="activity-time">1 day ago</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-file-medical"></i></div>
+                <div class="activity-content">
+                    <p>Medical records updated</p>
+                    <span class="activity-time">3 days ago</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="activity-content">
+                    <p>Health metrics synced from wearable device</p>
+                    <span class="activity-time">5 days ago</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ===== SIDEBAR TOGGLE =====
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const hamburger = document.getElementById('hamburgerBtn');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const hamburger = document.getElementById('hamburgerBtn');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('mediAI_user');
+                window.location.href = '../login.html';
+            }
+        }
+
+        // ===== LOAD USER DATA =====
+        function loadUserData() {
+            const user = localStorage.getItem('mediAI_user');
+            if (user) {
+                const userData = JSON.parse(user);
+                const name = userData.name || 'John Doe';
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                document.getElementById('userName').textContent = name;
+                document.getElementById('welcomeName').textContent = name.split(' ')[0];
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('headerAvatar').textContent = initials;
+            }
+        }
+
+        // ===== CHECK AUTH =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('mediAI_user');
+            if (!user) {
+                window.location.href = '../login.html';
+            }
+            loadUserData();
+            console.log('✅ Patient Dashboard loaded successfully!');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - MediAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-gradient: linear-gradient(135deg, #1a56db 0%, #3b82f6 100%);
+            --text: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --shadow: 0 4px 6px rgba(26, 86, 219, 0.07);
+            --shadow-lg: 0 10px 40px rgba(26, 86, 219, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --green: #22c55e;
+            --red: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--white);
+            padding: 16px 24px;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .nav-logo .stethoscope-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 8px;
+        }
+
+        .nav-logo .stethoscope-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .nav-logo .medi { color: var(--text); }
+        .nav-logo .ai { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary); }
+
+        .btn-home {
+            padding: 8px 20px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+        }
+
+        .main-content {
+            padding-top: 80px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 90px 24px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .page-header h1 span { color: var(--primary); }
+        .page-header p { color: var(--text-light); }
+
+        .chat-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header .assistant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header .assistant-info i {
+            font-size: 2rem;
+        }
+
+        .chat-header .assistant-info h3 {
+            font-size: 1.1rem;
+        }
+
+        .chat-header .assistant-info span {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--bg);
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+        }
+
+        .message .message-content {
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .message.user .message-content {
+            background: var(--primary-gradient);
+            color: var(--white);
+        }
+
+        .message .message-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .message .message-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .message .message-content ul li {
+            margin-bottom: 4px;
+        }
+
+        .message .message-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 8px 0;
+        }
+
+        .typing-indicator span {
+            width: 10px;
+            height: 10px;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: typing 1.4s ease-in-out infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        .chat-input {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            background: var(--white);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .quick-btn {
+            padding: 6px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            background: var(--white);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .quick-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+        }
+
+        .input-group button {
+            padding: 12px 24px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .input-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .input-group button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text);
+            color: var(--white);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show { display: flex; }
+
+        .toast.success { border-left: 4px solid var(--green); }
+        .toast.error { border-left: 4px solid var(--red); }
+        .toast.info { border-left: 4px solid var(--primary); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow-lg);
+                gap: 12px;
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: flex; }
+            .chat-container {
+                height: 500px;
+            }
+            .chat-messages {
+                padding: 16px;
+            }
+            .message {
+                max-width: 90%;
+            }
+            .quick-actions {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="stethoscope-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                    <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                    <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                    <circle cx="19" cy="8" r="1"/>
+                    <circle cx="8.5" cy="8" r="1"/>
+                </svg>
+            </div>
+            <span><span class="medi">Medi</span><span class="ai">AI</span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="assistant.html" class="active">AI Assistant</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html" class="btn-home">🏠 Home</a></li>
+            <li><button class="btn-logout" onclick="logout()">Logout</button></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>AI <span>Health Assistant</span></h1>
+                <p>Your 24/7 virtual health companion</p>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="assistant-info">
+                    <i class="fas fa-robot"></i>
+                    <div>
+                        <h3>MediAI Assistant</h3>
+                        <span>Online • Ready to help</span>
+                    </div>
+                </div>
+                <div>
+                    <i class="fas fa-circle" style="color: #22c55e; font-size: 0.75rem;"></i>
+                    <span style="font-size: 0.85rem; margin-left: 4px;">Active</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-content">
+                        <p>Hello! I'm your AI health assistant. 👋</p>
+                        <p style="margin-top: 8px;">How can I help you today? Feel free to ask me about:</p>
+                        <ul>
+                            <li>Symptom information</li>
+                            <li>Health tips and advice</li>
+                            <li>Medication information</li>
+                            <li>General health questions</li>
+                        </ul>
+                    </div>
+                    <span class="message-time">Just now</span>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="sendQuickMessage('What are the symptoms of flu?')">🤒 Flu Symptoms</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('How to reduce stress?')">🧘 Stress Relief</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Healthy diet tips')">🥗 Diet Tips</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('How to improve sleep?')">😴 Sleep Tips</button>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="chatInput" placeholder="Type your health question..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button id="sendBtn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-info-circle" id="toastIcon"></i>
+        <span id="toastMessage">Message sent!</span>
+    </div>
+
+    <script>
+        let isTyping = false;
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('mediAI_user');
+            window.location.href = '../login.html';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const text = document.getElementById('toastMessage');
+
+            toast.className = `toast show ${type}`;
+            text.textContent = message;
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            icon.className = `fas ${icons[type] || icons.info}`;
+
+            clearTimeout(toast.timeout);
+            toast.timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message || isTyping) return;
+            
+            input.value = '';
+            addMessage('user', message);
+            getAIResponse(message);
+        }
+
+        function sendQuickMessage(message) {
+            if (isTyping) return;
+            addMessage('user', message);
+            getAIResponse(message);
+        }
+
+        function addMessage(type, content) {
+            const container = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            const p = document.createElement('p');
+            p.textContent = content;
+            contentDiv.appendChild(p);
+            
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timeSpan);
+            
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTyping() {
+            const container = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typingIndicator';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.innerHTML = `
+                <span></span>
+                <span></span>
+                <span></span>
+            `;
+            
+            contentDiv.appendChild(typing);
+            typingDiv.appendChild(contentDiv);
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+            isTyping = true;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) {
+                typing.remove();
+            }
+            isTyping = false;
+        }
+
+        function getAIResponse(message) {
+            showTyping();
+
+            const responses = {
+                'flu': 'Common flu symptoms include fever, cough, sore throat, body aches, fatigue, and chills. Stay hydrated, rest, and consider over-the-counter medication. If symptoms persist, consult a doctor.',
+                'stress': 'To reduce stress: practice deep breathing, exercise regularly, get enough sleep, meditate, and take breaks from work. Consider talking to a professional if stress becomes overwhelming.',
+                'diet': 'A healthy diet includes: fruits, vegetables, whole grains, lean proteins, and healthy fats. Stay hydrated, limit processed foods, and maintain portion control.',
+                'sleep': 'To improve sleep: maintain a consistent sleep schedule, create a relaxing bedtime routine, avoid screens before bed, keep your bedroom cool and dark, and limit caffeine intake.',
+                'headache': 'For headaches: rest in a quiet, dark room, apply a cold or warm compress, stay hydrated, and consider over-the-counter pain relievers. If headaches are severe or persistent, see a doctor.',
+                'fever': 'For fever: rest, stay hydrated, use over-the-counter fever reducers, and monitor your temperature. Seek medical attention if fever is over 103°F (39.4°C) or lasts more than 3 days.'
+            };
+
+            let response = "I understand your concern. Based on what you've shared, I recommend consulting with a healthcare professional for a proper diagnosis. Would you like me to help you find a doctor?";
+
+            const lowerMsg = message.toLowerCase();
+            for (const [key, value] of Object.entries(responses)) {
+                if (lowerMsg.includes(key)) {
+                    response = value;
+                    break;
+                }
+            }
+
+            setTimeout(() => {
+                hideTyping();
+                addMessage('assistant', response);
+                showToast('Response received!', 'success');
+            }, 1000 + Math.random() * 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('mediAI_user');
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+            console.log('✅ AI Assistant page loaded successfully!');
+        });
+    </script>
+
+</body>
+</html>

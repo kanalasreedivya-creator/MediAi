@@ -1,0 +1,57 @@
+<!-- Sidebar Component - To be included in dashboard layouts -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+        <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="sidebar-user">
+        <img src="../assets/images/avatars/default.jpg" alt="User" class="sidebar-avatar">
+        <div>
+            <h4 id="userName">John Doe</h4>
+            <span id="userRole">Patient</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <ul>
+            <li class="active"><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+            <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+            <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load user data
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const userName = document.getElementById('userName');
+    const userRole = document.getElementById('userRole');
+    
+    if (userName) userName.textContent = userData.name || 'Guest';
+    if (userRole) userRole.textContent = userData.role || 'User';
+    
+    // Logout functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        });
+    }
+    
+    // Mobile sidebar toggle
+    const toggleBtn = document.querySelector('.sidebar-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('mobile-open');
+        });
+    }
+});
+</script>

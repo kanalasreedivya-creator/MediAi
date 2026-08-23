@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAI - Intelligent Healthcare Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-bg: #eff6ff;
+            --primary-gradient: linear-gradient(135deg, #1a56db 0%, #3b82f6 100%);
+            --text: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --shadow: 0 4px 6px rgba(26, 86, 219, 0.07);
+            --shadow-lg: 0 10px 40px rgba(26, 86, 219, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --max-width: 1200px;
+            --emergency-red: #dc2626;
+            --emergency-dark: #991b1b;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(26, 86, 219, 0.06);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 2px 20px rgba(26, 86, 219, 0.1);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo .stethoscope-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo .stethoscope-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+
+        .nav-logo .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo .logo-text .medi { color: var(--text); }
+        .nav-logo .logo-text .ai { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary); }
+
+        .nav-links .emergency-nav-btn {
+            background: var(--emergency-red);
+            color: var(--white) !important;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            animation: pulseEmergency 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+        }
+
+        .nav-links .emergency-nav-btn::after {
+            display: none !important;
+        }
+
+        .nav-links .emergency-nav-btn:hover {
+            background: var(--emergency-dark);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
+        }
+
+        @keyframes pulseEmergency {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.6); }
+        }
+
+        .btn-login {
+            padding: 8px 24px;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary) !important;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-login:hover {
+            background: var(--primary);
+            color: var(--white) !important;
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-login::after { display: none !important; }
+
+        .btn-register {
+            padding: 8px 24px;
+            background: var(--primary-gradient);
+            border-radius: 50px;
+            color: var(--white) !important;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 86, 219, 0.4);
+        }
+
+        .btn-register::after { display: none !important; }
+
+        /* ===== LANGUAGE SELECTOR ===== */
+        .language-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-selector .lang-btn {
+            padding: 6px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+        }
+
+        .language-selector .lang-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .language-selector .lang-btn i {
+            font-size: 0.9rem;
+        }
+
+        .language-selector .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 140px;
+            padding: 6px 0;
+            z-index: 100;
+            border: 1px solid #e2e8f0;
+        }
+
+        .language-selector .lang-dropdown.active {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .language-selector .lang-dropdown button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            width: 100%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: var(--text);
+            text-align: left;
+        }
+
+        .language-selector .lang-dropdown button:hover {
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+
+        .language-selector .lang-dropdown button.active {
+            background: var(--primary-bg);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .language-selector .lang-dropdown button .flag {
+            font-size: 1.2rem;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== EMERGENCY BANNER ===== */
+        .emergency-banner {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 12px 0;
+            position: fixed;
+            top: 70px;
+            width: 100%;
+            z-index: 999;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        .emergency-banner.active {
+            display: block;
+        }
+
+        .emergency-banner .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .emergency-banner .emergency-text {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .emergency-banner .emergency-text i {
+            font-size: 1.5rem;
+            animation: pulseEmergency 1s ease-in-out infinite;
+        }
+
+        .emergency-banner .emergency-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .emergency-banner .emergency-actions a {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .emergency-banner .emergency-actions .btn-call {
+            background: white;
+            color: var(--emergency-red);
+        }
+
+        .emergency-banner .emergency-actions .btn-close-emergency {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 140px 0 80px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(26, 86, 219, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content h1 .highlight {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 520px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3.5rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(26, 86, 219, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(26, 86, 219, 0.45);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(26, 86, 219, 0.25);
+        }
+
+        .btn-emergency {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 30px rgba(220, 38, 38, 0.4);
+            animation: pulseEmergency 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-emergency::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-30%, -30%) rotate(0deg); }
+            50% { transform: translate(30%, 30%) rotate(180deg); }
+        }
+
+        .btn-emergency:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 40px rgba(220, 38, 38, 0.6);
+        }
+
+        .btn-emergency i {
+            font-size: 1.5rem;
+            animation: pulseEmergency 1s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-emergency span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3.5rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(26, 86, 219, 0.1);
+        }
+
+        .stat-item h3 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-image .image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .hero-image .image-wrapper .main-illustration {
+            width: 100%;
+            border-radius: var(--radius);
+            animation: float 6s ease-in-out infinite;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(26, 86, 219, 0.15);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-image .floating-card {
+            position: absolute;
+            background: var(--white);
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: float 4s ease-in-out infinite;
+            border: 1px solid rgba(26, 86, 219, 0.08);
+        }
+
+        .floating-card.card-1 {
+            top: 5%;
+            right: -10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card.card-2 {
+            bottom: 10%;
+            left: -10%;
+            animation-delay: 1.5s;
+        }
+
+        .floating-card .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .floating-card .card-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .floating-card .card-text p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ===== EMERGENCY SECTION ===== */
+        .emergency-section {
+            padding: 60px 0 80px;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .emergency-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .emergency-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .emergency-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(220, 38, 38, 0.15);
+        }
+
+        .emergency-card .emergency-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--emergency-red);
+            transition: var(--transition);
+        }
+
+        .emergency-card:hover .emergency-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .emergency-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-card .emergency-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--emergency-red);
+        }
+
+        .emergency-card .btn-call-emergency {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .emergency-card .btn-call-emergency:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        /* ===== ROLE SELECTOR ===== */
+        .role-selector-section {
+            padding: 60px 0 80px;
+            background: var(--white);
+        }
+
+        .role-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .role-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .role-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(26, 86, 219, 0.15);
+        }
+
+        .role-card .role-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .role-card:hover .role-icon {
+            background: var(--primary-gradient);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .role-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .role-card .role-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .role-card .role-buttons .btn-sm {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .role-card .role-buttons .btn-login-sm {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .role-card .role-buttons .btn-login-sm:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .role-card .role-buttons .btn-register-sm {
+            background: var(--primary-gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .role-card .role-buttons .btn-register-sm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 86, 219, 0.4);
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 80px 0;
+            background: var(--bg);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+
+        .section-header .badge {
+            display: inline-block;
+            padding: 4px 16px;
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 .highlight {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2.5rem 2rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(26, 86, 219, 0.06);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(26, 86, 219, 0.15);
+        }
+
+        .feature-card .icon {
+            width: 72px;
+            height: 72px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 2rem;
+            color: var(--white);
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(26, 86, 219, 0.3);
+        }
+
+        .feature-card:hover .icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .feature-card .feature-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border: 1px solid rgba(26, 86, 219, 0.06);
+            cursor: pointer;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(26, 86, 219, 0.12);
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .step p { color: var(--text-light); }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 80px 0;
+            background: var(--bg);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border: 1px solid rgba(26, 86, 219, 0.06);
+            box-shadow: var(--shadow);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(26, 86, 219, 0.12);
+        }
+
+        .testimonial-card .stars {
+            color: #f59e0b;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card blockquote {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-card .author .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .testimonial-card .author h4 { font-size: 1rem; }
+        .testimonial-card .author p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            padding: 80px 0;
+            background: var(--primary-gradient);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta .btn-primary:hover {
+            background: var(--bg);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-col h4 .stethoscope-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 6px;
+        }
+
+        .footer-col h4 .stethoscope-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .footer-col p {
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
+        .footer-col ul li a {
+            color: #9ca3af;
+            transition: var(--transition);
+        }
+        .footer-col ul li a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom .heart {
+            color: #ef4444;
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(26, 86, 219, 0.3);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(26, 86, 219, 0.4);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--text);
+            color: var(--white);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+            max-width: 400px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toast.show { display: flex; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== EMERGENCY MODAL ===== */
+        .emergency-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .emergency-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .emergency-modal .modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            animation: scaleIn 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-modal .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .emergency-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+
+        .emergency-modal .modal-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--emergency-red);
+        }
+
+        .emergency-modal .modal-header h2 i {
+            animation: pulseEmergency 1s ease-in-out infinite;
+        }
+
+        .emergency-modal .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .emergency-modal .modal-close:hover {
+            color: var(--text);
+            transform: rotate(90deg);
+        }
+
+        .emergency-modal .modal-body .emergency-contact {
+            background: #fef2f2;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--emergency-red);
+        }
+
+        .emergency-modal .modal-body .emergency-contact .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--emergency-red);
+        }
+
+        .emergency-modal .modal-body .emergency-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .emergency-modal .modal-body .emergency-options button {
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .emergency-modal .modal-body .emergency-options button:hover {
+            border-color: var(--emergency-red);
+            background: #fef2f2;
+            transform: translateY(-2px);
+        }
+
+        .emergency-modal .modal-body .emergency-options button i {
+            font-size: 1.5rem;
+            color: var(--emergency-red);
+        }
+
+        .emergency-modal .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .emergency-modal .modal-footer .btn-call-now {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .emergency-modal .modal-footer .btn-call-now:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .emergency-modal .modal-footer .btn-cancel {
+            padding: 14px 24px;
+            background: var(--bg);
+            color: var(--text);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-content h1 { font-size: 3rem; }
+            .role-selector-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 992px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+            .hero-content .subtitle { margin: 0 auto 2rem; }
+            .hero-buttons { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .hero-image .image-wrapper { max-width: 400px; margin: 0 auto; }
+            .floating-card.card-1 { right: 0; top: 0; }
+            .floating-card.card-2 { left: 0; bottom: 5%; }
+            .role-selector-grid { grid-template-columns: 1fr 1fr; }
+            .emergency-modal .modal-body .emergency-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 1.5rem;
+                box-shadow: var(--shadow-lg);
+                gap: 1rem;
+                border-radius: 0 0 var(--radius) var(--radius);
+                border-top: 1px solid rgba(26, 86, 219, 0.06);
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a::after { display: none; }
+            .hamburger { display: flex; }
+            
+            .language-selector .lang-dropdown {
+                right: auto;
+                left: 0;
+            }
+            
+            .hero {
+                padding: 120px 0 60px;
+                min-height: auto;
+            }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-content .subtitle { font-size: 1rem; }
+            .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+            .stat-item h3 { font-size: 1.8rem; }
+            .floating-card { display: none !important; }
+            .section-header h2 { font-size: 2.2rem; }
+            .role-selector-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .cta h2 { font-size: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-social { justify-content: center; }
+            .btn-primary, .btn-secondary {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+            }
+            .emergency-grid { grid-template-columns: 1fr; }
+            .emergency-modal .modal-content {
+                padding: 24px;
+            }
+            .emergency-modal .modal-footer {
+                flex-direction: column;
+            }
+            .emergency-banner .container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .container { padding: 0 16px; }
+            .stat-item h3 { font-size: 1.5rem; }
+            .hero-image .image-wrapper { max-width: 300px; }
+            .toast {
+                bottom: 80px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+            }
+            .emergency-card .emergency-number {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== EMERGENCY BANNER ===== -->
+    <div class="emergency-banner" id="emergencyBanner">
+        <div class="container">
+            <div class="emergency-text">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span>🚨 Emergency Alert: Immediate assistance required</span>
+            </div>
+            <div class="emergency-actions">
+                <a href="#" class="btn-call" onclick="callEmergency()">
+                    <i class="fas fa-phone"></i> Call 911
+                </a>
+                <a href="#" class="btn-close-emergency" onclick="closeEmergencyBanner()">
+                    <i class="fas fa-times"></i> Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="stethoscope-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                        <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                        <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                        <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                        <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                        <circle cx="19" cy="8" r="1"/>
+                        <circle cx="8.5" cy="8" r="1"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="medi">Medi</span><span class="ai">AI</span>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+                
+                <!-- Language Selector -->
+                <li class="language-selector">
+                    <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                        <i class="fas fa-globe"></i> <span id="currentLangLabel">EN</span>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button onclick="changeLanguage('en')" class="active" data-lang="en">
+                            <span class="flag">🇬🇧</span> English
+                        </button>
+                        <button onclick="changeLanguage('te')" data-lang="te">
+                            <span class="flag">🇮🇳</span> తెలుగు
+                        </button>
+                        <button onclick="changeLanguage('hi')" data-lang="hi">
+                            <span class="flag">🇮🇳</span> हिन्दी
+                        </button>
+                    </div>
+                </li>
+                
+                <li><a href="#" class="emergency-nav-btn" onclick="openEmergencyModal()">
+                    <i class="fas fa-phone"></i> Emergency
+                </a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+                <li><a href="register.html" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1>
+                        AI-Powered Healthcare <br>
+                        <span class="highlight">For Everyone</span>
+                    </h1>
+                    <p class="subtitle">
+                        Experience the future of healthcare with MediAI. Get instant symptom analysis, 
+                        connect with top doctors, and manage your health journey seamlessly.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#roles" class="btn-primary">
+                            <i class="fas fa-rocket"></i> Get Started
+                        </a>
+                        <a href="#features" class="btn-secondary">
+                            <i class="fas fa-play-circle"></i> Learn More
+                        </a>
+                        <button class="btn-emergency" onclick="openEmergencyModal()">
+                            <i class="fas fa-triangle-exclamation"></i>
+                            <span>🚨 Emergency Help</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <h3 id="statUsers">50K+</h3>
+                            <p>Active Users</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 id="statHospitals">500+</h3>
+                            <p>Hospitals</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 id="statAccuracy">95%</h3>
+                            <p>Accuracy Rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <div class="main-illustration">
+                            <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="400" rx="20" fill="#eff6ff"/>
+                                <rect width="600" height="400" rx="20" fill="url(#heroGrad)" opacity="0.3"/>
+                                <defs>
+                                    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#1a56db;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="150" cy="150" r="100" fill="#3b82f6" opacity="0.08"/>
+                                <circle cx="450" cy="250" r="80" fill="#1a56db" opacity="0.06"/>
+                                <circle cx="300" cy="100" r="60" fill="#0ea5e9" opacity="0.05"/>
+                                <path d="M100 280 L200 180 L300 240 L400 150 L500 260" stroke="#3b82f6" stroke-width="3" fill="none" opacity="0.25" stroke-dasharray="8,4"/>
+                                <circle cx="200" cy="180" r="16" fill="#3b82f6" opacity="0.9"/>
+                                <circle cx="300" cy="240" r="16" fill="#3b82f6" opacity="0.9"/>
+                                <circle cx="400" cy="150" r="16" fill="#3b82f6" opacity="0.9"/>
+                                <circle cx="150" cy="220" r="8" fill="#60a5fa" opacity="0.6"/>
+                                <circle cx="350" cy="180" r="8" fill="#60a5fa" opacity="0.6"/>
+                                <circle cx="450" cy="220" r="8" fill="#60a5fa" opacity="0.6"/>
+                                <g transform="translate(300, 210)">
+                                    <circle cx="0" cy="0" r="50" fill="none" stroke="#1a56db" stroke-width="2" opacity="0.15"/>
+                                    <g transform="scale(1.6)">
+                                        <path d="M-8 -10 L-8 -2 L8 -2 L8 -10" stroke="#1a56db" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                        <path d="M-10 -2 C-10 8, -6 14, 0 14 C6 14, 10 8, 10 -2" stroke="#1a56db" stroke-width="2.5" fill="none"/>
+                                        <circle cx="0" cy="-12" r="5" stroke="#1a56db" stroke-width="2.5" fill="white"/>
+                                        <circle cx="0" cy="-12" r="2.5" fill="#3b82f6" opacity="0.3"/>
+                                        <line x1="0" y1="-8" x2="0" y2="-4" stroke="#1a56db" stroke-width="2"/>
+                                        <line x1="-3" y1="-6" x2="3" y2="-6" stroke="#1a56db" stroke-width="2"/>
+                                    </g>
+                                </g>
+                                <text x="190" y="340" font-family="Arial, sans-serif" font-size="32" fill="#1f2937" font-weight="800">MediAI</text>
+                                <text x="225" y="370" font-family="Arial, sans-serif" font-size="14" fill="#64748b">AI-Powered Healthcare</text>
+                                <rect x="70" y="310" width="40" height="40" rx="8" fill="#3b82f6" opacity="0.08"/>
+                                <rect x="490" y="310" width="40" height="40" rx="8" fill="#3b82f6" opacity="0.08"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="floating-card card-1">
+                        <div class="card-icon"><i class="fas fa-robot"></i></div>
+                        <div class="card-text">
+                            <h4>AI Assistant</h4>
+                            <p>24/7 Health Support</p>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <div class="card-icon"><i class="fas fa-user-md"></i></div>
+                        <div class="card-text">
+                            <h4>Top Doctors</h4>
+                            <p>Verified Professionals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMERGENCY SECTION ===== -->
+    <section class="emergency-section" id="emergency">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge" style="background:#fef2f2; color:#dc2626;">
+                    <i class="fas fa-triangle-exclamation"></i> Emergency Services
+                </span>
+                <h2>🚨 <span style="color:#dc2626;">Emergency</span> Assistance</h2>
+                <p>Immediate help is available 24/7. Don't hesitate to reach out in emergencies.</p>
+            </div>
+            <div class="emergency-grid">
+                <div class="emergency-card">
+                    <div class="emergency-icon"><i class="fas fa-phone"></i></div>
+                    <h3>Emergency Hotline</h3>
+                    <p>Call for immediate medical assistance</p>
+                    <div class="emergency-number">911</div>
+                    <button class="btn-call-emergency" onclick="callEmergency()">
+                        <i class="fas fa-phone"></i> Call Now
+                    </button>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon"><i class="fas fa-hospital"></i></div>
+                    <h3>Nearest Hospital</h3>
+                    <p>Find the closest emergency room</p>
+                    <div style="font-size:0.95rem; color:var(--text-light); margin-bottom:8px;">
+                        <i class="fas fa-location-dot" style="color:#dc2626;"></i> New York General Hospital
+                    </div>
+                    <button class="btn-call-emergency" onclick="findNearestHospital()">
+                        <i class="fas fa-location-dot"></i> Find Hospital
+                    </button>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon"><i class="fas fa-skull"></i></div>
+                    <h3>Poison Control</h3>
+                    <p>24/7 Poison Control Center</p>
+                    <div class="emergency-number">1-800-222-1222</div>
+                    <button class="btn-call-emergency" onclick="callPoisonControl()">
+                        <i class="fas fa-phone"></i> Call Now
+                    </button>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Suicide Prevention</h3>
+                    <p>988 Suicide & Crisis Lifeline</p>
+                    <div class="emergency-number">988</div>
+                    <button class="btn-call-emergency" onclick="callSuicidePrevention()">
+                        <i class="fas fa-phone"></i> Call Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ROLE SELECTOR ===== -->
+    <section class="role-selector-section" id="roles">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-users"></i> Choose Your Role</span>
+                <h2>Select Your <span class="highlight">Account Type</span></h2>
+                <p>Choose the role that best describes you and access tailored features</p>
+            </div>
+            <div class="role-selector-grid">
+                <!-- Patient -->
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-user"></i></div>
+                    <h3>Patient</h3>
+                    <p>Access your health records, book appointments, and track your wellness journey</p>
+                    <div class="role-buttons">
+                        <a href="patient/login.html" class="btn-sm btn-login-sm">Sign In</a>
+                        <a href="patient/register.html" class="btn-sm btn-register-sm">Sign Up</a>
+                    </div>
+                </div>
+
+                <!-- Doctor -->
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-user-md"></i></div>
+                    <h3>Doctor</h3>
+                    <p>Manage your patients, appointments, prescriptions, and practice analytics</p>
+                    <div class="role-buttons">
+                        <a href="doctor/login.html" class="btn-sm btn-login-sm">Sign In</a>
+                        <a href="doctor/register.html" class="btn-sm btn-register-sm">Sign Up</a>
+                    </div>
+                </div>
+
+                <!-- Hospital -->
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-hospital"></i></div>
+                    <h3>Hospital</h3>
+                    <p>Manage your hospital departments, staff, patients, and emergency services</p>
+                    <div class="role-buttons">
+                        <a href="hospital/login.html" class="btn-sm btn-login-sm">Sign In</a>
+                        <a href="hospital/register.html" class="btn-sm btn-register-sm">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-star"></i> Premium Features</span>
+                <h2>Smart Healthcare <span class="highlight">Features</span></h2>
+                <p>Revolutionizing healthcare with cutting-edge AI technology</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" onclick="window.location.href='patient/symptom-checker.html'">
+                    <div class="icon"><i class="fas fa-brain"></i></div>
+                    <h3>AI Symptom Checker</h3>
+                    <p>Get instant preliminary diagnosis using advanced AI algorithms with 95% accuracy</p>
+                    <span class="feature-link">Try Now →</span>
+                </div>
+                <div class="feature-card" onclick="window.location.href='patient/appointment.html'">
+                    <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Smart Appointments</h3>
+                    <p>Book appointments with top doctors in real-time and get automatic reminders</p>
+                    <span class="feature-link">Book Now →</span>
+                </div>
+                <div class="feature-card" onclick="window.location.href='patient/location.html'">
+                    <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Live Location Tracking</h3>
+                    <p>Find nearby doctors, hospitals, and track your health journey in real-time</p>
+                    <span class="feature-link">Find Now →</span>
+                </div>
+                <div class="feature-card" onclick="window.location.href='patient/assistant.html'">
+                    <div class="icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI Assistant</h3>
+                    <p>24/7 virtual health assistant ready to answer your medical questions instantly</p>
+                    <span class="feature-link">Chat Now →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-play"></i> Simple Process</span>
+                <h2>How It <span class="highlight">Works</span></h2>
+                <p>Start your healthcare journey in three simple steps</p>
+            </div>
+            <div class="steps">
+                <div class="step" onclick="window.location.href='register.html'">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Create your free account in minutes and set up your health profile</p>
+                </div>
+                <div class="step" onclick="window.location.href='patient/symptom-checker.html'">
+                    <div class="step-number">2</div>
+                    <h3>Check Symptoms</h3>
+                    <p>Use our AI-powered tool to analyze your symptoms and get insights</p>
+                </div>
+                <div class="step" onclick="window.location.href='patient/appointment.html'">
+                    <div class="step-number">3</div>
+                    <h3>Get Connected</h3>
+                    <p>Find the right doctor or hospital and book your appointment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fas fa-quote-left"></i> Testimonials</span>
+                <h2>What Our <span class="highlight">Users Say</span></h2>
+                <p>Real experiences from real people using MediAI</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>"MediAI has completely transformed how I manage my health. The symptom checker is incredibly accurate and the AI assistant is always there when I need it."</blockquote>
+                    <div class="author"><div class="avatar">SJ</div><div><h4>Sarah Johnson</h4><p>Patient</p></div></div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>"As a doctor, I appreciate how MediAI helps my patients stay informed and engaged in their healthcare journey. It's a game-changer for modern medicine."</blockquote>
+                    <div class="author"><div class="avatar">MC</div><div><h4>Dr. Michael Chen</h4><p>Neurologist</p></div></div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>"The hospital management features have streamlined our operations significantly. We've seen a 40% improvement in patient satisfaction since implementing MediAI."</blockquote>
+                    <div class="author"><div class="avatar">RM</div><div><h4>Robert Martinez</h4><p>Hospital Administrator</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta" id="cta">
+        <div class="container">
+            <h2>Ready to Transform Your <br>Healthcare Experience?</h2>
+            <p>Join thousands of satisfied users who trust MediAI for their healthcare needs</p>
+            <a href="#roles" class="btn-primary">
+                <i class="fas fa-rocket"></i> Get Started Now
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>
+                        <span class="stethoscope-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                                <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                                <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                                <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                                <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                                <circle cx="19" cy="8" r="1"/>
+                                <circle cx="8.5" cy="8" r="1"/>
+                            </svg>
+                        </span>
+                        MediAI
+                    </h4>
+                    <p>Intelligent healthcare platform powered by AI, making quality healthcare accessible to everyone.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="hospitals.html">Hospitals</a></li>
+                        <li><a href="doctors.html">Doctors</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Patient</h4>
+                    <ul>
+                        <li><a href="patient/dashboard.html">Dashboard</a></li>
+                        <li><a href="patient/symptom-checker.html">Symptom Checker</a></li>
+                        <li><a href="patient/appointments.html">Appointments</a></li>
+                        <li><a href="patient/location.html">Live Location</a></li>
+                        <li><a href="patient/records.html">Medical Records</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Emergency</h4>
+                    <ul>
+                        <li><a href="#" onclick="openEmergencyModal()"><i class="fas fa-phone" style="color:#dc2626;"></i> Emergency Help</a></li>
+                        <li><a href="#" onclick="callEmergency()"><i class="fas fa-ambulance" style="color:#dc2626;"></i> Call 911</a></li>
+                        <li><a href="#" onclick="findNearestHospital()"><i class="fas fa-hospital" style="color:#dc2626;"></i> Find Hospital</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MediAI. All rights reserved. Made with <span class="heart">❤</span> for better healthcare.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCROLL TO TOP ===== -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== EMERGENCY MODAL ===== -->
+    <div class="emergency-modal" id="emergencyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-triangle-exclamation" style="color:#dc2626;"></i> Emergency Assistance</h2>
+                <button class="modal-close" onclick="closeEmergencyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:16px; color:var(--text-light);">
+                    Please select an emergency service or call immediately:
+                </p>
+
+                <div class="emergency-contact">
+                    <div class="label">🚨 Emergency Hotline</div>
+                    <div class="number">911</div>
+                    <button class="btn-call-emergency" onclick="callEmergency()" style="margin-top:8px; width:100%;">
+                        <i class="fas fa-phone"></i> Call 911 Now
+                    </button>
+                </div>
+
+                <div class="emergency-options">
+                    <button onclick="callPoisonControl()">
+                        <i class="fas fa-skull"></i>
+                        Poison Control
+                        <small style="font-size:0.7rem; color:var(--text-light);">1-800-222-1222</small>
+                    </button>
+                    <button onclick="callSuicidePrevention()">
+                        <i class="fas fa-heart"></i>
+                        Suicide Prevention
+                        <small style="font-size:0.7rem; color:var(--text-light);">988</small>
+                    </button>
+                    <button onclick="findNearestHospital()">
+                        <i class="fas fa-hospital"></i>
+                        Nearest Hospital
+                        <small style="font-size:0.7rem; color:var(--text-light);">Find Location</small>
+                    </button>
+                    <button onclick="callCrisisLine()">
+                        <i class="fas fa-phone"></i>
+                        Crisis Line
+                        <small style="font-size:0.7rem; color:var(--text-light);">1-800-273-TALK</small>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-call-now" onclick="callEmergency()">
+                    <i class="fas fa-phone"></i> Call 911 Now
+                </button>
+                <button class="btn-cancel" onclick="closeEmergencyModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== LANGUAGE TRANSLATIONS =====
+        let currentLanguage = localStorage.getItem('mediAI_language') || 'en';
+
+        const translations = {
+            en: {
+                home: 'Home',
+                features_nav: 'Features',
+                how_it_works_nav: 'How It Works',
+                testimonials_nav: 'Testimonials',
+                contact_nav: 'Contact',
+                emergency_nav: 'Emergency',
+                login: 'Login',
+                register: 'Register',
+                hero_title_part1: 'AI-Powered Healthcare',
+                hero_title_part2: 'For Everyone',
+                hero_subtitle: 'Experience the future of healthcare with MediAI. Get instant symptom analysis, connect with top doctors, and manage your health journey seamlessly.',
+                get_started: 'Get Started',
+                learn_more: 'Learn More',
+                emergency_help: '🚨 Emergency Help',
+                active_users: 'Active Users',
+                hospitals_label: 'Hospitals',
+                accuracy_rate: 'Accuracy Rate',
+                ai_assistant: 'AI Assistant',
+                ai_support: '24/7 Health Support',
+                top_doctors: 'Top Doctors',
+                verified_professionals: 'Verified Professionals',
+                emergency_services: 'Emergency Services',
+                emergency_assistance: 'Emergency',
+                assistance: 'Assistance',
+                emergency_desc: 'Immediate help is available 24/7. Don\'t hesitate to reach out in emergencies.',
+                emergency_hotline: 'Emergency Hotline',
+                call_immediate: 'Call for immediate medical assistance',
+                call_now: 'Call Now',
+                nearest_hospital: 'Nearest Hospital',
+                find_er: 'Find the closest emergency room',
+                ny_general: 'New York General Hospital',
+                find_hospital: 'Find Hospital',
+                poison_control: 'Poison Control',
+                poison_24_7: '24/7 Poison Control Center',
+                suicide_prevention: 'Suicide Prevention',
+                suicide_lifeline: '988 Suicide & Crisis Lifeline',
+                choose_role: 'Choose Your Role',
+                select_account: 'Select Your',
+                account_type: 'Account Type',
+                role_desc: 'Choose the role that best describes you and access tailored features',
+                patient_role: 'Patient',
+                patient_desc: 'Access your health records, book appointments, and track your wellness journey',
+                sign_in: 'Sign In',
+                sign_up: 'Sign Up',
+                doctor_role: 'Doctor',
+                doctor_desc: 'Manage your patients, appointments, prescriptions, and practice analytics',
+                hospital_role: 'Hospital',
+                hospital_desc: 'Manage your hospital departments, staff, patients, and emergency services',
+                premium_features: 'Premium Features',
+                smart_healthcare: 'Smart Healthcare',
+                features_highlight: 'Features',
+                features_desc: 'Revolutionizing healthcare with cutting-edge AI technology',
+                symptom_checker: 'AI Symptom Checker',
+                symptom_desc: 'Get instant preliminary diagnosis using advanced AI algorithms with 95% accuracy',
+                try_now: 'Try Now →',
+                smart_appointments: 'Smart Appointments',
+                appointment_desc: 'Book appointments with top doctors in real-time and get automatic reminders',
+                book_now: 'Book Now →',
+                live_location: 'Live Location Tracking',
+                location_desc: 'Find nearby doctors, hospitals, and track your health journey in real-time',
+                find_now: 'Find Now →',
+                ai_assistant_feature: 'AI Assistant',
+                assistant_desc: '24/7 virtual health assistant ready to answer your medical questions instantly',
+                chat_now: 'Chat Now →',
+                simple_process: 'Simple Process',
+                how_it_works_heading: 'How It',
+                works_highlight: 'Works',
+                how_it_works_desc: 'Start your healthcare journey in three simple steps',
+                step1_title: 'Sign Up',
+                step1_desc: 'Create your free account in minutes and set up your health profile',
+                step2_title: 'Check Symptoms',
+                step2_desc: 'Use our AI-powered tool to analyze your symptoms and get insights',
+                step3_title: 'Get Connected',
+                step3_desc: 'Find the right doctor or hospital and book your appointment',
+                testimonials_badge: 'Testimonials',
+                what_users_say: 'What Our',
+                users_say: 'Users Say',
+                testimonials_desc: 'Real experiences from real people using MediAI',
+                testimonial1: '"MediAI has completely transformed how I manage my health. The symptom checker is incredibly accurate and the AI assistant is always there when I need it."',
+                testimonial1_name: 'Sarah Johnson',
+                patient_label: 'Patient',
+                testimonial2: '"As a doctor, I appreciate how MediAI helps my patients stay informed and engaged in their healthcare journey. It\'s a game-changer for modern medicine."',
+                testimonial2_name: 'Dr. Michael Chen',
+                neurologist_label: 'Neurologist',
+                testimonial3: '"The hospital management features have streamlined our operations significantly. We\'ve seen a 40% improvement in patient satisfaction since implementing MediAI."',
+                testimonial3_name: 'Robert Martinez',
+                hospital_admin_label: 'Hospital Administrator',
+                cta_title1: 'Ready to Transform Your',
+                cta_title2: 'Healthcare Experience?',
+                cta_desc: 'Join thousands of satisfied users who trust MediAI for their healthcare needs',
+                get_started_now: 'Get Started Now',
+                footer_desc: 'Intelligent healthcare platform powered by AI, making quality healthcare accessible to everyone.',
+                quick_links: 'Quick Links',
+                about_us: 'About Us',
+                features_link: 'Features',
+                hospitals_link: 'Hospitals',
+                doctors_link: 'Doctors',
+                contact_link: 'Contact',
+                patient_section: 'Patient',
+                dashboard_link: 'Dashboard',
+                symptom_checker_link: 'Symptom Checker',
+                appointments_link: 'Appointments',
+                live_location_link: 'Live Location',
+                records_link: 'Medical Records',
+                emergency_footer: 'Emergency',
+                emergency_help_footer: 'Emergency Help',
+                call_911: 'Call 911',
+                find_hospital_footer: 'Find Hospital',
+                legal: 'Legal',
+                privacy_policy: 'Privacy Policy',
+                terms_service: 'Terms of Service',
+                all_rights: 'All rights reserved.',
+                made_with: 'Made with',
+                for_better_healthcare: 'for better healthcare.',
+                emergency_assistance_modal: 'Emergency Assistance',
+                emergency_modal_desc: 'Please select an emergency service or call immediately:',
+                emergency_hotline_modal: 'Emergency Hotline',
+                call_911_now: 'Call 911 Now',
+                poison_control_modal: 'Poison Control',
+                suicide_prevention_modal: 'Suicide Prevention',
+                nearest_hospital_modal: 'Nearest Hospital',
+                find_location: 'Find Location',
+                crisis_line: 'Crisis Line',
+                close: 'Close',
+                emergency_alert: '🚨 Emergency Alert: Immediate assistance required',
+                call_911_btn: 'Call 911',
+                close_btn: 'Close'
+            },
+            te: {
+                home: 'హోమ్',
+                features_nav: 'ఫీచర్లు',
+                how_it_works_nav: 'ఇది ఎలా పనిచేస్తుంది',
+                testimonials_nav: 'సమీక్షలు',
+                contact_nav: 'సంప్రదించండి',
+                emergency_nav: 'అత్యవసర',
+                login: 'లాగిన్',
+                register: 'నమోదు',
+                hero_title_part1: 'AI-ఆధారిత ఆరోగ్య సంరక్షణ',
+                hero_title_part2: 'అందరికీ',
+                hero_subtitle: 'MediAIతో ఆరోగ్య సంరక్షణ యొక్క భవిష్యత్తును అనుభవించండి. తక్షణ లక్షణ విశ్లేషణ పొందండి, టాప్ డాక్టర్లతో కనెక్ట్ అవ్వండి మరియు మీ ఆరోగ్య ప్రయాణాన్ని సజావుగా నిర్వహించండి.',
+                get_started: 'ప్రారంభించండి',
+                learn_more: 'మరింత తెలుసుకోండి',
+                emergency_help: '🚨 అత్యవసర సహాయం',
+                active_users: 'క్రియాశీల వినియోగదారులు',
+                hospitals_label: 'ఆసుపత్రులు',
+                accuracy_rate: 'ఖచ్చితత్వం రేటు',
+                ai_assistant: 'AI సహాయకుడు',
+                ai_support: '24/7 ఆరోగ్య మద్దతు',
+                top_doctors: 'ఉత్తమ వైద్యులు',
+                verified_professionals: 'ధృవీకరించబడిన నిపుణులు',
+                emergency_services: 'అత్యవసర సేవలు',
+                emergency_assistance: 'అత్యవసర',
+                assistance: 'సహాయం',
+                emergency_desc: 'అత్యవసర పరిస్థితుల్లో 24/7 తక్షణ సహాయం అందుబాటులో ఉంది. సంకోచించకండి.',
+                emergency_hotline: 'అత్యవసర హాట్లైన్',
+                call_immediate: 'తక్షణ వైద్య సహాయం కోసం కాల్ చేయండి',
+                call_now: 'ఇప్పుడే కాల్ చేయండి',
+                nearest_hospital: 'సమీప ఆసుపత్రి',
+                find_er: 'సమీప అత్యవసర గదిని కనుగొనండి',
+                ny_general: 'న్యూయార్క్ జనరల్ ఆసుపత్రి',
+                find_hospital: 'ఆసుపత్రిని కనుగొనండి',
+                poison_control: 'పాయిజన్ కంట్రోల్',
+                poison_24_7: '24/7 పాయిజన్ కంట్రోల్ సెంటర్',
+                suicide_prevention: 'ఆత్మహత్య నివారణ',
+                suicide_lifeline: '988 ఆత్మహత్య & క్రైసిస్ లైఫ్లైన్',
+                choose_role: 'మీ పాత్రను ఎంచుకోండి',
+                select_account: 'మీ',
+                account_type: 'ఖాతా రకాన్ని ఎంచుకోండి',
+                role_desc: 'మీకు బాగా సరిపోయే పాత్రను ఎంచుకోండి మరియు అనుకూలీకరించిన ఫీచర్లను యాక్సెస్ చేయండి',
+                patient_role: 'రోగి',
+                patient_desc: 'మీ ఆరోగ్య రికార్డులను యాక్సెస్ చేయండి, అపాయింట్మెంట్లను బుక్ చేయండి మరియు మీ ఆరోగ్య ప్రయాణాన్ని ట్రాక్ చేయండి',
+                sign_in: 'సైన్ ఇన్',
+                sign_up: 'సైన్ అప్',
+                doctor_role: 'వైద్యుడు',
+                doctor_desc: 'మీ రోగులు, అపాయింట్మెంట్లు, ప్రిస్క్రిప్షన్లు మరియు ప్రాక్టీస్ విశ్లేషణలను నిర్వహించండి',
+                hospital_role: 'ఆసుపత్రి',
+                hospital_desc: 'మీ ఆసుపత్రి విభాగాలు, సిబ్బంది, రోగులు మరియు అత్యవసర సేవలను నిర్వహించండి',
+                premium_features: 'ప్రీమియం ఫీచర్లు',
+                smart_healthcare: 'స్మార్ట్ హెల్త్కేర్',
+                features_highlight: 'ఫీచర్లు',
+                features_desc: 'అత్యాధునిక AI టెక్నాలజీతో ఆరోగ్య సంరక్షణను విప్లవాత్మకంగా మార్చడం',
+                symptom_checker: 'AI లక్షణ పరిశీలకుడు',
+                symptom_desc: '95% ఖచ్చితత్వంతో అధునాతన AI అల్గారిథమ్లను ఉపయోగించి తక్షణ ప్రాథమిక నిర్ధారణ పొందండి',
+                try_now: 'ఇప్పుడే ప్రయత్నించండి →',
+                smart_appointments: 'స్మార్ట్ అపాయింట్మెంట్లు',
+                appointment_desc: 'టాప్ డాక్టర్లతో రియల్-టైమ్లో అపాయింట్మెంట్లను బుక్ చేయండి మరియు స్వయంచాలక రిమైండర్లను పొందండి',
+                book_now: 'ఇప్పుడే బుక్ చేయండి →',
+                live_location: 'లైవ్ లొకేషన్ ట్రాకింగ్',
+                location_desc: 'సమీపంలోని డాక్టర్లు, ఆసుపత్రులను కనుగొనండి మరియు మీ ఆరోగ్య ప్రయాణాన్ని రియల్-టైమ్లో ట్రాక్ చేయండి',
+                find_now: 'ఇప్పుడే కనుగొనండి →',
+                ai_assistant_feature: 'AI సహాయకుడు',
+                assistant_desc: 'మీ వైద్య ప్రశ్నలకు తక్షణ సమాధానాలు ఇవ్వడానికి 24/7 వర్చువల్ ఆరోగ్య సహాయకుడు',
+                chat_now: 'ఇప్పుడే చాట్ చేయండి →',
+                simple_process: 'సాధారణ ప్రక్రియ',
+                how_it_works_heading: 'ఇది ఎలా',
+                works_highlight: 'పనిచేస్తుంది',
+                how_it_works_desc: 'మూడు సాధారణ దశల్లో మీ ఆరోగ్య ప్రయాణాన్ని ప్రారంభించండి',
+                step1_title: 'నమోదు చేయండి',
+                step1_desc: 'నిమిషాల్లో మీ ఉచిత ఖాతాను సృష్టించండి మరియు మీ ఆరోగ్య ప్రొఫైల్ను సెటప్ చేయండి',
+                step2_title: 'లక్షణాలను తనిఖీ చేయండి',
+                step2_desc: 'మీ లక్షణాలను విశ్లేషించడానికి మరియు అంతర్దృష్టులను పొందడానికి మా AI-ఆధారిత సాధనాన్ని ఉపయోగించండి',
+                step3_title: 'కనెక్ట్ అవ్వండి',
+                step3_desc: 'సరైన డాక్టర్ లేదా ఆసుపత్రిని కనుగొని మీ అపాయింట్మెంట్ను బుక్ చేయండి',
+                testimonials_badge: 'సమీక్షలు',
+                what_users_say: 'మా వినియోగదారులు',
+                users_say: 'ఏమంటున్నారు',
+                testimonials_desc: 'MediAIని ఉపయోగించే నిజమైన వ్యక్తుల నుండి నిజమైన అనుభవాలు',
+                testimonial1: '"MediAI నా ఆరోగ్యాన్ని నిర్వహించే విధానాన్ని పూర్తిగా మార్చివేసింది. లక్షణ పరిశీలకుడు చాలా ఖచ్చితమైనది మరియు AI సహాయకుడు నాకు అవసరమైనప్పుడు ఎల్లప్పుడూ అందుబాటులో ఉంటాడు."',
+                testimonial1_name: 'సారా జాన్సన్',
+                patient_label: 'రోగి',
+                testimonial2: '"వైద్యుడిగా, MediAI నా రోగులు వారి ఆరోగ్య ప్రయాణంలో సమాచారం మరియు నిమగ్నమై ఉండటానికి ఎలా సహాయపడుతుందో నేను అభినందిస్తున్నాను. ఇది ఆధునిక వైద్యానికి గేమ్-ఛేంజర్."',
+                testimonial2_name: 'డాక్టర్ మైఖేల్ చెన్',
+                neurologist_label: 'న్యూరాలజిస్ట్',
+                testimonial3: '"ఆసుపత్రి నిర్వహణ ఫీచర్లు మా కార్యకలాపాలను గణనీయంగా క్రమబద్ధీకరించాయి. MediAIని అమలు చేసినప్పటి నుండి రోగి సంతృప్తిలో 40% మెరుగుదల చూశాము."',
+                testimonial3_name: 'రాబర్ట్ మార్టినెజ్',
+                hospital_admin_label: 'ఆసుపత్రి నిర్వాహకుడు',
+                cta_title1: 'మీ ఆరోగ్య అనుభవాన్ని',
+                cta_title2: 'మార్చడానికి సిద్ధంగా ఉన్నారా?',
+                cta_desc: 'MediAIని విశ్వసించే వేలాది మంది సంతృప్తి చెందిన వినియోగదారులతో చేరండి',
+                get_started_now: 'ఇప్పుడే ప్రారంభించండి',
+                footer_desc: 'AI ద్వారా ఆధారితమైన తెలివైన ఆరోగ్య సంరక్షణ వేదిక, నాణ్యమైన ఆరోగ్య సంరక్షణను అందరికీ అందుబాటులోకి తెస్తుంది.',
+                quick_links: 'త్వరిత లింక్లు',
+                about_us: 'మా గురించి',
+                features_link: 'ఫీచర్లు',
+                hospitals_link: 'ఆసుపత్రులు',
+                doctors_link: 'వైద్యులు',
+                contact_link: 'సంప్రదించండి',
+                patient_section: 'రోగి',
+                dashboard_link: 'డాష్బోర్డ్',
+                symptom_checker_link: 'లక్షణ పరిశీలకుడు',
+                appointments_link: 'అపాయింట్మెంట్లు',
+                live_location_link: 'లైవ్ లొకేషన్',
+                records_link: 'వైద్య రికార్డులు',
+                emergency_footer: 'అత్యవసర',
+                emergency_help_footer: 'అత్యవసర సహాయం',
+                call_911: '911కి కాల్ చేయండి',
+                find_hospital_footer: 'ఆసుపత్రిని కనుగొనండి',
+                legal: 'చట్టపరమైన',
+                privacy_policy: 'గోప్యతా విధానం',
+                terms_service: 'సేవా నిబంధనలు',
+                all_rights: 'అన్ని హక్కులు ప్రత్యేకించబడ్డాయి.',
+                made_with: 'తో తయారు చేయబడింది',
+                for_better_healthcare: 'మంచి ఆరోగ్య సంరక్షణ కోసం.',
+                emergency_assistance_modal: 'అత్యవసర సహాయం',
+                emergency_modal_desc: 'దయచేసి అత్యవసర సేవను ఎంచుకోండి లేదా వెంటనే కాల్ చేయండి:',
+                emergency_hotline_modal: 'అత్యవసర హాట్లైన్',
+                call_911_now: 'ఇప్పుడే 911కి కాల్ చేయండి',
+                poison_control_modal: 'పాయిజన్ కంట్రోల్',
+                suicide_prevention_modal: 'ఆత్మహత్య నివారణ',
+                nearest_hospital_modal: 'సమీప ఆసుపత్రి',
+                find_location: 'లొకేషన్ కనుగొనండి',
+                crisis_line: 'క్రైసిస్ లైన్',
+                close: 'మూసివేయండి',
+                emergency_alert: '🚨 అత్యవసర హెచ్చరిక: తక్షణ సహాయం అవసరం',
+                call_911_btn: '911కి కాల్ చేయండి',
+                close_btn: 'మూసివేయండి'
+            },
+            hi: {
+                home: 'होम',
+                features_nav: 'विशेषताएँ',
+                how_it_works_nav: 'यह कैसे काम करता है',
+                testimonials_nav: 'समीक्षाएँ',
+                contact_nav: 'संपर्क करें',
+                emergency_nav: 'आपातकालीन',
+                login: 'लॉगिन',
+                register: 'पंजीकरण',
+                hero_title_part1: 'AI-संचालित स्वास्थ्य सेवा',
+                hero_title_part2: 'सभी के लिए',
+                hero_subtitle: 'MediAI के साथ स्वास्थ्य सेवा के भविष्य का अनुभव करें। त्वरित लक्षण विश्लेषण प्राप्त करें, शीर्ष डॉक्टरों से जुड़ें, और अपनी स्वास्थ्य यात्रा को सुचारू रूप से प्रबंधित करें।',
+                get_started: 'शुरू करें',
+                learn_more: 'और जानें',
+                emergency_help: '🚨 आपातकालीन सहायता',
+                active_users: 'सक्रिय उपयोगकर्ता',
+                hospitals_label: 'अस्पताल',
+                accuracy_rate: 'सटीकता दर',
+                ai_assistant: 'AI सहायक',
+                ai_support: '24/7 स्वास्थ्य सहायता',
+                top_doctors: 'शीर्ष डॉक्टर',
+                verified_professionals: 'सत्यापित पेशेवर',
+                emergency_services: 'आपातकालीन सेवाएँ',
+                emergency_assistance: 'आपातकालीन',
+                assistance: 'सहायता',
+                emergency_desc: 'आपात स्थितियों में 24/7 तत्काल सहायता उपलब्ध है। संकोच न करें।',
+                emergency_hotline: 'आपातकालीन हॉटलाइन',
+                call_immediate: 'तत्काल चिकित्सा सहायता के लिए कॉल करें',
+                call_now: 'अभी कॉल करें',
+                nearest_hospital: 'निकटतम अस्पताल',
+                find_er: 'निकटतम आपातकालीन कक्ष खोजें',
+                ny_general: 'न्यूयॉर्क जनरल अस्पताल',
+                find_hospital: 'अस्पताल खोजें',
+                poison_control: 'पॉइज़न कंट्रोल',
+                poison_24_7: '24/7 पॉइज़न कंट्रोल सेंटर',
+                suicide_prevention: 'आत्महत्या रोकथाम',
+                suicide_lifeline: '988 आत्महत्या और संकट लाइफलाइन',
+                choose_role: 'अपनी भूमिका चुनें',
+                select_account: 'अपना',
+                account_type: 'खाता प्रकार चुनें',
+                role_desc: 'वह भूमिका चुनें जो आपको सबसे अच्छी तरह से वर्णित करती है और अनुकूलित सुविधाओं का उपयोग करें',
+                patient_role: 'मरीज',
+                patient_desc: 'अपने स्वास्थ्य रिकॉर्ड तक पहुँचें, अपॉइंटमेंट बुक करें, और अपनी स्वास्थ्य यात्रा को ट्रैक करें',
+                sign_in: 'साइन इन',
+                sign_up: 'साइन अप',
+                doctor_role: 'डॉक्टर',
+                doctor_desc: 'अपने मरीजों, अपॉइंटमेंट, प्रिस्क्रिप्शन और अभ्यास विश्लेषण का प्रबंधन करें',
+                hospital_role: 'अस्पताल',
+                hospital_desc: 'अपने अस्पताल के विभागों, कर्मचारियों, मरीजों और आपातकालीन सेवाओं का प्रबंधन करें',
+                premium_features: 'प्रीमियम सुविधाएँ',
+                smart_healthcare: 'स्मार्ट स्वास्थ्य सेवा',
+                features_highlight: 'सुविधाएँ',
+                features_desc: 'अत्याधुनिक AI तकनीक के साथ स्वास्थ्य सेवा में क्रांति',
+                symptom_checker: 'AI लक्षण जांचकर्ता',
+                symptom_desc: '95% सटीकता के साथ उन्नत AI एल्गोरिदम का उपयोग करके त्वरित प्रारंभिक निदान प्राप्त करें',
+                try_now: 'अभी आज़माएँ →',
+                smart_appointments: 'स्मार्ट अपॉइंटमेंट',
+                appointment_desc: 'शीर्ष डॉक्टरों के साथ रियल-टाइम में अपॉइंटमेंट बुक करें और स्वचालित रिमाइंडर प्राप्त करें',
+                book_now: 'अभी बुक करें →',
+                live_location: 'लाइव लोकेशन ट्रैकिंग',
+                location_desc: 'पास के डॉक्टरों, अस्पतालों को खोजें और अपनी स्वास्थ्य यात्रा को रियल-टाइम में ट्रैक करें',
+                find_now: 'अभी खोजें →',
+                ai_assistant_feature: 'AI सहायक',
+                assistant_desc: 'आपके चिकित्सा प्रश्नों का त्वरित उत्तर देने के लिए 24/7 वर्चुअल स्वास्थ्य सहायक',
+                chat_now: 'अभी चैट करें →',
+                simple_process: 'सरल प्रक्रिया',
+                how_it_works_heading: 'यह कैसे',
+                works_highlight: 'काम करता है',
+                how_it_works_desc: 'तीन सरल चरणों में अपनी स्वास्थ्य यात्रा शुरू करें',
+                step1_title: 'साइन अप करें',
+                step1_desc: 'मिनटों में अपना मुफ्त खाता बनाएं और अपनी स्वास्थ्य प्रोफ़ाइल सेट करें',
+                step2_title: 'लक्षण जांचें',
+                step2_desc: 'अपने लक्षणों का विश्लेषण करने और अंतर्दृष्टि प्राप्त करने के लिए हमारे AI-संचालित टूल का उपयोग करें',
+                step3_title: 'कनेक्ट हो जाएं',
+                step3_desc: 'सही डॉक्टर या अस्पताल खोजें और अपना अपॉइंटमेंट बुक करें',
+                testimonials_badge: 'समीक्षाएँ',
+                what_users_say: 'हमारे उपयोगकर्ता',
+                users_say: 'क्या कहते हैं',
+                testimonials_desc: 'MediAI का उपयोग करने वाले वास्तविक लोगों के वास्तविक अनुभव',
+                testimonial1: '"MediAI ने मेरे स्वास्थ्य को प्रबंधित करने के तरीके को पूरी तरह से बदल दिया है। लक्षण जांचकर्ता अविश्वसनीय रूप से सटीक है और AI सहायक हमेशा मेरी ज़रूरत के समय मौजूद रहता है।"',
+                testimonial1_name: 'सारा जॉनसन',
+                patient_label: 'मरीज',
+                testimonial2: '"एक डॉक्टर के रूप में, मैं सराहना करता हूं कि कैसे MediAI मेरे मरीजों को उनकी स्वास्थ्य यात्रा में सूचित और व्यस्त रहने में मदद करता है। यह आधुनिक चिकित्सा के लिए एक गेम-चेंजर है।"',
+                testimonial2_name: 'डॉ. माइकल चेन',
+                neurologist_label: 'न्यूरोलॉजिस्ट',
+                testimonial3: '"अस्पताल प्रबंधन सुविधाओं ने हमारे संचालन को महत्वपूर्ण रूप से सुव्यवस्थित किया है। MediAI को लागू करने के बाद से हमने रोगी संतुष्टि में 40% सुधार देखा है।"',
+                testimonial3_name: 'रॉबर्ट मार्टिनेज',
+                hospital_admin_label: 'अस्पताल प्रशासक',
+                cta_title1: 'अपने स्वास्थ्य अनुभव को',
+                cta_title2: 'बदलने के लिए तैयार हैं?',
+                cta_desc: 'हजारों संतुष्ट उपयोगकर्ताओं के साथ जुड़ें जो अपनी स्वास्थ्य आवश्यकताओं के लिए MediAI पर भरोसा करते हैं',
+                get_started_now: 'अभी शुरू करें',
+                footer_desc: 'AI द्वारा संचालित बुद्धिमान स्वास्थ्य सेवा मंच, गुणवत्तापूर्ण स्वास्थ्य सेवा को सभी के लिए सुलभ बनाता है।',
+                quick_links: 'त्वरित लिंक',
+                about_us: 'हमारे बारे में',
+                features_link: 'सुविधाएँ',
+                hospitals_link: 'अस्पताल',
+                doctors_link: 'डॉक्टर',
+                contact_link: 'संपर्क करें',
+                patient_section: 'मरीज',
+                dashboard_link: 'डैशबोर्ड',
+                symptom_checker_link: 'लक्षण जांचकर्ता',
+                appointments_link: 'अपॉइंटमेंट',
+                live_location_link: 'लाइव लोकेशन',
+                records_link: 'मेडिकल रिकॉर्ड',
+                emergency_footer: 'आपातकालीन',
+                emergency_help_footer: 'आपातकालीन सहायता',
+                call_911: '911 पर कॉल करें',
+                find_hospital_footer: 'अस्पताल खोजें',
+                legal: 'कानूनी',
+                privacy_policy: 'गोपनीयता नीति',
+                terms_service: 'सेवा की शर्तें',
+                all_rights: 'सर्वाधिकार सुरक्षित।',
+                made_with: 'के साथ बनाया गया',
+                for_better_healthcare: 'बेहतर स्वास्थ्य सेवा के लिए।',
+                emergency_assistance_modal: 'आपातकालीन सहायता',
+                emergency_modal_desc: 'कृपया कोई आपातकालीन सेवा चुनें या तुरंत कॉल करें:',
+                emergency_hotline_modal: 'आपातकालीन हॉटलाइन',
+                call_911_now: 'अभी 911 पर कॉल करें',
+                poison_control_modal: 'पॉइज़न कंट्रोल',
+                suicide_prevention_modal: 'आत्महत्या रोकथाम',
+                nearest_hospital_modal: 'निकटतम अस्पताल',
+                find_location: 'स्थान खोजें',
+                crisis_line: 'संकट रेखा',
+                close: 'बंद करें',
+                emergency_alert: '🚨 आपातकालीन चेतावनी: तत्काल सहायता की आवश्यकता',
+                call_911_btn: '911 पर कॉल करें',
+                close_btn: 'बंद करें'
+            }
+        };
+
+        // ===== CHANGE LANGUAGE =====
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('mediAI_language', lang);
+            
+            const translationsData = translations[lang];
+            if (!translationsData) return;
+            
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translationsData[key]) {
+                    el.textContent = translationsData[key];
+                }
+            });
+            
+            const langLabels = {
+                'en': 'EN',
+                'te': 'తెలుగు',
+                'hi': 'हिन्दी'
+            };
+            document.getElementById('currentLangLabel').textContent = langLabels[lang] || 'EN';
+            
+            document.querySelectorAll('.lang-dropdown button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            document.getElementById('langDropdown').classList.remove('active');
+            
+            showToast(`Language changed to ${lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : 'हिन्दी'}`, 'success');
+        }
+
+        // ===== TOGGLE LANGUAGE DROPDOWN =====
+        function toggleLanguageDropdown() {
+            document.getElementById('langDropdown').classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.language-selector');
+            if (dropdown && !dropdown.contains(event.target)) {
+                document.getElementById('langDropdown').classList.remove('active');
+            }
+        });
+
+        // ===== MOBILE MENU =====
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('.nav-container');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.getElementById('hamburger');
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // ===== SCROLL TO TOP =====
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; bottom: 100px; right: 30px;
+                background: #0f172a; color: white;
+                padding: 16px 24px; border-radius: 10px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                z-index: 2000;
+                animation: slideUp 0.3s ease;
+                max-width: 400px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-left: 4px solid ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};
+            `;
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.info}" style="color: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ===== CHECK LOGIN STATUS =====
+        function checkAuth() {
+            const user = localStorage.getItem('mediAI_user');
+            if (user) {
+                const userData = JSON.parse(user);
+                const loginBtn = document.querySelector('.btn-login');
+                const registerBtn = document.querySelector('.btn-register');
+                if (loginBtn) {
+                    const roleMap = {
+                        'patient': 'patient/dashboard.html',
+                        'doctor': 'doctor/dashboard.html',
+                        'hospital': 'hospital/dashboard.html'
+                    };
+                    loginBtn.textContent = 'Dashboard';
+                    loginBtn.href = roleMap[userData.role] || 'patient/dashboard.html';
+                    loginBtn.className = 'btn-register';
+                }
+                if (registerBtn) {
+                    registerBtn.textContent = 'Logout';
+                    registerBtn.href = '#';
+                    registerBtn.onclick = function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('mediAI_user');
+                        localStorage.removeItem('mediAI_remember');
+                        showToast('Logged out successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 500);
+                    };
+                    registerBtn.className = 'btn-login';
+                }
+            }
+        }
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounters() {
+            const stats = [
+                { id: 'statUsers', target: 50000, suffix: '+', label: 'Users' },
+                { id: 'statHospitals', target: 500, suffix: '+', label: 'Hospitals' },
+                { id: 'statAccuracy', target: 95, suffix: '%', label: 'Accuracy' }
+            ];
+
+            stats.forEach(stat => {
+                const el = document.getElementById(stat.id);
+                if (!el) return;
+                let current = 0;
+                const increment = stat.target / 60;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.target) {
+                        current = stat.target;
+                        clearInterval(timer);
+                    }
+                    if (stat.id === 'statAccuracy') {
+                        el.textContent = Math.floor(current) + stat.suffix;
+                    } else if (current >= 1000) {
+                        el.textContent = Math.floor(current / 1000) + 'K' + stat.suffix;
+                    } else {
+                        el.textContent = Math.floor(current) + stat.suffix;
+                    }
+                }, 30);
+            });
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsContainer = document.querySelector('.hero-stats');
+        if (statsContainer) {
+            statsObserver.observe(statsContainer);
+        }
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    const navHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ===== INTERSECTION OBSERVER =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .step, .testimonial-card, .role-card, .emergency-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // ===== EMERGENCY FUNCTIONS =====
+        function openEmergencyModal() {
+            document.getElementById('emergencyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            showEmergencyBanner();
+        }
+
+        function closeEmergencyModal() {
+            document.getElementById('emergencyModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showEmergencyBanner() {
+            document.getElementById('emergencyBanner').classList.add('active');
+        }
+
+        function closeEmergencyBanner() {
+            document.getElementById('emergencyBanner').classList.remove('active');
+        }
+
+        function callEmergency() {
+            if (confirm('🚨 Are you sure you want to call 911 for emergency assistance?')) {
+                window.location.href = 'tel:911';
+                showToast('📞 Calling 911...', 'error');
+                closeEmergencyModal();
+            }
+        }
+
+        function callPoisonControl() {
+            if (confirm('☠️ Are you sure you want to call Poison Control?')) {
+                window.location.href = 'tel:18002221222';
+                showToast('📞 Calling Poison Control...', 'error');
+                closeEmergencyModal();
+            }
+        }
+
+        function callSuicidePrevention() {
+            if (confirm('💔 Are you sure you want to call the Suicide Prevention Lifeline?')) {
+                window.location.href = 'tel:988';
+                showToast('📞 Calling Suicide Prevention Lifeline...', 'error');
+                closeEmergencyModal();
+            }
+        }
+
+        function callCrisisLine() {
+            if (confirm('📞 Are you sure you want to call the Crisis Line?')) {
+                window.location.href = 'tel:18002738255';
+                showToast('📞 Calling Crisis Line...', 'error');
+                closeEmergencyModal();
+            }
+        }
+
+        function findNearestHospital() {
+            if (navigator.geolocation) {
+                showToast('📍 Finding nearest hospital...', 'info');
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const url = `https://www.google.com/maps/search/hospitals/@${lat},${lng},15z`;
+                        window.open(url, '_blank');
+                        showToast('🏥 Nearest hospitals found!', 'success');
+                        closeEmergencyModal();
+                    },
+                    function() {
+                        showToast('📍 Please enable location services', 'error');
+                        window.open('https://www.google.com/maps/search/hospitals', '_blank');
+                        closeEmergencyModal();
+                    }
+                );
+            } else {
+                window.open('https://www.google.com/maps/search/hospitals', '_blank');
+                closeEmergencyModal();
+            }
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEmergencyModal();
+                document.getElementById('langDropdown').classList.remove('active');
+            }
+        });
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply language
+            changeLanguage(currentLanguage);
+            checkAuth();
+            
+            console.log('%c 🏥 MediAI Healthcare Platform ', 'background: #1a56db; color: white; padding: 12px 24px; border-radius: 8px; font-size: 20px; font-weight: bold;');
+            console.log('%c 🌍 Multi-Language Support Active ', 'background: #f59e0b; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold;');
+            console.log('%c 🚨 Emergency Feature Active ', 'background: #dc2626; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold;');
+            console.log('%c ✅ All Features Loaded Successfully! ', 'background: #22c55e; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold;');
+            console.log('%c 📝 Demo Credentials ', 'background: #10b981; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold;');
+            console.log('  Patient: patient@mediai.com / patient123');
+            console.log('  Doctor: doctor@mediai.com / doctor123');
+            console.log('  Hospital: hospital@mediai.com / hospital123');
+        });
+
+        window.onload = function() {
+            if (window.performance) {
+                if (performance.navigation.type === 1) {
+                    console.log('Page reloaded');
+                }
+            }
+        };
+    </script>
+
+</body>
+</html>

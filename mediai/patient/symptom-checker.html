@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Symptom Checker - MediAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-gradient: linear-gradient(135deg, #1a56db 0%, #3b82f6 100%);
+            --text: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --shadow: 0 4px 6px rgba(26, 86, 219, 0.07);
+            --shadow-lg: 0 10px 40px rgba(26, 86, 219, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #f59e0b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--white);
+            padding: 16px 24px;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .nav-logo .stethoscope-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 8px;
+        }
+
+        .nav-logo .stethoscope-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .nav-logo .medi { color: var(--text); }
+        .nav-logo .ai { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary); }
+
+        .btn-home {
+            padding: 8px 20px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+        }
+
+        .main-content {
+            padding-top: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 90px 24px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .page-header h1 span { color: var(--primary); }
+        .page-header p { color: var(--text-light); }
+
+        .symptom-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 32px;
+            gap: 0;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            background: #e2e8f0;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .step.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+        }
+
+        .step.completed {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .step-line {
+            width: 60px;
+            height: 3px;
+            background: #e2e8f0;
+            transition: var(--transition);
+        }
+
+        .step-line.active {
+            background: var(--primary);
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .step-content .step-description {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .symptom-categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 8px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary-light);
+            background: var(--bg);
+        }
+
+        .category-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .symptom-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .symptom-tag:hover {
+            border-color: var(--primary-light);
+            background: var(--bg);
+        }
+
+        .symptom-tag.selected {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .symptom-tag input[type="checkbox"] {
+            display: none;
+        }
+
+        .symptom-tag .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .symptom-tag.selected .checkmark {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .symptom-tag.selected .checkmark::after {
+            content: '✓';
+            font-size: 12px;
+        }
+
+        .step-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            padding: 12px 32px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 86, 219, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            padding: 12px 32px;
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .selected-count {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .selected-count strong {
+            color: var(--primary);
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .result-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 40px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-content {
+            text-align: left;
+        }
+
+        .result-summary {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-summary h4 {
+            margin-bottom: 12px;
+        }
+
+        .result-summary ul {
+            list-style: none;
+        }
+
+        .result-summary ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-summary ul li:last-child {
+            border-bottom: none;
+        }
+
+        .condition-name {
+            font-weight: 600;
+        }
+
+        .condition-match {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text);
+            color: var(--white);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show { display: flex; }
+
+        .toast.success { border-left: 4px solid var(--green); }
+        .toast.error { border-left: 4px solid var(--red); }
+        .toast.info { border-left: 4px solid var(--primary); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow-lg);
+                gap: 12px;
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: flex; }
+            .symptom-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .step-line {
+                width: 30px;
+            }
+            .symptom-container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .symptom-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .step-buttons {
+                flex-direction: column;
+            }
+            .step-buttons button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="stethoscope-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 8a3 3 0 0 1-3 3h-1.5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M8.5 8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h1.5a3 3 0 0 1 3 3v3z"/>
+                    <path d="M15 11v3a4 4 0 0 1-8 0v-3"/>
+                    <path d="M11 14v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4"/>
+                    <path d="M19 11v1a4 4 0 0 1-4 4h-2"/>
+                    <circle cx="19" cy="8" r="1"/>
+                    <circle cx="8.5" cy="8" r="1"/>
+                </svg>
+            </div>
+            <span><span class="medi">Medi</span><span class="ai">AI</span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="symptom-checker.html" class="active">Symptom Checker</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html" class="btn-home">🏠 Home</a></li>
+            <li><button class="btn-logout" onclick="logout()">Logout</button></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>AI <span>Symptom Checker</span></h1>
+                <p>Describe your symptoms for AI analysis</p>
+            </div>
+        </div>
+
+        <div class="symptom-container">
+            <div class="step-indicator">
+                <div class="step active" id="step1">1</div>
+                <div class="step-line" id="line1"></div>
+                <div class="step" id="step2">2</div>
+                <div class="step-line" id="line2"></div>
+                <div class="step" id="step3">3</div>
+            </div>
+
+            <form id="symptomForm">
+                <!-- Step 1: Select Symptoms -->
+                <div class="step-content active" id="stepContent1">
+                    <h3>Select Your Symptoms</h3>
+                    <p class="step-description">Choose all the symptoms you're currently experiencing</p>
+
+                    <div class="symptom-categories">
+                        <button type="button" class="category-btn active" data-category="all" onclick="filterSymptoms('all')">All</button>
+                        <button type="button" class="category-btn" data-category="general" onclick="filterSymptoms('general')">General</button>
+                        <button type="button" class="category-btn" data-category="respiratory" onclick="filterSymptoms('respiratory')">Respiratory</button>
+                        <button type="button" class="category-btn" data-category="digestive" onclick="filterSymptoms('digestive')">Digestive</button>
+                        <button type="button" class="category-btn" data-category="musculoskeletal" onclick="filterSymptoms('musculoskeletal')">Musculoskeletal</button>
+                        <button type="button" class="category-btn" data-category="neurological" onclick="filterSymptoms('neurological')">Neurological</button>
+                    </div>
+
+                    <div class="selected-count">Selected: <strong id="selectedCount">0</strong> symptoms</div>
+
+                    <div class="symptom-grid" id="symptomGrid">
+                        <label class="symptom-tag" data-category="general" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="headache">
+                            <span class="checkmark"></span>
+                            Headache
+                        </label>
+                        <label class="symptom-tag" data-category="general" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="fever">
+                            <span class="checkmark"></span>
+                            Fever
+                        </label>
+                        <label class="symptom-tag" data-category="respiratory" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="cough">
+                            <span class="checkmark"></span>
+                            Cough
+                        </label>
+                        <label class="symptom-tag" data-category="respiratory" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="sore-throat">
+                            <span class="checkmark"></span>
+                            Sore Throat
+                        </label>
+                        <label class="symptom-tag" data-category="general" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="fatigue">
+                            <span class="checkmark"></span>
+                            Fatigue
+                        </label>
+                        <label class="symptom-tag" data-category="digestive" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="nausea">
+                            <span class="checkmark"></span>
+                            Nausea
+                        </label>
+                        <label class="symptom-tag" data-category="musculoskeletal" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="muscle-pain">
+                            <span class="checkmark"></span>
+                            Muscle Pain
+                        </label>
+                        <label class="symptom-tag" data-category="neurological" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="dizziness">
+                            <span class="checkmark"></span>
+                            Dizziness
+                        </label>
+                        <label class="symptom-tag" data-category="digestive" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="stomach-pain">
+                            <span class="checkmark"></span>
+                            Stomach Pain
+                        </label>
+                        <label class="symptom-tag" data-category="respiratory" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="shortness-breath">
+                            <span class="checkmark"></span>
+                            Shortness of Breath
+                        </label>
+                        <label class="symptom-tag" data-category="general" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="chills">
+                            <span class="checkmark"></span>
+                            Chills
+                        </label>
+                        <label class="symptom-tag" data-category="neurological" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="confusion">
+                            <span class="checkmark"></span>
+                            Confusion
+                        </label>
+                        <label class="symptom-tag" data-category="musculoskeletal" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="joint-pain">
+                            <span class="checkmark"></span>
+                            Joint Pain
+                        </label>
+                        <label class="symptom-tag" data-category="digestive" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="diarrhea">
+                            <span class="checkmark"></span>
+                            Diarrhea
+                        </label>
+                        <label class="symptom-tag" data-category="respiratory" onclick="toggleSymptom(this)">
+                            <input type="checkbox" value="chest-tightness">
+                            <span class="checkmark"></span>
+                            Chest Tightness
+                        </label>
+                    </div>
+
+                    <div class="step-buttons">
+                        <button type="button" class="btn-primary" onclick="nextStep(2)">Next →</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Additional Details -->
+                <div class="step-content" id="stepContent2">
+                    <h3>Additional Details</h3>
+                    <p class="step-description">Provide more information about your symptoms</p>
+
+                    <div style="display: grid; gap: 16px;">
+                        <div>
+                            <label style="display:block; font-weight:500; margin-bottom:4px;">When did symptoms start?</label>
+                            <input type="date" id="startDate" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:10px; font-size:0.95rem;">
+                        </div>
+                        <div>
+                            <label style="display:block; font-weight:500; margin-bottom:4px;">Severity (1-10)</label>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <input type="range" id="severity" min="1" max="10" value="5" style="flex:1;" oninput="document.getElementById('severityLabel').textContent = this.value">
+                                <span id="severityLabel" style="font-weight:700; color:var(--primary); min-width:30px;">5</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display:block; font-weight:500; margin-bottom:4px;">Additional Notes</label>
+                            <textarea id="notes" rows="4" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:10px; font-size:0.95rem; resize:vertical; font-family:inherit;" placeholder="Any other details about your symptoms..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="step-buttons">
+                        <button type="button" class="btn-secondary" onclick="prevStep(1)">← Previous</button>
+                        <button type="button" class="btn-primary" onclick="nextStep(3)">Next →</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Results -->
+                <div class="step-content" id="stepContent3">
+                    <h3>Analysis Results</h3>
+                    <p class="step-description">Based on your symptoms, here's what we found</p>
+
+                    <div class="result-container">
+                        <div class="result-loading" id="resultLoading">
+                            <div class="spinner"></div>
+                            <p>Analyzing your symptoms...</p>
+                        </div>
+
+                        <div class="result-content" id="resultContent" style="display:none;">
+                            <div class="result-summary">
+                                <h4>Possible Conditions</h4>
+                                <ul id="conditionsList">
+                                    <li>
+                                        <span class="condition-name">Common Cold</span>
+                                        <span class="condition-match">65% match</span>
+                                    </li>
+                                    <li>
+                                        <span class="condition-name">Allergies</span>
+                                        <span class="condition-match">45% match</span>
+                                    </li>
+                                    <li>
+                                        <span class="condition-name">Sinus Infection</span>
+                                        <span class="condition-match">30% match</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div style="background: #fef3c7; border-radius: var(--radius); padding: 16px; margin-bottom: 16px;">
+                                <p style="color: #92400e; font-size:0.95rem;">
+                                    <i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>
+                                    <strong>Medical Disclaimer:</strong> This is not a medical diagnosis. Please consult a healthcare professional for accurate diagnosis.
+                                </p>
+                            </div>
+
+                            <h4>Recommendations</h4>
+                            <ul style="list-style:none; margin:12px 0;">
+                                <li style="padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                                    <i class="fas fa-check-circle" style="color:var(--green); margin-right:8px;"></i>
+                                    Rest and stay hydrated
+                                </li>
+                                <li style="padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                                    <i class="fas fa-check-circle" style="color:var(--green); margin-right:8px;"></i>
+                                    Monitor your symptoms for 24 hours
+                                </li>
+                                <li style="padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                                    <i class="fas fa-check-circle" style="color:var(--green); margin-right:8px;"></i>
+                                    Consider over-the-counter medication
+                                </li>
+                                <li style="padding:8px 0;">
+                                    <i class="fas fa-check-circle" style="color:var(--green); margin-right:8px;"></i>
+                                    Consult a doctor if symptoms worsen
+                                </li>
+                            </ul>
+
+                            <div class="result-actions">
+                                <a href="appointment.html" class="btn-primary">
+                                    <i class="fas fa-calendar-plus"></i> Book Appointment
+                                </a>
+                                <a href="dashboard.html" class="btn-secondary">
+                                    <i class="fas fa-home"></i> Dashboard
+                                </a>
+                                <button class="btn-secondary" onclick="resetSymptomChecker()">
+                                    <i class="fas fa-redo"></i> Start Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-info-circle" id="toastIcon"></i>
+        <span id="toastMessage">Symptom analysis complete!</span>
+    </div>
+
+    <script>
+        // ===== STATE =====
+        let currentStep = 1;
+        let selectedSymptoms = new Set();
+
+        // ===== TOGGLE MENU =====
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            localStorage.removeItem('mediAI_user');
+            window.location.href = '../login.html';
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const text = document.getElementById('toastMessage');
+
+            toast.className = `toast show ${type}`;
+            text.textContent = message;
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            icon.className = `fas ${icons[type] || icons.info}`;
+
+            clearTimeout(toast.timeout);
+            toast.timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ===== SYMPTOM SELECTION =====
+        function toggleSymptom(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('selected');
+
+            if (checkbox.checked) {
+                selectedSymptoms.add(checkbox.value);
+            } else {
+                selectedSymptoms.delete(checkbox.value);
+            }
+
+            document.getElementById('selectedCount').textContent = selectedSymptoms.size;
+        }
+
+        // ===== FILTER SYMPTOMS =====
+        function filterSymptoms(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+
+            document.querySelectorAll('.symptom-tag').forEach(tag => {
+                if (category === 'all' || tag.dataset.category === category) {
+                    tag.style.display = 'flex';
+                } else {
+                    tag.style.display = 'none';
+                }
+            });
+        }
+
+        // ===== STEP NAVIGATION =====
+        function nextStep(step) {
+            if (step === 2 && selectedSymptoms.size === 0) {
+                showToast('Please select at least one symptom', 'error');
+                return;
+            }
+
+            goToStep(step);
+        }
+
+        function prevStep(step) {
+            goToStep(step);
+        }
+
+        function goToStep(step) {
+            // Hide all step contents
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show target step
+            document.getElementById(`stepContent${step}`).classList.add('active');
+
+            // Update step indicators
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                stepEl.classList.remove('active', 'completed');
+                if (i === step) {
+                    stepEl.classList.add('active');
+                } else if (i < step) {
+                    stepEl.classList.add('completed');
+                }
+            }
+
+            // Update step lines
+            for (let i = 1; i <= 2; i++) {
+                const line = document.getElementById(`line${i}`);
+                line.classList.toggle('active', i < step);
+            }
+
+            currentStep = step;
+
+            // If step 3, run analysis
+            if (step === 3) {
+                runAnalysis();
+            }
+        }
+
+        // ===== RUN ANALYSIS =====
+        function runAnalysis() {
+            const loading = document.getElementById('resultLoading');
+            const content = document.getElementById('resultContent');
+
+            loading.style.display = 'flex';
+            content.style.display = 'none';
+
+            // Simulate AI analysis
+            setTimeout(() => {
+                loading.style.display = 'none';
+                content.style.display = 'block';
+                showToast('Symptom analysis complete!', 'success');
+            }, 2000);
+        }
+
+        // ===== RESET =====
+        function resetSymptomChecker() {
+            selectedSymptoms.clear();
+            document.querySelectorAll('.symptom-tag').forEach(tag => {
+                tag.classList.remove('selected');
+                tag.querySelector('input[type="checkbox"]').checked = false;
+            });
+            document.getElementById('selectedCount').textContent = '0';
+            document.getElementById('startDate').value = '';
+            document.getElementById('severity').value = '5';
+            document.getElementById('severityLabel').textContent = '5';
+            document.getElementById('notes').value = '';
+            goToStep(1);
+        }
+
+        // ===== CHECK AUTH =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('mediAI_user');
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+            console.log('✅ Symptom Checker page loaded successfully!');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li class="active"><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Reminders</h1>
+                    <p>Stay on track with your health schedule</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-primary" onclick="openModal()">+ Add Reminder</button>
+                </div>
+            </header>
+
+            <section class="reminders-section">
+                <div class="reminder-filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Medication</button>
+                    <button class="filter-btn">Appointments</button>
+                    <button class="filter-btn">Health Check</button>
+                </div>
+
+                <div class="reminders-list">
+                    <div class="reminder-item">
+                        <div class="reminder-icon medication">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="reminder-content">
+                            <h4>Take Medication</h4>
+                            <p>Blood pressure medication - 10mg</p>
+                            <span class="reminder-time"><i class="fas fa-clock"></i> Today, 8:00 AM</span>
+                        </div>
+                        <div class="reminder-actions">
+                            <button class="btn-success btn-sm">Done</button>
+                            <button class="btn-secondary btn-sm">Snooze</button>
+                        </div>
+                    </div>
+                    <div class="reminder-item">
+                        <div class="reminder-icon appointment">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="reminder-content">
+                            <h4>Doctor Appointment</h4>
+                            <p>Follow-up with Dr. Sarah Johnson</p>
+                            <span class="reminder-time"><i class="fas fa-clock"></i> Tomorrow, 3:00 PM</span>
+                        </div>
+                        <div class="reminder-actions">
+                            <button class="btn-secondary btn-sm">View Details</button>
+                        </div>
+                    </div>
+                    <div class="reminder-item">
+                        <div class="reminder-icon health">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="reminder-content">
+                            <h4>Blood Pressure Check</h4>
+                            <p>Record your daily blood pressure</p>
+                            <span class="reminder-time"><i class="fas fa-clock"></i> Today, 6:00 PM</span>
+                        </div>
+                        <div class="reminder-actions">
+                            <button class="btn-success btn-sm">Done</button>
+                            <button class="btn-secondary btn-sm">Remind Later</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Reminder Modal -->
+            <div class="modal-overlay" id="reminderModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add Reminder</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" placeholder="Reminder title" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select>
+                                <option value="medication">Medication</option>
+                                <option value="appointment">Appointment</option>
+                                <option value="health">Health Check</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <input type="time" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea rows="3" placeholder="Additional details..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary btn-block">Add Reminder</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script>
+        function openModal() {
+            document.getElementById('reminderModal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('reminderModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
