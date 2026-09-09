@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Facility Registration | BloodConnect | MediAI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+.navbar{
+    background:#ffffff;
+    border-bottom:1px solid #e2e8f0;
+    padding:16px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    text-decoration:none;
+    font-size:26px;
+    font-weight:800;
+}
+
+.logo span:first-child{
+    color:#0f172a;
+}
+
+.logo span:last-child{
+    color:#2563eb;
+}
+
+.back{
+    text-decoration:none;
+    color:#475569;
+    font-size:14px;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#64748b;
+}
+
+.card{
+    background:#ffffff;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 8px 30px rgba(15,23,42,.08);
+    margin-bottom:20px;
+}
+
+.section-title{
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:20px;
+    padding-bottom:10px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.form-group{
+    margin-bottom:5px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    font-size:14px;
+    outline:none;
+    background:#fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.location-row{
+    display:flex;
+    gap:10px;
+}
+
+.location-row input{
+    flex:1;
+}
+
+.location-btn{
+    border:none;
+    background:#eff6ff;
+    color:#1d4ed8;
+    padding:0 15px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.location-btn:hover{
+    background:#dbeafe;
+}
+
+.consent{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-top:20px;
+    color:#475569;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.consent input{
+    width:auto;
+    margin-top:3px;
+}
+
+.submit-btn{
+    width:100%;
+    margin-top:22px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    opacity:.93;
+}
+
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.alert{
+    display:none;
+    padding:13px 15px;
+    border-radius:9px;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+.alert.show{
+    display:block;
+}
+
+.alert.error{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    color:#991b1b;
+}
+
+.alert.success{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    color:#166534;
+}
+
+.note{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1e40af;
+    padding:15px;
+    border-radius:10px;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.footer{
+    text-align:center;
+    color:#64748b;
+    font-size:12px;
+    padding:20px;
+}
+
+@media(max-width:650px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .navbar{
+        padding:14px 20px;
+    }
+
+    .container{
+        margin:25px auto;
+    }
+
+    .card{
+        padding:22px;
+    }
+
+    .header h1{
+        font-size:26px;
+    }
+
+    .location-row{
+        flex-direction:column;
+    }
+
+    .location-btn{
+        padding:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<a href="index.html" class="logo">
+    <span>Medi</span><span>AI</span>
+</a>
+
+<a href="index.html" class="back">
+    ← Back to Home
+</a>
+
+</nav>
+
+
+<main class="container">
+
+<div class="header">
+
+<h1>Facility Registration</h1>
+
+<p>
+Register your hospital or blood bank with BloodConnect
+</p>
+
+</div>
+
+
+<div id="alertBox" class="alert">
+    <span id="alertText"></span>
+</div>
+
+
+<div class="card">
+
+<div class="section-title">
+    Facility Information
+</div>
+
+
+<form id="facilityForm">
+
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label for="facilityName">
+Facility Name *
+</label>
+
+<input
+type="text"
+id="facilityName"
+placeholder="Enter hospital or blood bank name"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="facilityType">
+Facility Type *
+</label>
+
+<select id="facilityType" required>
+
+<option value="">
+Select facility type
+</option>
+
+<option value="hospital">
+Hospital
+</option>
+
+<option value="blood-bank">
+Blood Bank
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="registrationNumber">
+Registration / License Number
+</label>
+
+<input
+type="text"
+id="registrationNumber"
+placeholder="Enter registration number">
+
+</div>
+
+
+<div class="form-group">
+
+<label for="contactPerson">
+Contact Person *
+</label>
+
+<input
+type="text"
+id="contactPerson"
+placeholder="Authorized contact person"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="phone">
+Phone Number *
+</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="Enter phone number"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="email">
+Email Address *
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="facility@example.com"
+required>
+
+</div>
+
+
+<div class="form-group full">
+
+<label for="address">
+Address *
+</label>
+
+<textarea
+id="address"
+placeholder="Enter complete facility address"
+required></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="city">
+City *
+</label>
+
+<input
+type="text"
+id="city"
+placeholder="Enter city"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="state">
+State *
+</label>
+
+<input
+type="text"
+id="state"
+placeholder="Enter state"
+required>
+
+</div>
+
+
+<div class="form-group full">
+
+<label for="location">
+Location / Area
+</label>
+
+<div class="location-row">
+
+<input
+type="text"
+id="location"
+placeholder="Example: Nandyal">
+
+<button
+type="button"
+class="location-btn"
+onclick="getLocation()">
+
+📍 Use My Location
+
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="note">
+
+<strong>Verification:</strong>
+After registration, your facility will initially have
+<strong>Pending Verification</strong> status. An authorized
+administrator should verify the facility before it is treated
+as a verified BloodConnect resource.
+
+</div>
+
+
+<label class="consent">
+
+<input
+type="checkbox"
+id="consent"
+required>
+
+<span>
+I confirm that I am authorized to register this facility and
+that the information provided is accurate. I understand that
+blood availability, donor eligibility, compatibility,
+cross-matching and transfusion decisions must be verified by
+qualified medical professionals and authorized blood-bank staff.
+</span>
+
+</label>
+
+
+<button
+type="submit"
+class="submit-btn"
+id="submitBtn">
+
+Register Facility
+
+</button>
+
+
+</form>
+
+</div>
+
+
+<div class="footer">
+
+MediAI BloodConnect • Prototype
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================
+   ALERT
+========================================= */
+
+function showAlert(message,type){
+
+    const box =
+        document.getElementById("alertBox");
+
+    const text =
+        document.getElementById("alertText");
+
+    box.className =
+        "alert show " + type;
+
+    text.textContent = message;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+function hideAlert(){
+
+    document.getElementById(
+        "alertBox"
+    ).className = "alert";
+
+}
+
+
+/* =========================================
+   LOCATION
+========================================= */
+
+function getLocation(){
+
+    const locationInput =
+        document.getElementById("location");
+
+
+    if(!navigator.geolocation){
+
+        showAlert(
+            "Geolocation is not supported by this browser.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    locationInput.value =
+        "Detecting location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+
+            /*
+             * Save coordinates separately.
+             * We do not use an external geocoding
+             * service here.
+             */
+
+            localStorage.setItem(
+                "mediAI_facility_coordinates",
+                JSON.stringify({
+                    latitude:latitude,
+                    longitude:longitude
+                })
+            );
+
+
+            locationInput.value =
+                "Location detected";
+
+
+            showAlert(
+                "Location detected successfully.",
+                "success"
+            );
+
+        },
+
+        function(){
+
+            locationInput.value = "";
+
+            showAlert(
+                "Unable to detect your location. Please enter the location manually.",
+                "error"
+            );
+
+        },
+
+        {
+            enableHighAccuracy:true,
+            timeout:10000,
+            maximumAge:60000
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   GET FACILITIES
+========================================= */
+
+function getFacilities(){
+
+    const raw =
+        localStorage.getItem(
+            "mediAI_facilities"
+        );
+
+
+    if(!raw){
+
+        return [];
+
+    }
+
+
+    try{
+
+        const data =
+            JSON.parse(raw);
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        console.error(
+            "Facility storage error:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================
+   SAVE FACILITIES
+========================================= */
+
+function saveFacilities(facilities){
+
+    localStorage.setItem(
+        "mediAI_facilities",
+        JSON.stringify(facilities)
+    );
+
+}
+
+
+/* =========================================
+   FORM SUBMISSION
+========================================= */
+
+document
+.getElementById("facilityForm")
+.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+        hideAlert();
+
+
+        const facilityName =
+            document
+            .getElementById("facilityName")
+            .value
+            .trim();
+
+
+        const facilityType =
+            document
+            .getElementById("facilityType")
+            .value;
+
+
+        const registrationNumber =
+            document
+            .getElementById("registrationNumber")
+            .value
+            .trim();
+
+
+        const contactPerson =
+            document
+            .getElementById("contactPerson")
+            .value
+            .trim();
+
+
+        const phone =
+            document
+            .getElementById("phone")
+            .value
+            .trim();
+
+
+        const email =
+            document
+            .getElementById("email")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const address =
+            document
+            .getElementById("address")
+            .value
+            .trim();
+
+
+        const city =
+            document
+            .getElementById("city")
+            .value
+            .trim();
+
+
+        const state =
+            document
+            .getElementById("state")
+            .value
+            .trim();
+
+
+        const location =
+            document
+            .getElementById("location")
+            .value
+            .trim();
+
+
+        const consent =
+            document
+            .getElementById("consent")
+            .checked;
+
+
+        /* =================================
+           VALIDATION
+        ================================= */
+
+        if(
+            !facilityName ||
+            !facilityType ||
+            !contactPerson ||
+            !phone ||
+            !email ||
+            !address ||
+            !city ||
+            !state
+        ){
+
+            showAlert(
+                "Please fill in all required fields.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const phoneDigits =
+            phone.replace(/\D/g,"");
+
+
+        if(phoneDigits.length < 10){
+
+            showAlert(
+                "Please enter a valid phone number.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if(!emailPattern.test(email)){
+
+            showAlert(
+                "Please enter a valid email address.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(!consent){
+
+            showAlert(
+                "Please confirm the authorization and information declaration.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* =================================
+           LOAD EXISTING FACILITIES
+        ================================= */
+
+        const facilities =
+            getFacilities();
+
+
+        /*
+         * Prevent duplicate facility email.
+         */
+
+        const duplicate =
+            facilities.find(
+                facility =>
+                    String(
+                        facility.email || ""
+                    ).toLowerCase() === email
+            );
+
+
+        if(duplicate){
+
+            /*
+             * If this facility already exists,
+             * use it as the current facility.
+             */
+
+            localStorage.setItem(
+                "mediAI_current_facility",
+                JSON.stringify(duplicate)
+            );
+
+
+            showAlert(
+                "A facility with this email already exists. Opening the existing facility dashboard.",
+                "success"
+            );
+
+
+            setTimeout(function(){
+
+                window.location.href =
+                    "facility-dashboard.html";
+
+            },1000);
+
+
+            return;
+
+        }
+
+
+        /* =================================
+           GET SAVED COORDINATES
+        ================================= */
+
+        let coordinates = null;
+
+
+        const savedCoordinates =
+            localStorage.getItem(
+                "mediAI_facility_coordinates"
+            );
+
+
+        if(savedCoordinates){
+
+            try{
+
+                coordinates =
+                    JSON.parse(savedCoordinates);
+
+            }catch(error){
+
+                coordinates = null;
+
+            }
+
+        }
+
+
+        /* =================================
+           CREATE FACILITY
+        ================================= */
+
+        const facility = {
+
+            id:
+                "FAC-" +
+                Date.now(),
+
+            facilityId:
+                "FAC-" +
+                Date.now(),
+
+            name:
+                facilityName,
+
+            facilityName:
+                facilityName,
+
+            type:
+                facilityType,
+
+            facilityType:
+                facilityType,
+
+            registrationNumber:
+                registrationNumber,
+
+            contactPerson:
+                contactPerson,
+
+            phone:
+                phone,
+
+            email:
+                email,
+
+            address:
+                address,
+
+            city:
+                city,
+
+            state:
+                state,
+
+            location:
+                location ||
+                city,
+
+            latitude:
+                coordinates
+                ? coordinates.latitude
+                : null,
+
+            longitude:
+                coordinates
+                ? coordinates.longitude
+                : null,
+
+            verified:false,
+
+            verificationStatus:
+                "Pending",
+
+            status:
+                "Pending Verification",
+
+            registeredAt:
+                new Date().toISOString(),
+
+            bloodInventory:{
+
+                "A+":0,
+                "A-":0,
+                "B+":0,
+                "B-":0,
+                "AB+":0,
+                "AB-":0,
+                "O+":0,
+                "O-":0
+
+            }
+
+        };
+
+
+        /* =================================
+           SAVE
+        ================================= */
+
+        facilities.push(
+            facility
+        );
+
+
+        saveFacilities(
+            facilities
+        );
+
+
+        /*
+         * VERY IMPORTANT:
+         * This is what facility-dashboard.html
+         * looks for.
+         */
+
+        localStorage.setItem(
+            "mediAI_current_facility",
+            JSON.stringify(facility)
+        );
+
+
+        /*
+         * Also save the facility ID separately.
+         */
+
+        localStorage.setItem(
+            "mediAI_current_facility_id",
+            facility.id
+        );
+
+
+        /*
+         * Remove temporary coordinates.
+         */
+
+        localStorage.removeItem(
+            "mediAI_facility_coordinates"
+        );
+
+
+        /* =================================
+           SUCCESS
+        ================================= */
+
+        const button =
+            document.getElementById(
+                "submitBtn"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Registration Successful ✓";
+
+
+        showAlert(
+            "Facility registered successfully! Opening your facility dashboard...",
+            "success"
+        );
+
+
+        setTimeout(function(){
+
+            window.location.href =
+                "facility-dashboard.html";
+
+        },1200);
+
+    }
+);
+
+
+/* =========================================
+   PAGE LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        console.log(
+            "BloodConnect facility registration ready."
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

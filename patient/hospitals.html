@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospitals - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li class="active"><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Nearby Hospitals</h1>
+                    <p>Find healthcare facilities near you</p>
+                </div>
+            </header>
+
+            <section class="hospitals-section">
+                <div class="search-filter">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search hospitals...">
+                    </div>
+                    <div class="filters">
+                        <select>
+                            <option value="">All Locations</option>
+                            <option value="new-york">New York</option>
+                            <option value="los-angeles">Los Angeles</option>
+                            <option value="chicago">Chicago</option>
+                        </select>
+                        <select>
+                            <option value="">All Specialties</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="neurology">Neurology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="hospitals-grid">
+                    <div class="hospital-card">
+                        <img src="../assets/images/hospitals/hospital1.jpg" alt="Hospital">
+                        <div class="hospital-info">
+                            <h3>New York General Hospital</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> New York, NY</p>
+                            <div class="hospital-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>4.5 (200 reviews)</span>
+                            </div>
+                            <div class="hospital-specialties">
+                                <span>Cardiology</span>
+                                <span>Neurology</span>
+                                <span>Orthopedics</span>
+                            </div>
+                            <div class="hospital-actions">
+                                <a href="#" class="btn-primary">View Details</a>
+                                <a href="appointment.html" class="btn-secondary">Book Appointment</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hospital-card">
+                        <img src="../assets/images/hospitals/hospital2.jpg" alt="Hospital">
+                        <div class="hospital-info">
+                            <h3>Los Angeles Medical Center</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Los Angeles, CA</p>
+                            <div class="hospital-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>5.0 (150 reviews)</span>
+                            </div>
+                            <div class="hospital-specialties">
+                                <span>Oncology</span>
+                                <span>Pediatrics</span>
+                                <span>Radiology</span>
+                            </div>
+                            <div class="hospital-actions">
+                                <a href="#" class="btn-primary">View Details</a>
+                                <a href="appointment.html" class="btn-secondary">Book Appointment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/hospitals.js"></script>
+</body>
+</html>

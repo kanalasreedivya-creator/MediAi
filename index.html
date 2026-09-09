@@ -1,0 +1,3170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediAI - Intelligent Healthcare Platform</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           MEDI AI - COMPLETE HOMEPAGE
+           STEP 1 - BLOODCONNECT
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-bg: #eff6ff;
+
+            --red: #dc2626;
+            --dark-red: #991b1b;
+            --light-red: #fef2f2;
+
+            --green: #16a34a;
+            --orange: #f97316;
+
+            --text: #0f172a;
+            --text-light: #64748b;
+
+            --white: #ffffff;
+            --bg: #f8fafc;
+
+            --shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 15px 45px rgba(15, 23, 42, 0.12);
+
+            --radius: 18px;
+            --transition: all 0.3s ease;
+            --max-width: 1200px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--max-width);
+            margin: auto;
+        }
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+
+            z-index: 1000;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            min-height: 72px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white;
+            font-size: 1.4rem;
+        }
+
+        .logo .medi {
+            color: var(--text);
+        }
+
+        .logo .ai {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: var(--text);
+
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .emergency-nav {
+            padding: 9px 18px;
+
+            background: var(--red);
+            color: white !important;
+
+            border-radius: 50px;
+
+            animation: emergencyPulse 2s infinite;
+        }
+
+        .login-btn {
+            padding: 8px 20px;
+
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+
+            color: var(--primary) !important;
+        }
+
+        .register-btn {
+            padding: 9px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white !important;
+            border-radius: 50px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            min-height: 100vh;
+
+            padding-top: 120px;
+            padding-bottom: 80px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #dbeafe,
+                    #bfdbfe
+                );
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 60px;
+
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.7rem;
+            line-height: 1.1;
+
+            margin-bottom: 22px;
+
+            font-weight: 800;
+        }
+
+        .highlight {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+
+            max-width: 560px;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 14px 28px;
+
+            border-radius: 50px;
+
+            font-weight: 700;
+
+            border: none;
+            cursor: pointer;
+
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 8px 25px rgba(26, 86, 219, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: white;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid rgba(26, 86, 219, 0.15);
+        }
+
+        .stat h3 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .stat p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .medical-card {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 30px;
+
+            box-shadow: var(--shadow-lg);
+
+            text-align: center;
+
+            animation: floating 5s ease-in-out infinite;
+        }
+
+        .medical-icon {
+            width: 150px;
+            height: 150px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary-bg);
+
+            color: var(--primary);
+
+            font-size: 5rem;
+        }
+
+        .medical-card h3 {
+            margin-top: 25px;
+            font-size: 1.6rem;
+        }
+
+        .medical-card p {
+            color: var(--text-light);
+        }
+
+        /* =========================================================
+           SECTION HEADER
+        ========================================================= */
+
+        .section {
+            padding: 90px 0;
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin: 0 auto 50px;
+
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 6px 15px;
+
+            border-radius: 50px;
+
+            background: var(--primary-bg);
+            color: var(--primary);
+
+            font-size: 0.85rem;
+            font-weight: 700;
+
+            margin-bottom: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 2.7rem;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        /* =========================================================
+           EMERGENCY SECTION
+        ========================================================= */
+
+        .emergency-section {
+            padding: 80px 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fef2f2,
+                    #fee2e2
+                );
+        }
+
+        .emergency-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+        .emergency-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: var(--radius);
+
+            text-align: center;
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+        }
+
+        .emergency-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .emergency-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: auto auto 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--light-red);
+
+            color: var(--red);
+
+            font-size: 2rem;
+        }
+
+        .emergency-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .emergency-card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        /* =========================================================
+           BLOODCONNECT
+        ========================================================= */
+
+        .bloodconnect-section {
+            padding: 100px 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff1f2,
+                    #fee2e2
+                );
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bloodconnect-section::before {
+            content: "🩸";
+
+            position: absolute;
+
+            right: 4%;
+            top: 10%;
+
+            font-size: 12rem;
+
+            opacity: 0.08;
+
+            transform: rotate(-15deg);
+        }
+
+        .bloodconnect-box {
+            position: relative;
+            z-index: 2;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 50px;
+
+            align-items: center;
+
+            background: white;
+
+            padding: 55px;
+
+            border-radius: 30px;
+
+            box-shadow: var(--shadow-lg);
+
+            border: 2px solid rgba(220, 38, 38, 0.1);
+        }
+
+        .bloodconnect-content .blood-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 15px;
+
+            border-radius: 50px;
+
+            background: #fee2e2;
+            color: var(--red);
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+        .bloodconnect-content h2 {
+            font-size: 2.7rem;
+            line-height: 1.2;
+
+            margin-bottom: 18px;
+        }
+
+        .bloodconnect-content h2 span {
+            color: var(--red);
+        }
+
+        .bloodconnect-content p {
+            color: var(--text-light);
+
+            font-size: 1.05rem;
+
+            margin-bottom: 25px;
+        }
+
+        .blood-features {
+            list-style: none;
+
+            display: grid;
+            gap: 12px;
+
+            margin-bottom: 28px;
+        }
+
+        .blood-features li {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            font-weight: 600;
+        }
+
+        .blood-features i {
+            color: var(--green);
+        }
+
+        .blood-search-card {
+            padding: 30px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #991b1b,
+                    #dc2626
+                );
+
+            color: white;
+
+            box-shadow:
+                0 15px 40px rgba(220, 38, 38, 0.25);
+        }
+
+        .blood-search-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .blood-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .blood-form label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .blood-form select,
+        .blood-form input {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 1rem;
+
+            background: white;
+            color: var(--text);
+        }
+
+        .blood-form .find-blood-btn {
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: var(--red);
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: var(--transition);
+        }
+
+        .blood-form .find-blood-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .blood-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .blood-action-btn {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            padding: 12px 20px;
+
+            border-radius: 50px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            border: none;
+
+            transition: var(--transition);
+        }
+
+        .blood-action-primary {
+            background: var(--red);
+            color: white;
+        }
+
+        .blood-action-primary:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+        }
+
+        .blood-action-secondary {
+            background: white;
+            color: var(--red);
+
+            border: 2px solid var(--red);
+        }
+
+        .blood-action-secondary:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        /* =========================================================
+           BLOOD GROUPS
+        ========================================================= */
+
+        .blood-groups {
+            margin-top: 60px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(8, 1fr);
+
+            gap: 12px;
+        }
+
+        .blood-group {
+            padding: 18px 10px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            font-size: 1.2rem;
+            font-weight: 800;
+
+            color: var(--red);
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+        }
+
+        .blood-group:hover {
+            background: var(--red);
+            color: white;
+
+            transform: translateY(-5px);
+        }
+
+        /* =========================================================
+           ROLE SECTION
+        ========================================================= */
+
+        .roles-section {
+            background: white;
+        }
+
+        .roles-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+        .role-card {
+            padding: 30px;
+
+            border-radius: var(--radius);
+
+            background: white;
+
+            box-shadow: var(--shadow);
+
+            text-align: center;
+
+            border: 1px solid #e2e8f0;
+
+            transition: var(--transition);
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .role-icon {
+            width: 75px;
+            height: 75px;
+
+            margin: auto auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary-bg);
+            color: var(--primary);
+
+            font-size: 2rem;
+        }
+
+        .role-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .role-card p {
+            color: var(--text-light);
+
+            margin-bottom: 20px;
+        }
+
+        .role-btn {
+            display: inline-block;
+
+            padding: 9px 20px;
+
+            border-radius: 50px;
+
+            background: var(--primary);
+
+            color: white;
+
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           FEATURES
+        ========================================================= */
+
+        .features-section {
+            background: var(--bg);
+        }
+
+        .features-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+        .feature-card {
+            padding: 30px;
+
+            background: white;
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 65px;
+            height: 65px;
+
+            margin-bottom: 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white;
+
+            font-size: 1.7rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+        }
+
+        /* =========================================================
+           HOW IT WORKS
+        ========================================================= */
+
+        .steps-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+
+            margin: auto auto 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary);
+
+            color: white;
+
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .step p {
+            color: var(--text-light);
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 3000;
+
+            background: rgba(15, 23, 42, 0.65);
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 520px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            position: relative;
+
+            animation: modalIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            width: 35px;
+            height: 35px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #f1f5f9;
+
+            cursor: pointer;
+
+            font-size: 1.2rem;
+        }
+
+        .request-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .request-form label {
+            font-weight: 600;
+        }
+
+        .request-form input,
+        .request-form select,
+        .request-form textarea {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 10px;
+
+            outline: none;
+        }
+
+        .request-form textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .submit-request {
+            padding: 13px;
+
+            background: var(--red);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           SEARCH RESULT
+        ========================================================= */
+
+        .search-result {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            background: #f0fdf4;
+
+            color: #166534;
+
+            border: 1px solid #bbf7d0;
+        }
+
+        .search-result.active {
+            display: block;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: #0f172a;
+
+            color: white;
+
+            padding: 60px 0 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr 1fr;
+
+            gap: 40px;
+
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 18px;
+        }
+
+        .footer-column p {
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            list-style: none;
+
+            display: grid;
+
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+
+            border-top: 1px solid #334155;
+
+            text-align: center;
+
+            color: #94a3b8;
+        }
+
+        /* =========================================================
+           ANIMATIONS
+        ========================================================= */
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes emergencyPulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 0 0 rgba(220, 38, 38, 0.3);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 0 10px rgba(220, 38, 38, 0);
+            }
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+
+            transform: translateY(25px);
+
+            transition:
+                opacity 0.7s ease,
+                transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+           RESPONSIVE DESIGN
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .hero-grid,
+            .bloodconnect-box {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .blood-groups {
+                grid-template-columns:
+                    repeat(4, 1fr);
+            }
+
+            .steps-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-links {
+                display: none;
+
+                position: absolute;
+
+                top: 72px;
+                left: 0;
+
+                width: 100%;
+
+                background: white;
+
+                padding: 25px;
+
+                flex-direction: column;
+
+                box-shadow: var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.7rem;
+            }
+
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .bloodconnect-box {
+                padding: 30px;
+            }
+
+            .bloodconnect-content h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .hero {
+                padding-top: 110px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .blood-groups {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
+
+    <nav class="navbar" id="navbar">
+
+        <div class="container nav-container">
+
+            <a href="#home" class="logo">
+
+                <div class="logo-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+
+                <div>
+                    <span class="medi">Medi</span><span class="ai">AI</span>
+                </div>
+
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+
+                <li>
+                    <a href="#home">Home</a>
+                </li>
+
+                <li>
+                    <a href="#features">Features</a>
+                </li>
+
+                <li>
+                    <a href="#bloodconnect">BloodConnect</a>
+                </li>
+
+                <li>
+                    <a href="#roles">Roles</a>
+                </li>
+
+                <li>
+                    <a href="#how-it-works">How It Works</a>
+                </li>
+
+                <li>
+                    <a href="#emergency" class="emergency-nav">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        Emergency
+                    </a>
+                </li>
+
+                <li>
+                    <a href="login.html" class="btn-login">Login</a>
+<a href="register.html" class="btn-register">Register</a>
+                </li>
+
+                <li>
+                    <a href="#" class="register-btn">
+                        Register
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================= -->
+
+    <section class="hero" id="home">
+
+        <div class="container hero-grid">
+
+            <div class="hero-content fade-in">
+
+                <span class="badge">
+                    <i class="fas fa-sparkles"></i>
+                    AI-Powered Healthcare
+                </span>
+
+                <h1>
+                    Smarter Healthcare,
+                    <span class="highlight">
+                        Better Care
+                    </span>
+                </h1>
+
+                <p>
+                    MediAI connects patients, doctors, hospitals,
+                    blood donors and blood banks through one
+                    intelligent healthcare platform.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#features"
+                       class="btn btn-primary">
+
+                        <i class="fas fa-stethoscope"></i>
+
+                        Explore MediAI
+
+                    </a>
+
+                    <a href="#bloodconnect"
+                       class="btn btn-outline">
+
+                        <i class="fas fa-droplet"></i>
+
+                        Find Blood
+
+                    </a>
+
+                </div>
+
+                <div class="hero-stats">
+
+                    <div class="stat">
+                        <h3>24/7</h3>
+                        <p>Healthcare Access</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3>AI</h3>
+                        <p>Smart Assistance</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3>1</h3>
+                        <p>Connected Platform</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-visual fade-in">
+
+                <div class="medical-card">
+
+                    <div class="medical-icon">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+
+                    <h3>
+                        Your Health, Connected
+                    </h3>
+
+                    <p>
+                        Intelligent healthcare assistance
+                        whenever you need it.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         EMERGENCY SECTION
+    ========================================================= -->
+
+    <section class="emergency-section" id="emergency">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="badge"
+                      style="
+                      background:#fee2e2;
+                      color:#dc2626;">
+
+                    <i class="fas fa-triangle-exclamation"></i>
+
+                    Emergency Services
+
+                </span>
+
+                <h2>
+                    Get Help When
+                    <span class="highlight">
+                        Every Second Matters
+                    </span>
+                </h2>
+
+                <p>
+                    Quickly access emergency healthcare
+                    assistance and blood support.
+                </p>
+
+            </div>
+
+
+            <div class="emergency-grid">
+
+                <div class="emergency-card fade-in">
+
+                    <div class="emergency-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+
+                    <h3>
+                        Find Hospital
+                    </h3>
+
+                    <p>
+                        Locate nearby hospitals and
+                        emergency facilities.
+                    </p>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="findHospital()">
+
+                        <i class="fas fa-location-dot"></i>
+
+                        Find Nearby
+
+                    </button>
+
+                </div>
+
+
+                <div class="emergency-card fade-in">
+
+                    <div class="emergency-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+
+                    <h3>
+                        Emergency Call
+                    </h3>
+
+                    <p>
+                        Contact your local emergency
+                        services when required.
+                    </p>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="emergencyCall()">
+
+                        <i class="fas fa-phone"></i>
+
+                        Call Emergency
+
+                    </button>
+
+                </div>
+
+
+                <div class="emergency-card fade-in">
+
+                    <div class="emergency-icon">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+
+                    <h3>
+                        Need Blood?
+                    </h3>
+
+                    <p>
+                        Quickly search for compatible
+                        registered blood donors.
+                    </p>
+
+                    <a href="#bloodconnect"
+                       class="btn btn-primary">
+
+                        <i class="fas fa-search"></i>
+
+                        Find Blood
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         BLOODCONNECT SECTION
+    ========================================================= -->
+
+    <section class="bloodconnect-section"
+             id="bloodconnect">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="badge"
+                      style="
+                      background:#fee2e2;
+                      color:#dc2626;">
+
+                    <i class="fas fa-droplet"></i>
+
+                    MediAI BloodConnect
+
+                </span>
+
+                <h2>
+                    Emergency Blood
+                    <span style="color:#dc2626;">
+                        Assistance
+                    </span>
+                </h2>
+
+                <p>
+                    Connect patients with registered blood donors,
+                    blood banks and hospitals based on blood group
+                    and location.
+                </p>
+
+            </div>
+
+
+            <div class="bloodconnect-box">
+
+
+                <!-- LEFT CONTENT -->
+
+                <div class="bloodconnect-content fade-in">
+
+                    <div class="blood-badge">
+
+                        <i class="fas fa-heart"></i>
+
+                        Save Lives. Donate Blood.
+
+                    </div>
+
+                    <h2>
+                        Find the Right Blood
+                        <span>When It Matters Most</span>
+                    </h2>
+
+                    <p>
+                        BloodConnect helps patients and families
+                        quickly discover suitable registered donors,
+                        nearby blood banks and participating hospitals.
+                    </p>
+
+
+                    <ul class="blood-features">
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Search by blood group
+                        </li>
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Location-based donor matching
+                        </li>
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Verified donor and facility profiles
+                        </li>
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Emergency blood requests
+                        </li>
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Blood bank and hospital availability
+                        </li>
+
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+
+                            Request status tracking
+                        </li>
+
+                    </ul>
+
+
+                    <div class="blood-actions">
+
+                        <button
+                            class="blood-action-btn
+                                   blood-action-primary"
+                            onclick="openBloodRequest()">
+
+                            <i class="fas fa-triangle-exclamation"></i>
+
+                            Emergency Request
+
+                        </button>
+
+                        <button
+                            class="blood-action-btn
+                                   blood-action-secondary"
+                            onclick="scrollToSearch()">
+
+                            <i class="fas fa-search"></i>
+
+                            Find Blood
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT SEARCH CARD -->
+
+                <div class="blood-search-card fade-in"
+                     id="bloodSearchCard">
+
+                    <h3>
+                        <i class="fas fa-magnifying-glass"></i>
+
+                        Find Blood Near You
+                    </h3>
+
+                    <form
+                        class="blood-form"
+                        id="bloodSearchForm">
+
+                        <div>
+
+                            <label for="bloodGroup">
+                                Blood Group
+                            </label>
+
+                            <select id="bloodGroup"
+                                    required>
+
+                                <option value="">
+                                    Select Blood Group
+                                </option>
+
+                                <option>A+</option>
+                                <option>A-</option>
+                                <option>B+</option>
+                                <option>B-</option>
+                                <option>AB+</option>
+                                <option>AB-</option>
+                                <option>O+</option>
+                                <option>O-</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div>
+
+                            <label for="bloodLocation">
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="bloodLocation"
+                                placeholder="Enter city / area"
+                                required>
+
+                        </div>
+
+
+                        <div>
+
+                            <label for="urgency">
+                                Urgency
+                            </label>
+
+                            <select id="urgency">
+
+                                <option value="normal">
+                                    Normal
+                                </option>
+
+                                <option value="urgent">
+                                    Urgent
+                                </option>
+
+                                <option value="critical">
+                                    Critical
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="find-blood-btn">
+
+                            <i class="fas fa-search"></i>
+
+                            FIND BLOOD NOW
+
+                        </button>
+
+                    </form>
+
+
+                    <div
+                        class="search-result"
+                        id="searchResult">
+
+                        <strong>
+                            <i class="fas fa-circle-check"></i>
+
+                            Search request created
+                        </strong>
+
+                        <p id="searchMessage">
+                            Matching donors and facilities
+                            will be displayed in the next step.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BLOOD GROUPS -->
+
+            <div class="section-header"
+                 style="margin-top:70px;
+                        margin-bottom:25px;">
+
+                <h3>
+                    Supported Blood Groups
+                </h3>
+
+                <p>
+                    Select from the commonly recognized
+                    blood groups.
+                </p>
+
+            </div>
+
+
+            <div class="blood-groups">
+
+                <div class="blood-group">A+</div>
+                <div class="blood-group">A-</div>
+                <div class="blood-group">B+</div>
+                <div class="blood-group">B-</div>
+                <div class="blood-group">AB+</div>
+                <div class="blood-group">AB-</div>
+                <div class="blood-group">O+</div>
+                <div class="blood-group">O-</div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         ROLES
+    ========================================================= -->
+
+    <section class="section roles-section"
+             id="roles">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="badge">
+                    <i class="fas fa-users"></i>
+
+                    MediAI Community
+                </span>
+
+                <h2>
+                    One Platform,
+                    <span class="highlight">
+                        Multiple Roles
+                    </span>
+                </h2>
+
+                <p>
+                    MediAI connects everyone involved
+                    in the healthcare journey.
+                </p>
+
+            </div>
+
+
+            <div class="roles-grid">
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <h3>
+                        Patient
+                    </h3>
+
+                    <p>
+                        Manage health records, symptoms,
+                        appointments and blood requests.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Patient Portal
+
+                    </a>
+
+                </div>
+
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+
+                    <h3>
+                        Blood Donor
+                    </h3>
+
+                    <p>
+                        Register your blood group,
+                        availability and receive requests.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Become Donor
+
+                    </a>
+
+                </div>
+
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-user-doctor"></i>
+                    </div>
+
+                    <h3>
+                        Doctor
+                    </h3>
+
+                    <p>
+                        Manage patients, appointments
+                        and healthcare consultations.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Doctor Portal
+
+                    </a>
+
+                </div>
+
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+
+                    <h3>
+                        Hospital
+                    </h3>
+
+                    <p>
+                        Manage doctors, emergency cases,
+                        appointments and resources.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Hospital Portal
+
+                    </a>
+
+                </div>
+
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-building-circle-check"></i>
+                    </div>
+
+                    <h3>
+                        Blood Bank
+                    </h3>
+
+                    <p>
+                        Maintain blood inventory and
+                        respond to emergency requirements.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Blood Bank Portal
+
+                    </a>
+
+                </div>
+
+
+                <div class="role-card fade-in">
+
+                    <div class="role-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+
+                    <h3>
+                        Administrator
+                    </h3>
+
+                    <p>
+                        Verify users, facilities and monitor
+                        emergency requests.
+                    </p>
+
+                    <a href="#"
+                       class="role-btn">
+
+                        Admin Portal
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         FEATURES
+    ========================================================= -->
+
+    <section class="section features-section"
+             id="features">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="badge">
+                    <i class="fas fa-sparkles"></i>
+
+                    Intelligent Features
+                </span>
+
+                <h2>
+                    Healthcare Made
+                    <span class="highlight">
+                        Smarter
+                    </span>
+                </h2>
+
+                <p>
+                    A unified platform designed to simplify
+                    healthcare access.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+
+                    <h3>
+                        AI Health Assistant
+                    </h3>
+
+                    <p>
+                        Interact with an intelligent healthcare
+                        assistant for general health guidance.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+
+                    <h3>
+                        Symptom Analysis
+                    </h3>
+
+                    <p>
+                        Enter symptoms and receive structured
+                        guidance about possible next steps.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+
+                    <h3>
+                        Hospital Discovery
+                    </h3>
+
+                    <p>
+                        Discover hospitals based on location,
+                        specialty and availability.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+
+                    <h3>
+                        Appointments
+                    </h3>
+
+                    <p>
+                        Organize doctor appointments and
+                        healthcare schedules.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+
+                    <h3>
+                        Digital Health Records
+                    </h3>
+
+                    <p>
+                        Keep important healthcare information
+                        organized in one place.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+
+                    <h3>
+                        Smart Notifications
+                    </h3>
+
+                    <p>
+                        Receive reminders for appointments,
+                        medicines and follow-ups.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+
+                    <h3>
+                        BloodConnect
+                    </h3>
+
+                    <p>
+                        Search for blood donors and participating
+                        blood banks during emergencies.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card fade-in">
+
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+
+                    <h3>
+                        Healthcare Analytics
+                    </h3>
+
+                    <p>
+                        Help healthcare facilities understand
+                        patient flow and resource requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         HOW IT WORKS
+    ========================================================= -->
+
+    <section class="section"
+             id="how-it-works">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <span class="badge">
+                    <i class="fas fa-route"></i>
+
+                    Simple Process
+                </span>
+
+                <h2>
+                    How MediAI
+                    <span class="highlight">
+                        Works
+                    </span>
+                </h2>
+
+                <p>
+                    Access the right healthcare support
+                    in a few simple steps.
+                </p>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step fade-in">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Create Profile
+                    </h3>
+
+                    <p>
+                        Create your secure MediAI profile.
+                    </p>
+
+                </div>
+
+
+                <div class="step fade-in">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Enter Information
+                    </h3>
+
+                    <p>
+                        Enter symptoms, location or
+                        healthcare requirements.
+                    </p>
+
+                </div>
+
+
+                <div class="step fade-in">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h3>
+                        Get Matched
+                    </h3>
+
+                    <p>
+                        MediAI helps connect you with
+                        appropriate healthcare resources.
+                    </p>
+
+                </div>
+
+
+                <div class="step fade-in">
+
+                    <div class="step-number">
+                        4
+                    </div>
+
+                    <h3>
+                        Get Support
+                    </h3>
+
+                    <p>
+                        Track appointments, requests and
+                        healthcare activities.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         BLOOD REQUEST MODAL
+    ========================================================= -->
+
+    <div class="modal"
+         id="bloodRequestModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    <i class="fas fa-droplet"
+                       style="color:#dc2626;">
+                    </i>
+
+                    Emergency Blood Request
+                </h3>
+
+                <button
+                    class="close-modal"
+                    onclick="closeBloodRequest()">
+
+                    <i class="fas fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+
+            <form
+                class="request-form"
+                id="bloodRequestForm">
+
+                <div>
+
+                    <label>
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patientName"
+                        placeholder="Enter patient name"
+                        required>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Blood Group
+                    </label>
+
+                    <select
+                        id="requestBloodGroup"
+                        required>
+
+                        <option value="">
+                            Select Blood Group
+                        </option>
+
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Units Required
+                    </label>
+
+                    <input
+                        type="number"
+                        id="units"
+                        min="1"
+                        max="20"
+                        placeholder="Example: 2"
+                        required>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Hospital / Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="hospitalLocation"
+                        placeholder="Hospital and city"
+                        required>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Urgency
+                    </label>
+
+                    <select id="requestUrgency">
+
+                        <option>
+                            Critical
+                        </option>
+
+                        <option>
+                            Urgent
+                        </option>
+
+                        <option>
+                            Normal
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Additional Information
+                    </label>
+
+                    <textarea
+                        id="additionalInfo"
+                        placeholder="Any additional information">
+                    </textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-request">
+
+                    <i class="fas fa-paper-plane"></i>
+
+                    SEND EMERGENCY REQUEST
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-column">
+
+                    <div class="logo"
+                         style="color:white;
+                                margin-bottom:15px;">
+
+                        <div class="logo-icon">
+                            <i class="fas fa-heart-pulse"></i>
+                        </div>
+
+                        <div>
+                            <span style="color:white;">
+                                Medi
+                            </span>
+
+                            <span style="color:#60a5fa;">
+                                AI
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <p>
+                        An intelligent healthcare platform
+                        connecting patients, doctors,
+                        hospitals, blood donors and blood banks.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Platform
+                    </h3>
+
+                    <ul class="footer-links">
+
+                        <li>
+                            <a href="#features">
+                                Features
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#bloodconnect">
+                                BloodConnect
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#roles">
+                                Roles
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#how-it-works">
+                                How It Works
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Healthcare
+                    </h3>
+
+                    <ul class="footer-links">
+
+                        <li>
+                            <a href="#">
+                                Patients
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Doctors
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Hospitals
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Blood Banks
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Emergency
+                    </h3>
+
+                    <ul class="footer-links">
+
+                        <li>
+                            <a href="#bloodconnect">
+                                Find Blood
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#emergency">
+                                Emergency Help
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#bloodconnect">
+                                Donate Blood
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 MediAI.
+                    Built for smarter and more connected healthcare.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        const navbar =
+            document.getElementById("navbar");
+
+        window.addEventListener("scroll", function () {
+
+            if (window.scrollY > 50) {
+
+                navbar.classList.add("scrolled");
+
+            } else {
+
+                navbar.classList.remove("scrolled");
+
+            }
+
+        });
+
+
+        /* =====================================================
+           MOBILE MENU
+        ===================================================== */
+
+        const hamburger =
+            document.getElementById("hamburger");
+
+        const navLinks =
+            document.getElementById("navLinks");
+
+        hamburger.addEventListener("click", function () {
+
+            navLinks.classList.toggle("active");
+
+        });
+
+
+        document.querySelectorAll(".nav-links a")
+            .forEach(function (link) {
+
+                link.addEventListener("click", function () {
+
+                    navLinks.classList.remove("active");
+
+                });
+
+            });
+
+
+        /* =====================================================
+           SMOOTH SCROLL
+        ===================================================== */
+
+        document.querySelectorAll('a[href^="#"]')
+            .forEach(function (anchor) {
+
+                anchor.addEventListener("click", function (event) {
+
+                    const targetId =
+                        this.getAttribute("href");
+
+                    if (targetId === "#") {
+                        return;
+                    }
+
+                    const target =
+                        document.querySelector(targetId);
+
+                    if (target) {
+
+                        event.preventDefault();
+
+                        target.scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                    }
+
+                });
+
+            });
+
+
+        /* =====================================================
+           FADE-IN ANIMATION
+        ===================================================== */
+
+        const observer =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(function (entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target
+                                .classList
+                                .add("visible");
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.12
+                }
+            );
+
+
+        document
+            .querySelectorAll(".fade-in")
+            .forEach(function (element) {
+
+                observer.observe(element);
+
+            });
+
+
+        /* =====================================================
+           FIND HOSPITAL
+        ===================================================== */
+
+        function findHospital() {
+
+            if (!navigator.geolocation) {
+
+                alert(
+                    "Location services are not supported by your browser."
+                );
+
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+
+                function (position) {
+
+                    const latitude =
+                        position.coords.latitude;
+
+                    const longitude =
+                        position.coords.longitude;
+
+                    const mapUrl =
+                        "https://www.google.com/maps/search/hospitals/@"
+                        + latitude
+                        + ","
+                        + longitude
+                        + ",14z";
+
+                    window.open(
+                        mapUrl,
+                        "_blank"
+                    );
+
+                },
+
+                function () {
+
+                    alert(
+                        "Please allow location access to find nearby hospitals."
+                    );
+
+                }
+
+            );
+
+        }
+
+
+        /* =====================================================
+           EMERGENCY CALL
+        ===================================================== */
+
+        function emergencyCall() {
+
+            alert(
+                "For a medical emergency, contact your local emergency services immediately."
+            );
+
+        }
+
+
+        /* =====================================================
+           BLOOD SEARCH
+        ===================================================== */
+
+        const bloodSearchForm =
+            document.getElementById(
+                "bloodSearchForm"
+            );
+
+        bloodSearchForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                const bloodGroup =
+                    document.getElementById(
+                        "bloodGroup"
+                    ).value;
+
+                const location =
+                    document.getElementById(
+                        "bloodLocation"
+                    ).value;
+
+                const urgency =
+                    document.getElementById(
+                        "urgency"
+                    ).value;
+
+                if (!bloodGroup || !location) {
+
+                    alert(
+                        "Please select a blood group and enter your location."
+                    );
+
+                    return;
+                }
+
+
+                const result =
+                    document.getElementById(
+                        "searchResult"
+                    );
+
+                const message =
+                    document.getElementById(
+                        "searchMessage"
+                    );
+
+
+                message.innerHTML =
+                    "Searching for registered <strong>"
+                    + bloodGroup
+                    + "</strong> donors, blood banks and hospitals near <strong>"
+                    + location
+                    + "</strong>. Urgency: <strong>"
+                    + urgency
+                    + "</strong>. " +
+                    "The real matching system will be connected to the backend in a later step.";
+
+                result.classList.add("active");
+
+            }
+        );
+
+
+        /* =====================================================
+           SCROLL TO BLOOD SEARCH
+        ===================================================== */
+
+        function scrollToSearch() {
+
+            document
+                .getElementById("bloodconnect")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+
+            setTimeout(function () {
+
+                document
+                    .getElementById("bloodGroup")
+                    .focus();
+
+            }, 700);
+
+        }
+
+
+        /* =====================================================
+           OPEN BLOOD REQUEST MODAL
+        ===================================================== */
+
+        function openBloodRequest() {
+
+            document
+                .getElementById("bloodRequestModal")
+                .classList
+                .add("active");
+
+            document.body.style.overflow =
+                "hidden";
+
+        }
+
+
+        /* =====================================================
+           CLOSE BLOOD REQUEST MODAL
+        ===================================================== */
+
+        function closeBloodRequest() {
+
+            document
+                .getElementById("bloodRequestModal")
+                .classList
+                .remove("active");
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL WHEN CLICKING OUTSIDE
+        ===================================================== */
+
+        document
+            .getElementById("bloodRequestModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target === this
+                    ) {
+
+                        closeBloodRequest();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           BLOOD REQUEST FORM
+        ===================================================== */
+
+        document
+            .getElementById("bloodRequestForm")
+            .addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+                    const patient =
+                        document.getElementById(
+                            "patientName"
+                        ).value;
+
+                    const bloodGroup =
+                        document.getElementById(
+                            "requestBloodGroup"
+                        ).value;
+
+                    const units =
+                        document.getElementById(
+                            "units"
+                        ).value;
+
+                    const hospital =
+                        document.getElementById(
+                            "hospitalLocation"
+                        ).value;
+
+
+                    alert(
+                        "Emergency blood request created!\n\n"
+                        + "Patient: "
+                        + patient
+                        + "\nBlood Group: "
+                        + bloodGroup
+                        + "\nUnits: "
+                        + units
+                        + "\nHospital: "
+                        + hospital
+                        + "\n\nIn the next steps, this request will be connected to donors, hospitals and blood banks."
+                    );
+
+
+                    closeBloodRequest();
+
+                    this.reset();
+
+                }
+            );
+
+
+        /* =====================================================
+           ESC KEY CLOSES MODAL
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeBloodRequest();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           CONSOLE INFORMATION
+        ===================================================== */
+
+        console.log(
+            "MediAI BloodConnect Step 1 loaded successfully."
+        );
+
+        console.log(
+            "Blood groups supported: A+, A-, B+, B-, AB+, AB-, O+, O-"
+        );
+
+    </script>
+
+</body>
+</html>

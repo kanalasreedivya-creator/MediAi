@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | MediAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            color: #0f172a;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 650px;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT SIDE */
+
+        .left {
+            background: linear-gradient(145deg, #2563eb, #1d4ed8, #1e40af);
+            color: white;
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -80px;
+            right: -80px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            bottom: -70px;
+            left: -70px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 45px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            background: white;
+            color: #2563eb;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: #bfdbfe;
+        }
+
+        .left h1 {
+            font-size: 42px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .left p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #dbeafe;
+            max-width: 430px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefits {
+            margin-top: 35px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 17px;
+            color: #eff6ff;
+            font-size: 14px;
+        }
+
+        .benefit i {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* RIGHT SIDE */
+
+        .right {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+        }
+
+        .form-header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* ROLE */
+
+        .role-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .role-option {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 13px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        .role-option:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+
+        .role-option.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .role-option i {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .role-option span {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ALERT */
+
+        .alert {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .alert.show {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper > i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #dbe3ed;
+            border-radius: 11px;
+            padding: 0 45px;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: #64748b;
+        }
+
+        .remember input {
+            accent-color: #2563eb;
+        }
+
+        .forgot {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 11px;
+            background: #2563eb;
+            color: white;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            background: #e2e8f0;
+            flex: 1;
+        }
+
+        .register-text {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-text a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .back-home:hover {
+            color: #2563eb;
+        }
+
+        /* DEMO */
+
+        .demo-box {
+            margin-top: 22px;
+            padding: 13px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .demo-box strong {
+            color: #334155;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+            .page {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 35px 25px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            body {
+                padding: 12px;
+            }
+
+            .right {
+                padding: 28px 20px;
+            }
+
+            .role-selector {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- LEFT -->
+    <div class="left">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
+
+            <div class="brand-name">
+                Medi<span>AI</span>
+            </div>
+        </div>
+
+        <h1>
+            Welcome Back to
+            <br>
+            Smarter Healthcare
+        </h1>
+
+        <p>
+            Access your MediAI healthcare dashboard, appointments,
+            medical records, AI health tools and emergency services
+            from one secure platform.
+        </p>
+
+        <div class="benefits">
+
+            <div class="benefit">
+                <i class="fas fa-shield-halved"></i>
+                <span>Secure healthcare experience</span>
+            </div>
+
+            <div class="benefit">
+                <i class="fas fa-user-doctor"></i>
+                <span>Connect with healthcare professionals</span>
+            </div>
+
+            <div class="benefit">
+                <i class="fas fa-calendar-check"></i>
+                <span>Manage appointments easily</span>
+            </div>
+
+            <div class="benefit">
+                <i class="fas fa-droplet"></i>
+                <span>Access BloodConnect emergency assistance</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+
+        <div class="form-header">
+            <h2>Sign In</h2>
+            <p>Sign in to continue to your MediAI account.</p>
+        </div>
+
+        <div id="alertMessage" class="alert">
+            <i class="fas fa-circle-exclamation"></i>
+            <span id="alertText"></span>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="role-title">
+                Select Account Type
+            </div>
+
+            <div class="role-selector">
+
+                <div class="role-option active"
+                     data-role="patient"
+                     onclick="selectRole('patient')">
+
+                    <i class="fas fa-user"></i>
+                    <span>Patient</span>
+
+                </div>
+
+                <div class="role-option"
+                     data-role="doctor"
+                     onclick="selectRole('doctor')">
+
+                    <i class="fas fa-user-doctor"></i>
+                    <span>Doctor</span>
+
+                </div>
+
+                <div class="role-option"
+                     data-role="hospital"
+                     onclick="selectRole('hospital')">
+
+                    <i class="fas fa-hospital"></i>
+                    <span>Hospital</span>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fas fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword()">
+
+                        <i id="passwordToggleIcon"
+                           class="fas fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="options">
+
+                <label class="remember">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                    >
+
+                    Remember me
+
+                </label>
+
+                <a href="#" class="forgot" onclick="forgotPassword(event)">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <button
+                type="submit"
+                id="loginBtn"
+                class="login-btn">
+
+                <i class="fas fa-right-to-bracket"></i>
+                Sign In
+
+            </button>
+
+        </form>
+
+        <div class="divider">
+            OR
+        </div>
+
+        <div class="register-text">
+
+            Don't have an account?
+
+            <a href="register.html">
+                Create Account
+            </a>
+
+        </div>
+
+        <div class="demo-box">
+
+            <strong>Demo accounts:</strong><br>
+
+            Patient:
+            patient@mediai.com / patient123
+            <br>
+
+            Doctor:
+            doctor@mediai.com / doctor123
+            <br>
+
+            Hospital:
+            hospital@mediai.com / hospital123
+
+        </div>
+
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+    let selectedRole = "patient";
+
+    /* ================================
+       ROLE SELECTION
+    ================================= */
+
+    function selectRole(role) {
+
+        selectedRole = role;
+
+        document.querySelectorAll(".role-option").forEach(option => {
+
+            option.classList.toggle(
+                "active",
+                option.dataset.role === role
+            );
+
+        });
+
+        hideAlert();
+    }
+
+
+    /* ================================
+       ALERT
+    ================================= */
+
+    function showAlert(message, type = "error") {
+
+        const alertBox = document.getElementById("alertMessage");
+        const alertText = document.getElementById("alertText");
+
+        alertBox.className = "alert show alert-" + type;
+
+        alertText.textContent = message;
+
+    }
+
+
+    function hideAlert() {
+
+        const alertBox = document.getElementById("alertMessage");
+
+        alertBox.className = "alert";
+
+    }
+
+
+    /* ================================
+       PASSWORD VISIBILITY
+    ================================= */
+
+    function togglePassword() {
+
+        const password = document.getElementById("password");
+        const icon = document.getElementById("passwordToggleIcon");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+            icon.className = "fas fa-eye-slash";
+
+        } else {
+
+            password.type = "password";
+            icon.className = "fas fa-eye";
+
+        }
+
+    }
+
+
+    /* ================================
+       USER DATABASE
+    ================================= */
+
+    function getUsers() {
+
+        const stored = localStorage.getItem("mediAI_users");
+
+        if (stored) {
+
+            try {
+
+                const users = JSON.parse(stored);
+
+                return {
+
+                    patient: Array.isArray(users.patient)
+                        ? users.patient
+                        : [],
+
+                    doctor: Array.isArray(users.doctor)
+                        ? users.doctor
+                        : [],
+
+                    hospital: Array.isArray(users.hospital)
+                        ? users.hospital
+                        : []
+
+                };
+
+            } catch (error) {
+
+                console.error("Could not read users:", error);
+
+            }
+
+        }
+
+
+        /* DEFAULT DEMO ACCOUNTS */
+
+        return {
+
+            patient: [
+                {
+                    id: "demo-patient",
+                    email: "patient@mediai.com",
+                    password: "patient123",
+                    name: "Demo Patient",
+                    phone: "",
+                    registeredAt: new Date().toISOString()
+                }
+            ],
+
+            doctor: [
+                {
+                    id: "demo-doctor",
+                    email: "doctor@mediai.com",
+                    password: "doctor123",
+                    name: "Demo Doctor",
+                    phone: "",
+                    registeredAt: new Date().toISOString()
+                }
+            ],
+
+            hospital: [
+                {
+                    id: "demo-hospital",
+                    email: "hospital@mediai.com",
+                    password: "hospital123",
+                    name: "Demo Hospital",
+                    phone: "",
+                    registeredAt: new Date().toISOString()
+                }
+            ]
+
+        };
+
+    }
+
+
+    function saveUsers(users) {
+
+        localStorage.setItem(
+            "mediAI_users",
+            JSON.stringify(users)
+        );
+
+    }
+
+
+    /* ================================
+       LOGIN
+    ================================= */
+
+    function handleLogin(event) {
+
+        event.preventDefault();
+
+        hideAlert();
+
+        const email =
+            document.getElementById("email").value.trim().toLowerCase();
+
+        const password =
+            document.getElementById("password").value;
+
+        const rememberMe =
+            document.getElementById("rememberMe").checked;
+
+
+        if (!email || !password) {
+
+            showAlert("Please enter your email and password.");
+
+            return;
+
+        }
+
+
+        if (!email.includes("@")) {
+
+            showAlert("Please enter a valid email address.");
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            showAlert("Password must contain at least 6 characters.");
+
+            return;
+
+        }
+
+
+        const users = getUsers();
+
+        const roleUsers = users[selectedRole] || [];
+
+
+        const user = roleUsers.find(
+            item =>
+                String(item.email).toLowerCase() === email &&
+                String(item.password) === password
+        );
+
+
+        const button = document.getElementById("loginBtn");
+
+        button.disabled = true;
+
+        button.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+
+        setTimeout(function() {
+
+            if (!user) {
+
+                button.disabled = false;
+
+                button.innerHTML =
+                    '<i class="fas fa-right-to-bracket"></i> Sign In';
+
+
+                const emailExists = roleUsers.some(
+                    item =>
+                        String(item.email).toLowerCase() === email
+                );
+
+
+                if (emailExists) {
+
+                    showAlert(
+                        "Incorrect password. Please try again."
+                    );
+
+                } else {
+
+                    showAlert(
+                        "No account found for this email under the selected role."
+                    );
+
+                }
+
+                return;
+
+            }
+
+
+            /* ================================
+               CREATE LOGIN SESSION
+            ================================= */
+
+            const userData = {
+
+                id: user.id || Date.now().toString(),
+
+                name: user.name || "MediAI User",
+
+                email: email,
+
+                role: selectedRole,
+
+                phone: user.phone || "",
+
+                loggedIn: true,
+
+                loginTime: new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "mediAI_user",
+                JSON.stringify(userData)
+            );
+
+
+            if (rememberMe) {
+
+                localStorage.setItem(
+                    "mediAI_remember",
+                    "true"
+                );
+
+            } else {
+
+                localStorage.removeItem(
+                    "mediAI_remember"
+                );
+
+            }
+
+
+            button.innerHTML =
+                '<i class="fas fa-check"></i> Login Successful';
+
+
+            showAlert(
+                "Login successful! Redirecting...",
+                "success"
+            );
+
+
+            /* ================================
+               ROLE DASHBOARD
+            ================================= */
+
+            const redirects = {
+
+                patient:
+                    "patient/dashboard.html",
+
+                doctor:
+                    "doctor/dashboard.html",
+
+                hospital:
+                    "hospital/dashboard.html"
+
+            };
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    redirects[selectedRole];
+
+            }, 900);
+
+
+        }, 700);
+
+    }
+
+
+    /* ================================
+       FORGOT PASSWORD
+    ================================= */
+
+    function forgotPassword(event) {
+
+        event.preventDefault();
+
+        showAlert(
+            "Password recovery will be connected to the backend when authentication is added.",
+            "info"
+        );
+
+    }
+
+
+    /* ================================
+       FORM EVENT
+    ================================= */
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", handleLogin);
+
+
+    /* ================================
+       PAGE LOAD
+    ================================= */
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const remember =
+            localStorage.getItem("mediAI_remember");
+
+        if (remember === "true") {
+
+            document.getElementById("rememberMe").checked = true;
+
+        }
+
+        console.log("MediAI Login loaded successfully.");
+
+    });
+
+</script>
+
+</body>
+</html>

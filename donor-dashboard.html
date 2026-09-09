@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediAI | BloodConnect Donor Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#172033;
+}
+
+.navbar{
+    background:linear-gradient(135deg,#b91c1c,#7f1d1d);
+    color:white;
+    padding:16px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#fecaca;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.donor-name{
+    font-size:14px;
+    background:rgba(255,255,255,.15);
+    padding:8px 13px;
+    border-radius:20px;
+}
+
+.logout{
+    border:none;
+    background:white;
+    color:#991b1b;
+    padding:9px 15px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:30px;
+}
+
+/* WELCOME */
+
+.welcome{
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.welcome p{
+    color:#64748b;
+}
+
+/* PROFILE */
+
+.profile{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+    margin-bottom:25px;
+}
+
+.profile-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.avatar{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#fee2e2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+}
+
+.profile h2{
+    margin-bottom:7px;
+}
+
+.profile p{
+    color:#64748b;
+    margin:3px 0;
+}
+
+.blood-badge{
+    background:#fee2e2;
+    color:#991b1b;
+    padding:10px 18px;
+    border-radius:20px;
+    font-weight:800;
+    font-size:18px;
+}
+
+/* AVAILABILITY */
+
+.availability{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:25px;
+    border:1px solid #e5e7eb;
+}
+
+.availability-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.availability h3{
+    margin-bottom:5px;
+}
+
+.availability p{
+    color:#64748b;
+    font-size:14px;
+}
+
+.switch{
+    position:relative;
+    width:55px;
+    height:30px;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#cbd5e1;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:22px;
+    height:22px;
+    left:4px;
+    top:4px;
+    background:white;
+    border-radius:50%;
+    transition:.25s;
+}
+
+input:checked + .slider{
+    background:#16a34a;
+}
+
+input:checked + .slider:before{
+    transform:translateX(25px);
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.stat-icon{
+    font-size:26px;
+    margin-bottom:10px;
+}
+
+.stat h3{
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.stat p{
+    color:#64748b;
+    font-size:14px;
+}
+
+/* REQUESTS */
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.section-header h2{
+    font-size:23px;
+}
+
+.refresh{
+    border:none;
+    background:#fee2e2;
+    color:#991b1b;
+    padding:9px 14px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.requests{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.request-card{
+    background:white;
+    border-radius:17px;
+    padding:22px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.request-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:18px;
+}
+
+.request-id{
+    font-size:13px;
+    color:#64748b;
+}
+
+.urgency{
+    padding:6px 10px;
+    border-radius:15px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.critical{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.urgent{
+    background:#ffedd5;
+    color:#9a3412;
+}
+
+.normal{
+    background:#e2e8f0;
+    color:#475569;
+}
+
+.request-blood{
+    font-size:32px;
+    font-weight:800;
+    color:#b91c1c;
+    margin-bottom:10px;
+}
+
+.request-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin:15px 0;
+}
+
+.info{
+    background:#f8fafc;
+    padding:10px;
+    border-radius:8px;
+}
+
+.info small{
+    display:block;
+    color:#64748b;
+    margin-bottom:4px;
+}
+
+.info strong{
+    font-size:14px;
+}
+
+.request-actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.accept{
+    flex:1;
+    border:none;
+    background:#16a34a;
+    color:white;
+    padding:11px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.decline{
+    flex:1;
+    border:none;
+    background:#f1f5f9;
+    color:#475569;
+    padding:11px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.accepted-box{
+    background:#dcfce7;
+    color:#166534;
+    padding:12px;
+    border-radius:9px;
+    text-align:center;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+.declined-box{
+    background:#f1f5f9;
+    color:#64748b;
+    padding:12px;
+    border-radius:9px;
+    text-align:center;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+/* EMPTY */
+
+.empty{
+    background:white;
+    border-radius:16px;
+    padding:45px 20px;
+    text-align:center;
+    border:1px solid #e5e7eb;
+}
+
+.empty-icon{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+.empty h3{
+    margin-bottom:8px;
+}
+
+.empty p{
+    color:#64748b;
+}
+
+/* SAFETY */
+
+.safety{
+    margin-top:30px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    padding:20px;
+    border-radius:15px;
+}
+
+.safety h3{
+    color:#9a3412;
+    margin-bottom:8px;
+}
+
+.safety p{
+    color:#7c2d12;
+    line-height:1.6;
+    font-size:14px;
+}
+
+/* FOOTER */
+
+footer{
+    background:#450a0a;
+    color:#fecaca;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+    font-size:13px;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .requests{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .navbar{
+        padding:14px 15px;
+    }
+
+    .donor-name{
+        display:none;
+    }
+
+    .container{
+        padding:18px;
+    }
+
+    .profile{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .request-info{
+        grid-template-columns:1fr;
+    }
+
+    .welcome h1{
+        font-size:24px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Medi<span>AI</span> 🩸
+    </div>
+
+    <div class="nav-right">
+
+        <div class="donor-name" id="navDonorName">
+            Donor
+        </div>
+
+        <button class="logout" onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h1>BloodConnect Donor Dashboard</h1>
+
+        <p>
+            Help patients by responding to blood donation requests near you.
+        </p>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section class="profile">
+
+        <div class="profile-left">
+
+            <div class="avatar">
+                🩸
+            </div>
+
+            <div>
+
+                <h2 id="donorName">
+                    Donor
+                </h2>
+
+                <p>
+                    📍 <span id="donorLocation">
+                        Location not available
+                    </span>
+                </p>
+
+                <p>
+                    📞 <span id="donorPhone">
+                        Contact not available
+                    </span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="blood-badge" id="donorBlood">
+            Blood Group
+        </div>
+
+    </section>
+
+
+    <!-- AVAILABILITY -->
+
+    <section class="availability">
+
+        <div class="availability-row">
+
+            <div>
+
+                <h3>🟢 Available for Donation</h3>
+
+                <p>
+                    Turn this on when you are available to receive nearby requests.
+                </p>
+
+            </div>
+
+            <label class="switch">
+
+                <input
+                    type="checkbox"
+                    id="availabilityToggle"
+                    onchange="changeAvailability()"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🚨
+            </div>
+
+            <h3 id="matchingCount">
+                0
+            </h3>
+
+            <p>
+                Matching Requests
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+            <h3 id="acceptedCount">
+                0
+            </h3>
+
+            <p>
+                Accepted
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🩸
+            </div>
+
+            <h3 id="donationCount">
+                0
+            </h3>
+
+            <p>
+                Donation Responses
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🔐
+            </div>
+
+            <h3 id="verificationStatus">
+                Pending
+            </h3>
+
+            <p>
+                Verification
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- REQUESTS -->
+
+    <section>
+
+        <div class="section-header">
+
+            <div>
+                <h2>🚨 Blood Requests Near You</h2>
+
+                <p style="color:#64748b;margin-top:5px;">
+                    Requests matching your registered blood group.
+                </p>
+            </div>
+
+            <button
+                class="refresh"
+                onclick="loadRequests()"
+            >
+                🔄 Refresh
+            </button>
+
+        </div>
+
+
+        <div
+            class="requests"
+            id="requestsContainer"
+        ></div>
+
+    </section>
+
+
+    <!-- SAFETY -->
+
+    <section class="safety">
+
+        <h3>
+            ⚠️ Donor Safety
+        </h3>
+
+        <p>
+            Only accept donation requests that you can safely fulfil.
+            Final donor eligibility, blood-group compatibility and transfusion
+            suitability must be confirmed by qualified medical professionals
+            or authorized blood-bank staff.
+        </p>
+
+    </section>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 MediAI | BloodConnect
+    </p>
+
+    <p style="margin-top:7px;">
+        Emergency blood coordination prototype
+    </p>
+
+</footer>
+
+
+<script>
+
+/* ============================================
+   STORAGE HELPERS
+============================================ */
+
+function getArray(key){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value){
+            return [];
+        }
+
+        const parsed =
+            JSON.parse(value);
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    }catch(error){
+
+        console.error(error);
+
+        return [];
+
+    }
+
+}
+
+
+function saveArray(key,data){
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* ============================================
+   ESCAPE HTML
+============================================ */
+
+function escapeHTML(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ============================================
+   CURRENT DONOR
+============================================ */
+
+let currentDonor =
+    JSON.parse(
+        localStorage.getItem(
+            "mediAI_current_donor"
+        ) || "null"
+    );
+
+
+/* ============================================
+   LOAD DONOR
+============================================ */
+
+function loadDonor(){
+
+    if(!currentDonor){
+
+        alert(
+            "No donor profile found. Please register as a donor first."
+        );
+
+        window.location.href =
+            "donor-register.html";
+
+        return;
+
+    }
+
+
+    const name =
+        currentDonor.fullName ||
+        currentDonor.name ||
+        "Donor";
+
+
+    const blood =
+        currentDonor.bloodGroup ||
+        currentDonor.blood ||
+        "-";
+
+
+    const location =
+        currentDonor.location ||
+        currentDonor.city ||
+        "Location not available";
+
+
+    const phone =
+        currentDonor.phone ||
+        currentDonor.contact ||
+        "Contact not available";
+
+
+    document.getElementById(
+        "donorName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "navDonorName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "donorBlood"
+    ).textContent = blood;
+
+
+    document.getElementById(
+        "donorLocation"
+    ).textContent = location;
+
+
+    document.getElementById(
+        "donorPhone"
+    ).textContent = phone;
+
+
+    document.getElementById(
+        "availabilityToggle"
+    ).checked =
+        currentDonor.available !== false;
+
+
+    document.getElementById(
+        "verificationStatus"
+    ).textContent =
+        currentDonor.verificationStatus ||
+        currentDonor.status ||
+        "Pending";
+
+}
+
+
+/* ============================================
+   CHANGE AVAILABILITY
+============================================ */
+
+function changeAvailability(){
+
+    if(!currentDonor){
+        return;
+    }
+
+
+    const toggle =
+        document.getElementById(
+            "availabilityToggle"
+        );
+
+
+    currentDonor.available =
+        toggle.checked;
+
+
+    localStorage.setItem(
+        "mediAI_current_donor",
+        JSON.stringify(currentDonor)
+    );
+
+
+    /*
+       Also update donor in the global donor list.
+    */
+
+    const donors =
+        getArray("mediAI_donors");
+
+
+    const donorIndex =
+        donors.findIndex(
+            donor =>
+
+            (
+                donor.id &&
+                currentDonor.id &&
+                donor.id === currentDonor.id
+            ) ||
+
+            (
+                donor.email &&
+                currentDonor.email &&
+                donor.email === currentDonor.email
+            ) ||
+
+            (
+                donor.phone &&
+                currentDonor.phone &&
+                donor.phone === currentDonor.phone
+            )
+        );
+
+
+    if(donorIndex !== -1){
+
+        donors[donorIndex] =
+            {
+                ...donors[donorIndex],
+                ...currentDonor
+            };
+
+        saveArray(
+            "mediAI_donors",
+            donors
+        );
+
+    }
+
+}
+
+
+/* ============================================
+   LOAD REQUESTS
+============================================ */
+
+function loadRequests(){
+
+    const container =
+        document.getElementById(
+            "requestsContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if(!currentDonor){
+        return;
+    }
+
+
+    const bloodGroup =
+        currentDonor.bloodGroup ||
+        currentDonor.blood ||
+        "";
+
+
+    const donorLocation =
+        String(
+            currentDonor.location ||
+            currentDonor.city ||
+            ""
+        ).toLowerCase();
+
+
+    const requests =
+        getArray(
+            "mediAI_blood_requests"
+        );
+
+
+    /*
+       Accepted/declined responses are stored here.
+    */
+
+    const responses =
+        getArray(
+            "mediAI_facility_responses"
+        );
+
+
+    const donorResponses =
+        getArray(
+            "mediAI_donor_responses"
+        );
+
+
+    /*
+       Only display requests that match
+       the donor's registered blood group.
+
+       Location is used as a helpful filter,
+       but clinical compatibility must still
+       be confirmed by professionals.
+    */
+
+    const matching =
+        requests.filter(request => {
+
+            const requestBlood =
+                String(
+                    request.bloodGroup ||
+                    ""
+                ).trim().toUpperCase();
+
+
+            const donorBlood =
+                String(
+                    bloodGroup
+                ).trim().toUpperCase();
+
+
+            if(
+                !requestBlood ||
+                !donorBlood
+            ){
+                return false;
+            }
+
+
+            if(
+                requestBlood !== donorBlood
+            ){
+                return false;
+            }
+
+
+            /*
+               Do not hide the request when
+               location information is missing.
+            */
+
+            return true;
+
+        });
+
+
+    document.getElementById(
+        "matchingCount"
+    ).textContent =
+        matching.length;
+
+
+    if(matching.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty"
+                 style="grid-column:1/-1;">
+
+                <div class="empty-icon">
+                    🩸
+                </div>
+
+                <h3>
+                    No matching blood requests
+                </h3>
+
+                <p>
+                    New requests matching your registered blood group
+                    will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        updateStats(
+            donorResponses
+        );
+
+        return;
+
+    }
+
+
+    matching
+        .slice()
+        .reverse()
+        .forEach(request => {
+
+            const card =
+                createRequestCard(
+                    request,
+                    donorResponses
+                );
+
+
+            container.appendChild(card);
+
+        });
+
+
+    updateStats(
+        donorResponses
+    );
+
+}
+
+
+/* ============================================
+   CREATE REQUEST CARD
+============================================ */
+
+function createRequestCard(
+    request,
+    donorResponses
+){
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "request-card";
+
+
+    const requestId =
+        request.requestId ||
+        request.id ||
+        "BC-REQUEST";
+
+
+    const patient =
+        request.patientName ||
+        request.name ||
+        "Patient";
+
+
+    const blood =
+        request.bloodGroup ||
+        "-";
+
+
+    const units =
+        request.units ||
+        "1";
+
+
+    const hospital =
+        request.hospital ||
+        "Hospital not specified";
+
+
+    const location =
+        request.location ||
+        "Location not specified";
+
+
+    const urgency =
+        request.urgency ||
+        "Normal";
+
+
+    const additional =
+        request.additionalInfo ||
+        request.message ||
+        "No additional information";
+
+
+    /*
+       Check whether this donor has already
+       responded to this request.
+    */
+
+    const existingResponse =
+        donorResponses.find(
+            response =>
+
+                response.requestId ===
+                requestId &&
+
+                (
+                    (
+                        response.donorId &&
+                        currentDonor.id &&
+                        response.donorId ===
+                        currentDonor.id
+                    ) ||
+
+                    (
+                        response.donorEmail &&
+                        currentDonor.email &&
+                        response.donorEmail ===
+                        currentDonor.email
+                    ) ||
+
+                    (
+                        response.donorPhone &&
+                        currentDonor.phone &&
+                        response.donorPhone ===
+                        currentDonor.phone
+                    )
+                )
+        );
+
+
+    const urgencyClass =
+        String(urgency)
+            .toLowerCase()
+            .includes("critical")
+            ? "critical"
+            :
+            String(urgency)
+                .toLowerCase()
+                .includes("urgent")
+            ? "urgent"
+            : "normal";
+
+
+    card.innerHTML = `
+
+        <div class="request-top">
+
+            <div>
+
+                <div class="request-id">
+                    Request ID: ${escapeHTML(requestId)}
+                </div>
+
+                <h3 style="margin-top:6px;">
+                    ${escapeHTML(patient)}
+                </h3>
+
+            </div>
+
+            <span class="urgency ${urgencyClass}">
+                ${escapeHTML(urgency)}
+            </span>
+
+        </div>
+
+
+        <div class="request-blood">
+            ${escapeHTML(blood)}
+        </div>
+
+
+        <div class="request-info">
+
+            <div class="info">
+
+                <small>
+                    🩸 Units Required
+                </small>
+
+                <strong>
+                    ${escapeHTML(units)}
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    🏥 Hospital
+                </small>
+
+                <strong>
+                    ${escapeHTML(hospital)}
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    📍 Location
+                </small>
+
+                <strong>
+                    ${escapeHTML(location)}
+                </strong>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>
+                    ℹ️ Information
+                </small>
+
+                <strong>
+                    ${escapeHTML(additional)}
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    if(
+        existingResponse &&
+        existingResponse.response ===
+        "accepted"
+    ){
+
+        card.innerHTML += `
+
+            <div class="accepted-box">
+                ✅ You accepted this request
+            </div>
+
+        `;
+
+    }
+
+    else if(
+        existingResponse &&
+        existingResponse.response ===
+        "declined"
+    ){
+
+        card.innerHTML += `
+
+            <div class="declined-box">
+                ❌ You declined this request
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        const actions =
+            document.createElement(
+                "div"
+            );
+
+
+        actions.className =
+            "request-actions";
+
+
+        const accept =
+            document.createElement(
+                "button"
+            );
+
+
+        accept.className =
+            "accept";
+
+
+        accept.textContent =
+            "✅ Accept Request";
+
+
+        accept.onclick =
+            function(){
+
+                respondToRequest(
+                    request,
+                    "accepted"
+                );
+
+            };
+
+
+        const decline =
+            document.createElement(
+                "button"
+            );
+
+
+        decline.className =
+            "decline";
+
+
+        decline.textContent =
+            "❌ Decline";
+
+
+        decline.onclick =
+            function(){
+
+                respondToRequest(
+                    request,
+                    "declined"
+                );
+
+            };
+
+
+        actions.appendChild(
+            accept
+        );
+
+
+        actions.appendChild(
+            decline
+        );
+
+
+        card.appendChild(
+            actions
+        );
+
+    }
+
+
+    return card;
+
+}
+
+
+/* ============================================
+   RESPOND TO REQUEST
+============================================ */
+
+function respondToRequest(
+    request,
+    responseType
+){
+
+    if(!currentDonor){
+
+        alert(
+            "Donor profile not found."
+        );
+
+        return;
+
+    }
+
+
+    const requestId =
+        request.requestId ||
+        request.id;
+
+
+    if(!requestId){
+
+        alert(
+            "This request does not have a valid ID."
+        );
+
+        return;
+
+    }
+
+
+    const message =
+        responseType === "accepted"
+            ? "Accept this blood donation request?"
+            : "Decline this blood donation request?";
+
+
+    if(!confirm(message)){
+        return;
+    }
+
+
+    let donorResponses =
+        getArray(
+            "mediAI_donor_responses"
+        );
+
+
+    /*
+       Prevent duplicate response.
+    */
+
+    const alreadyResponded =
+        donorResponses.some(
+            response =>
+
+                response.requestId ===
+                requestId &&
+
+                (
+                    (
+                        response.donorId &&
+                        currentDonor.id &&
+                        response.donorId ===
+                        currentDonor.id
+                    ) ||
+
+                    (
+                        response.donorEmail &&
+                        currentDonor.email &&
+                        response.donorEmail ===
+                        currentDonor.email
+                    ) ||
+
+                    (
+                        response.donorPhone &&
+                        currentDonor.phone &&
+                        response.donorPhone ===
+                        currentDonor.phone
+                    )
+                )
+        );
+
+
+    if(alreadyResponded){
+
+        alert(
+            "You have already responded to this request."
+        );
+
+        return;
+
+    }
+
+
+    const responseRecord = {
+
+        id:
+            "DR-" +
+            Date.now(),
+
+        requestId:
+            requestId,
+
+        donorId:
+            currentDonor.id ||
+            "",
+
+        donorName:
+            currentDonor.fullName ||
+            currentDonor.name ||
+            "",
+
+        donorEmail:
+            currentDonor.email ||
+            "",
+
+        donorPhone:
+            currentDonor.phone ||
+            "",
+
+        donorBloodGroup:
+            currentDonor.bloodGroup ||
+            currentDonor.blood ||
+            "",
+
+        response:
+            responseType,
+
+        timestamp:
+            new Date().toISOString()
+
+    };
+
+
+    donorResponses.push(
+        responseRecord
+    );
+
+
+    saveArray(
+        "mediAI_donor_responses",
+        donorResponses
+    );
+
+
+    /*
+       Update the original blood request.
+    */
+
+    updateBloodRequest(
+        requestId,
+        responseType
+    );
+
+
+    /*
+       Also maintain accepted request list
+       for compatibility with the existing
+       prototype.
+    */
+
+    if(
+        responseType === "accepted"
+    ){
+
+        let accepted =
+            getArray(
+                "mediAI_accepted_requests"
+            );
+
+
+        const exists =
+            accepted.some(
+                item =>
+                    item.requestId ===
+                    requestId &&
+                    (
+                        item.donorId ===
+                        responseRecord.donorId
+                    )
+            );
+
+
+        if(!exists){
+
+            accepted.push(
+                {
+                    ...responseRecord
+                }
+            );
+
+
+            saveArray(
+                "mediAI_accepted_requests",
+                accepted
+            );
+
+        }
+
+    }
+
+
+    alert(
+        responseType === "accepted"
+            ? "Request accepted successfully. The response has been recorded."
+            : "Request declined."
+    );
+
+
+    loadRequests();
+
+}
+
+
+/* ============================================
+   UPDATE REQUEST
+============================================ */
+
+function updateBloodRequest(
+    requestId,
+    responseType
+){
+
+    let requests =
+        getArray(
+            "mediAI_blood_requests"
+        );
+
+
+    const index =
+        requests.findIndex(
+            request =>
+
+                (
+                    request.requestId ===
+                    requestId
+                ) ||
+
+                (
+                    request.id ===
+                    requestId
+                )
+        );
+
+
+    if(index === -1){
+        return;
+    }
+
+
+    const request =
+        requests[index];
+
+
+    /*
+       Maintain donor response information.
+    */
+
+    request.lastDonorResponse =
+        responseType;
+
+
+    request.lastDonorResponseAt =
+        new Date().toISOString();
+
+
+    /*
+       Do not mark the entire emergency
+       request as completed merely because
+       one donor responded.
+
+       An accepted donor means the request
+       has received a response.
+    */
+
+    if(
+        responseType === "accepted"
+    ){
+
+        request.status =
+            "Donor Responded";
+
+    }
+
+    else{
+
+        request.status =
+            "Response Pending";
+
+    }
+
+
+    requests[index] =
+        request;
+
+
+    saveArray(
+        "mediAI_blood_requests",
+        requests
+    );
+
+
+    /*
+       Keep latest request synchronized.
+    */
+
+    localStorage.setItem(
+        "mediAI_latest_blood_request",
+        JSON.stringify(request)
+    );
+
+}
+
+
+/* ============================================
+   UPDATE STATS
+============================================ */
+
+function updateStats(
+    donorResponses
+){
+
+    const accepted =
+        donorResponses.filter(
+            response =>
+
+                response.response ===
+                "accepted"
+        );
+
+
+    document.getElementById(
+        "acceptedCount"
+    ).textContent =
+        accepted.length;
+
+
+    document.getElementById(
+        "donationCount"
+    ).textContent =
+        donorResponses.length;
+
+}
+
+
+/* ============================================
+   LOGOUT
+============================================ */
+
+function logout(){
+
+    if(
+        !confirm(
+            "Are you sure you want to logout?"
+        )
+    ){
+        return;
+    }
+
+
+    /*
+       Do NOT clear localStorage.
+       BloodConnect prototype data is stored
+       there and should remain available.
+    */
+
+    localStorage.removeItem(
+        "mediAI_current_donor"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ============================================
+   INITIALIZE
+============================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadDonor();
+
+        loadRequests();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

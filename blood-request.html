@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediAI | BloodConnect Request</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#172033;
+}
+
+.navbar{
+    background:linear-gradient(135deg,#b91c1c,#7f1d1d);
+    color:white;
+    padding:16px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#fecaca;
+}
+
+.nav-links{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-btn{
+    border:none;
+    background:white;
+    color:#991b1b;
+    padding:9px 14px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px;
+}
+
+.header{
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#64748b;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.card h2{
+    margin-bottom:20px;
+}
+
+.request-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.summary-item{
+    background:#f8fafc;
+    padding:16px;
+    border-radius:12px;
+}
+
+.summary-item small{
+    display:block;
+    color:#64748b;
+    margin-bottom:7px;
+}
+
+.summary-item strong{
+    font-size:18px;
+}
+
+.blood{
+    color:#b91c1c;
+    font-size:25px !important;
+}
+
+.status-box{
+    padding:20px;
+    border-radius:14px;
+    margin-top:20px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+}
+
+.status-box h3{
+    color:#9a3412;
+    margin-bottom:7px;
+}
+
+.status-box p{
+    color:#7c2d12;
+}
+
+.status-box.accepted{
+    background:#dcfce7;
+    border-color:#bbf7d0;
+}
+
+.status-box.accepted h3,
+.status-box.accepted p{
+    color:#166534;
+}
+
+.status-box.completed{
+    background:#dbeafe;
+    border-color:#bfdbfe;
+}
+
+.status-box.completed h3,
+.status-box.completed p{
+    color:#1e40af;
+}
+
+/* TIMELINE */
+
+.timeline{
+    position:relative;
+    margin-top:25px;
+}
+
+.timeline-item{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+    position:relative;
+}
+
+.timeline-item:not(:last-child)::after{
+    content:"";
+    position:absolute;
+    left:14px;
+    top:30px;
+    width:2px;
+    height:35px;
+    background:#cbd5e1;
+}
+
+.timeline-icon{
+    width:30px;
+    height:30px;
+    min-width:30px;
+    border-radius:50%;
+    background:#e2e8f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:14px;
+    z-index:2;
+}
+
+.timeline-item.active .timeline-icon{
+    background:#dcfce7;
+}
+
+.timeline-item.active strong{
+    color:#166534;
+}
+
+.timeline-item.pending .timeline-icon{
+    background:#fee2e2;
+}
+
+.timeline-content strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.timeline-content span{
+    color:#64748b;
+    font-size:13px;
+}
+
+/* DONOR RESPONSE */
+
+.response-card{
+    display:none;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    border-radius:14px;
+    padding:20px;
+}
+
+.response-card.show{
+    display:block;
+}
+
+.response-card h3{
+    color:#166534;
+    margin-bottom:10px;
+}
+
+.response-details{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.response-detail{
+    background:white;
+    padding:12px;
+    border-radius:9px;
+}
+
+.response-detail small{
+    display:block;
+    color:#64748b;
+    margin-bottom:5px;
+}
+
+/* BUTTONS */
+
+.actions{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+}
+
+.primary{
+    background:#b91c1c;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.secondary{
+    background:#f1f5f9;
+    color:#334155;
+    border:none;
+    padding:12px 18px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* SAFETY */
+
+.safety{
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    padding:20px;
+    border-radius:14px;
+}
+
+.safety h3{
+    color:#9a3412;
+    margin-bottom:8px;
+}
+
+.safety p{
+    color:#7c2d12;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.empty{
+    text-align:center;
+    padding:50px 20px;
+}
+
+.empty-icon{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.empty p{
+    color:#64748b;
+    margin-top:8px;
+}
+
+footer{
+    background:#450a0a;
+    color:#fecaca;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+
+    .request-summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .response-details{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .navbar{
+        padding:14px 15px;
+    }
+
+    .container{
+        padding:18px;
+    }
+
+    .nav-btn{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .header h1{
+        font-size:24px;
+    }
+
+    .request-summary{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Medi<span>AI</span> 🩸
+    </div>
+
+    <div class="nav-links">
+
+        <button
+            class="nav-btn"
+            onclick="goToSearch()">
+            🔎 Blood Search
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="goHome()">
+            Home
+        </button>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            🩸 Blood Request Tracking
+        </h1>
+
+        <p>
+            Track the status of your BloodConnect emergency request.
+        </p>
+
+    </div>
+
+
+    <!-- REQUEST DETAILS -->
+
+    <div
+        class="card"
+        id="requestCard"
+    >
+
+        <h2>
+            Request Details
+        </h2>
+
+        <div
+            class="request-summary"
+            id="requestSummary"
+        ></div>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="status-box"
+            id="statusBox"
+        >
+
+            <h3 id="statusTitle">
+                ⏳ Response Pending
+            </h3>
+
+            <p id="statusText">
+                Your request has been created and is waiting for donor responses.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- DONOR RESPONSE -->
+
+    <div
+        class="card"
+        id="donorResponseSection"
+    >
+
+        <h2>
+            🩸 Donor Response
+        </h2>
+
+
+        <div
+            class="response-card"
+            id="acceptedResponse"
+        >
+
+            <h3>
+                ✅ A donor has responded to your request
+            </h3>
+
+            <p>
+                A registered donor has accepted your request.
+                Please coordinate through the authorized hospital or
+                blood-bank process.
+            </p>
+
+
+            <div
+                class="response-details"
+                id="responseDetails"
+            ></div>
+
+        </div>
+
+
+        <div
+            class="response-card"
+            id="waitingResponse"
+            style="display:block;background:#f8fafc;border-color:#e2e8f0;"
+        >
+
+            <h3 style="color:#475569;">
+                ⏳ Waiting for donor response
+            </h3>
+
+            <p style="color:#64748b;">
+                Matching donors will see this request on their dashboard.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TIMELINE -->
+
+    <div class="card">
+
+        <h2>
+            📊 Request Timeline
+        </h2>
+
+        <div
+            class="timeline"
+            id="timeline"
+        ></div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="card">
+
+        <h2>
+            What would you like to do?
+        </h2>
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                onclick="goToSearch()"
+            >
+                🔎 Search Blood
+            </button>
+
+            <button
+                class="secondary"
+                onclick="refreshRequest()"
+            >
+                🔄 Refresh Status
+            </button>
+
+            <button
+                class="secondary"
+                onclick="goHome()"
+            >
+                🏠 Back Home
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- SAFETY -->
+
+    <div class="safety">
+
+        <h3>
+            ⚠️ Important Medical Safety Information
+        </h3>
+
+        <p>
+            BloodConnect is a coordination prototype. A donor response does
+            not by itself confirm transfusion compatibility or donor eligibility.
+            Blood group, cross-matching, donor eligibility, collection and
+            transfusion decisions must be confirmed by qualified healthcare
+            professionals or authorized blood-bank staff.
+        </p>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 MediAI | BloodConnect
+    </p>
+
+    <p style="margin-top:7px;">
+        Emergency blood coordination prototype
+    </p>
+
+</footer>
+
+
+<script>
+
+/* ============================================
+   STORAGE
+============================================ */
+
+function getArray(key){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value){
+            return [];
+        }
+
+        const data =
+            JSON.parse(value);
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        console.error(error);
+
+        return [];
+
+    }
+
+}
+
+
+/* ============================================
+   HTML ESCAPE
+============================================ */
+
+function escapeHTML(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ============================================
+   FIND CURRENT REQUEST
+============================================ */
+
+function getCurrentRequest(){
+
+    /*
+       First try the latest request.
+    */
+
+    const latest =
+        localStorage.getItem(
+            "mediAI_latest_blood_request"
+        );
+
+
+    if(latest){
+
+        try{
+
+            return JSON.parse(latest);
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    /*
+       If latest request does not exist,
+       use the newest request from the list.
+    */
+
+    const requests =
+        getArray(
+            "mediAI_blood_requests"
+        );
+
+
+    if(requests.length > 0){
+
+        return requests[
+            requests.length - 1
+        ];
+
+    }
+
+
+    return null;
+
+}
+
+
+/* ============================================
+   LOAD REQUEST
+============================================ */
+
+function loadRequest(){
+
+    let request =
+        getCurrentRequest();
+
+
+    if(!request){
+
+        showEmpty();
+
+        return;
+
+    }
+
+
+    /*
+       Always get the newest version of
+       this request from the main request list.
+    */
+
+    const requests =
+        getArray(
+            "mediAI_blood_requests"
+        );
+
+
+    const requestId =
+        request.requestId ||
+        request.id;
+
+
+    const latestVersion =
+        requests.find(
+            item =>
+
+                (
+                    item.requestId ===
+                    requestId
+                ) ||
+
+                (
+                    item.id ===
+                    requestId
+                )
+        );
+
+
+    if(latestVersion){
+
+        request =
+            latestVersion;
+
+    }
+
+
+    /*
+       Update latest request storage.
+    */
+
+    localStorage.setItem(
+        "mediAI_latest_blood_request",
+        JSON.stringify(request)
+    );
+
+
+    renderRequest(
+        request
+    );
+
+
+    checkDonorResponses(
+        request
+    );
+
+
+    renderTimeline(
+        request
+    );
+
+}
+
+
+/* ============================================
+   RENDER REQUEST
+============================================ */
+
+function renderRequest(request){
+
+    const requestId =
+        request.requestId ||
+        request.id ||
+        "BC-REQUEST";
+
+
+    const patient =
+        request.patientName ||
+        request.name ||
+        "Patient";
+
+
+    const blood =
+        request.bloodGroup ||
+        "-";
+
+
+    const units =
+        request.units ||
+        "1";
+
+
+    const hospital =
+        request.hospital ||
+        "Not specified";
+
+
+    const location =
+        request.location ||
+        "Not specified";
+
+
+    const urgency =
+        request.urgency ||
+        "Normal";
+
+
+    document.getElementById(
+        "requestSummary"
+    ).innerHTML = `
+
+        <div class="summary-item">
+
+            <small>
+                Request ID
+            </small>
+
+            <strong>
+                ${escapeHTML(requestId)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Patient
+            </small>
+
+            <strong>
+                ${escapeHTML(patient)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Blood Group
+            </small>
+
+            <strong class="blood">
+                ${escapeHTML(blood)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Units Required
+            </small>
+
+            <strong>
+                ${escapeHTML(units)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Hospital
+            </small>
+
+            <strong>
+                ${escapeHTML(hospital)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Location
+            </small>
+
+            <strong>
+                ${escapeHTML(location)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Urgency
+            </small>
+
+            <strong>
+                ${escapeHTML(urgency)}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <small>
+                Status
+            </small>
+
+            <strong id="summaryStatus">
+                ${escapeHTML(
+                    request.status ||
+                    "Response Pending"
+                )}
+            </strong>
+
+        </div>
+
+    `;
+
+
+    updateStatusBox(
+        request
+    );
+
+}
+
+
+/* ============================================
+   STATUS
+============================================ */
+
+function updateStatusBox(request){
+
+    const status =
+        String(
+            request.status ||
+            "Response Pending"
+        ).toLowerCase();
+
+
+    const box =
+        document.getElementById(
+            "statusBox"
+        );
+
+
+    const title =
+        document.getElementById(
+            "statusTitle"
+        );
+
+
+    const text =
+        document.getElementById(
+            "statusText"
+        );
+
+
+    box.className =
+        "status-box";
+
+
+    if(
+        status.includes("completed")
+    ){
+
+        box.classList.add(
+            "completed"
+        );
+
+
+        title.textContent =
+            "✅ Request Completed";
+
+
+        text.textContent =
+            "This blood request has been marked as completed.";
+
+    }
+
+    else if(
+        status.includes("donor responded") ||
+        status.includes("accepted")
+    ){
+
+        box.classList.add(
+            "accepted"
+        );
+
+
+        title.textContent =
+            "🩸 Donor Responded";
+
+
+        text.textContent =
+            "A donor has responded to your request. Please continue coordination through the hospital or authorized blood-bank process.";
+
+    }
+
+    else if(
+        status.includes("blood arranged")
+    ){
+
+        box.classList.add(
+            "accepted"
+        );
+
+
+        title.textContent =
+            "🩸 Blood Arranged";
+
+
+        text.textContent =
+            "Blood has been reported as arranged. Final confirmation must be handled by the hospital or blood bank.";
+
+    }
+
+    else{
+
+        title.textContent =
+            "⏳ Response Pending";
+
+
+        text.textContent =
+            "Your request has been created and is waiting for donor responses.";
+
+    }
+
+}
+
+
+/* ============================================
+   CHECK DONOR RESPONSES
+============================================ */
+
+function checkDonorResponses(request){
+
+    const requestId =
+        request.requestId ||
+        request.id;
+
+
+    const responses =
+        getArray(
+            "mediAI_donor_responses"
+        );
+
+
+    const matchingResponses =
+        responses.filter(
+            response =>
+                response.requestId ===
+                requestId
+        );
+
+
+    const accepted =
+        matchingResponses.filter(
+            response =>
+                response.response ===
+                "accepted"
+        );
+
+
+    const acceptedBox =
+        document.getElementById(
+            "acceptedResponse"
+        );
+
+
+    const waitingBox =
+        document.getElementById(
+            "waitingResponse"
+        );
+
+
+    if(accepted.length > 0){
+
+        const response =
+            accepted[
+                accepted.length - 1
+            ];
+
+
+        acceptedBox.classList.add(
+            "show"
+        );
+
+
+        waitingBox.style.display =
+            "none";
+
+
+        document.getElementById(
+            "responseDetails"
+        ).innerHTML = `
+
+            <div class="response-detail">
+
+                <small>
+                    Donor
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        response.donorName ||
+                        "Registered Donor"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="response-detail">
+
+                <small>
+                    Blood Group
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        response.donorBloodGroup ||
+                        request.bloodGroup ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="response-detail">
+
+                <small>
+                    Response
+                </small>
+
+                <strong>
+                    ✅ Accepted
+                </strong>
+
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        acceptedBox.classList.remove(
+            "show"
+        );
+
+
+        waitingBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* ============================================
+   TIMELINE
+============================================ */
+
+function renderTimeline(request){
+
+    const status =
+        String(
+            request.status ||
+            "Response Pending"
+        ).toLowerCase();
+
+
+    const hasDonorResponse =
+        status.includes(
+            "donor responded"
+        ) ||
+        status.includes(
+            "accepted"
+        ) ||
+        status.includes(
+            "blood arranged"
+        ) ||
+        status.includes(
+            "completed"
+        );
+
+
+    const bloodArranged =
+        status.includes(
+            "blood arranged"
+        ) ||
+        status.includes(
+            "completed"
+        );
+
+
+    const completed =
+        status.includes(
+            "completed"
+        );
+
+
+    const timeline =
+        document.getElementById(
+            "timeline"
+        );
+
+
+    timeline.innerHTML = `
+
+        <div class="timeline-item active">
+
+            <div class="timeline-icon">
+                ✓
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    Request Created
+                </strong>
+
+                <span>
+                    Your blood request has been submitted.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="timeline-item ${
+            hasDonorResponse
+                ? "active"
+                : ""
+        }">
+
+            <div class="timeline-icon">
+                ${
+                    hasDonorResponse
+                        ? "✓"
+                        : "•"
+                }
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    Donors Notified
+                </strong>
+
+                <span>
+                    Matching donors can view your request.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="timeline-item ${
+            hasDonorResponse
+                ? "active"
+                : "pending"
+        }">
+
+            <div class="timeline-icon">
+                ${
+                    hasDonorResponse
+                        ? "✓"
+                        : "•"
+                }
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    ${
+                        hasDonorResponse
+                            ? "Donor Responded"
+                            : "Response Pending"
+                    }
+                </strong>
+
+                <span>
+                    ${
+                        hasDonorResponse
+                            ? "A registered donor has responded."
+                            : "Waiting for donor responses."
+                    }
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="timeline-item ${
+            bloodArranged
+                ? "active"
+                : ""
+        }">
+
+            <div class="timeline-icon">
+                ${
+                    bloodArranged
+                        ? "✓"
+                        : "•"
+                }
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    Blood Arranged
+                </strong>
+
+                <span>
+                    ${
+                        bloodArranged
+                            ? "Blood arrangement has been reported."
+                            : "Pending confirmation."
+                    }
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="timeline-item ${
+            completed
+                ? "active"
+                : ""
+        }">
+
+            <div class="timeline-icon">
+                ${
+                    completed
+                        ? "✓"
+                        : "•"
+                }
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    Request Completed
+                </strong>
+
+                <span>
+                    ${
+                        completed
+                            ? "Request completed."
+                            : "Pending completion."
+                    }
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================
+   EMPTY
+============================================ */
+
+function showEmpty(){
+
+    document.getElementById(
+        "requestCard"
+    ).innerHTML = `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🩸
+            </div>
+
+            <h2>
+                No Blood Request Found
+            </h2>
+
+            <p>
+                Create a blood request first to track it here.
+            </p>
+
+            <div class="actions"
+                 style="justify-content:center;">
+
+                <button
+                    class="primary"
+                    onclick="goToSearch()">
+                    🔎 Search Blood
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================
+   REFRESH
+============================================ */
+
+function refreshRequest(){
+
+    loadRequest();
+
+}
+
+
+/* ============================================
+   NAVIGATION
+============================================ */
+
+function goToSearch(){
+
+    window.location.href =
+        "blood-search.html";
+
+}
+
+
+function goHome(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ============================================
+   AUTO REFRESH
+============================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadRequest();
+
+
+        /*
+           Check for new donor responses
+           every 5 seconds.
+        */
+
+        setInterval(
+            loadRequest,
+            5000
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

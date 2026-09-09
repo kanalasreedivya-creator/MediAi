@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Admin Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctors.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="outbreaks.html"><i class="fas fa-virus"></i> Outbreaks</a></li>
+                    <li class="active"><a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Feedback</h1>
+                    <p>Review user feedback and ratings</p>
+                </div>
+            </header>
+
+            <section class="feedback-section">
+                <div class="feedback-summary">
+                    <div class="feedback-stat">
+                        <h3>4.5</h3>
+                        <p>Average Rating</p>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <div class="feedback-stat">
+                        <h3>1,234</h3>
+                        <p>Total Reviews</p>
+                    </div>
+                    <div class="feedback-stat">
+                        <h3>92%</h3>
+                        <p>Positive Feedback</p>
+                    </div>
+                </div>
+
+                <div class="feedback-list">
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <div class="user-info">
+                                <img src="../assets/images/avatars/user1.jpg" alt="User">
+                                <div>
+                                    <h4>John Doe</h4>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="feedback-date">Jan 15, 2026</span>
+                        </div>
+                        <p>Excellent platform! The symptom checker was very accurate and the AI assistant was helpful.</p>
+                        <div class="feedback-actions">
+                            <button class="btn-success btn-sm">Resolved</button>
+                            <button class="btn-secondary btn-sm">Reply</button>
+                        </div>
+                    </div>
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <div class="user-info">
+                                <img src="../assets/images/avatars/user2.jpg" alt="User">
+                                <div>
+                                    <h4>Jane Smith</h4>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="feedback-date">Jan 14, 2026</span>
+                        </div>
+                        <p>Great experience with the doctors. Appointments are easy to book and manage.</p>
+                        <div class="feedback-actions">
+                            <button class="btn-success btn-sm">Resolved</button>
+                            <button class="btn-secondary btn-sm">Reply</button>
+                        </div>
+                    </div>
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <div class="user-info">
+                                <img src="../assets/images/avatars/user3.jpg" alt="User">
+                                <div>
+                                    <h4>Robert Brown</h4>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="feedback-date">Jan 12, 2026</span>
+                        </div>
+                        <p>Love the wearable integration! Being able to track my health data in one place is amazing.</p>
+                        <div class="feedback-actions">
+                            <button class="btn-success btn-sm">Resolved</button>
+                            <button class="btn-secondary btn-sm">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>

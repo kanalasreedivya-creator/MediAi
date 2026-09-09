@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records - MediAI</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/logos/logo.png" alt="MediAI" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="symptom-checker.html"><i class="fas fa-brain"></i> Symptom Checker</a></li>
+                    <li><a href="prediction.html"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="hospitals.html"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li><a href="doctor.html"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a href="appointment.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
+                    <li><a href="queue.html"><i class="fas fa-clock"></i> Queue Status</a></li>
+                    <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li class="active"><a href="records.html"><i class="fas fa-folder"></i> Medical Records</a></li>
+                    <li><a href="assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+                    <li><a href="wearable.html"><i class="fas fa-watch"></i> Wearable Data</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Medical Records</h1>
+                    <p>Access your complete medical history</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-primary">+ Upload Records</button>
+                </div>
+            </header>
+
+            <section class="records-section">
+                <div class="record-categories">
+                    <button class="category-btn active">All</button>
+                    <button class="category-btn">Test Results</button>
+                    <button class="category-btn">Prescriptions</button>
+                    <button class="category-btn">Reports</button>
+                    <button class="category-btn">Imaging</button>
+                </div>
+
+                <div class="records-list">
+                    <div class="record-item">
+                        <div class="record-icon">
+                            <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <div class="record-info">
+                            <h4>Blood Test Results</h4>
+                            <p>Complete blood count - January 2026</p>
+                            <span class="record-date"><i class="fas fa-calendar"></i> Jan 10, 2026</span>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-secondary btn-sm">View</button>
+                            <button class="btn-secondary btn-sm">Download</button>
+                        </div>
+                    </div>
+                    <div class="record-item">
+                        <div class="record-icon">
+                            <i class="fas fa-prescription"></i>
+                        </div>
+                        <div class="record-info">
+                            <h4>Prescription</h4>
+                            <p>Blood pressure medication - 3 months supply</p>
+                            <span class="record-date"><i class="fas fa-calendar"></i> Jan 5, 2026</span>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-secondary btn-sm">View</button>
+                            <button class="btn-secondary btn-sm">Download</button>
+                        </div>
+                    </div>
+                    <div class="record-item">
+                        <div class="record-icon">
+                            <i class="fas fa-x-ray"></i>
+                        </div>
+                        <div class="record-info">
+                            <h4>Chest X-Ray</h4>
+                            <p>Routine chest examination - December 2025</p>
+                            <span class="record-date"><i class="fas fa-calendar"></i> Dec 15, 2025</span>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-secondary btn-sm">View</button>
+                            <button class="btn-secondary btn-sm">Download</button>
+                        </div>
+                    </div>
+                    <div class="record-item">
+                        <div class="record-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="record-info">
+                            <h4>Medical Report</h4>
+                            <p>Annual health checkup - December 2025</p>
+                            <span class="record-date"><i class="fas fa-calendar"></i> Dec 1, 2025</span>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-secondary btn-sm">View</button>
+                            <button class="btn-secondary btn-sm">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>

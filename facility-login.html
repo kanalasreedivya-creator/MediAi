@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Facility Login | MediAI BloodConnect</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef6ff, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            color: #172033;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 650px;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT SIDE */
+
+        .left {
+            background: linear-gradient(145deg, #0b5ed7, #174ea6);
+            color: white;
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -100px;
+            right: -100px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            bottom: -100px;
+            left: -80px;
+        }
+
+        .brand {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand span {
+            color: #ffdfdf;
+        }
+
+        .left h1 {
+            font-size: 42px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .left p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #e4efff;
+            max-width: 450px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .features {
+            margin-top: 35px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 17px;
+            font-size: 15px;
+        }
+
+        .feature-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        /* RIGHT SIDE */
+
+        .right {
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .facility-type {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .type-card {
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .type-card:hover {
+            border-color: #0b5ed7;
+        }
+
+        .type-card.active {
+            border-color: #0b5ed7;
+            background: #eff6ff;
+        }
+
+        .type-icon {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .type-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #d8dee8;
+            border-radius: 11px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        input:focus {
+            border-color: #0b5ed7;
+            box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.08);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .remember-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+        }
+
+        .remember input {
+            width: auto;
+        }
+
+        .forgot {
+            color: #0b5ed7;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0b5ed7, #174ea6);
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(11, 94, 215, 0.22);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+        }
+
+        .message.success {
+            display: block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 23px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #0b5ed7;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 14px;
+        }
+
+        .back-link a {
+            color: #64748b;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .demo-box {
+            margin-top: 24px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 13px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .demo-box strong {
+            color: #334155;
+        }
+
+        @media (max-width: 850px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .left {
+                padding: 40px;
+                min-height: 350px;
+            }
+
+            .left h1 {
+                font-size: 32px;
+            }
+
+            .right {
+                padding: 40px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 12px;
+            }
+
+            .left,
+            .right {
+                padding: 28px 22px;
+            }
+
+            .facility-type {
+                grid-template-columns: 1fr;
+            }
+
+            .left h1 {
+                font-size: 28px;
+            }
+
+            .login-title {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT -->
+
+    <section class="left">
+
+        <div class="brand">
+            Medi<span>AI</span> BloodConnect
+        </div>
+
+        <h1>
+            Facility<br>
+            Portal
+        </h1>
+
+        <p>
+            Manage emergency blood requests, update blood inventory,
+            and coordinate faster assistance for patients through
+            BloodConnect.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">🏥</div>
+                <span>Hospital & Blood Bank Management</span>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🩸</div>
+                <span>Manage Blood Inventory</span>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🚨</div>
+                <span>Respond to Emergency Requests</span>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <span>Monitor BloodConnect Activity</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT -->
+
+    <section class="right">
+
+        <h2 class="login-title">
+            Facility Login
+        </h2>
+
+        <p class="login-subtitle">
+            Login to your registered hospital or blood bank account.
+        </p>
+
+
+        <!-- FACILITY TYPE -->
+
+        <div class="facility-type">
+
+            <div
+                class="type-card active"
+                id="hospitalType"
+                onclick="selectType('hospital')"
+            >
+                <div class="type-icon">🏥</div>
+                <div class="type-name">Hospital</div>
+            </div>
+
+            <div
+                class="type-card"
+                id="bloodBankType"
+                onclick="selectType('blood-bank')"
+            >
+                <div class="type-icon">🩸</div>
+                <div class="type-name">Blood Bank</div>
+            </div>
+
+        </div>
+
+
+        <div id="message" class="message"></div>
+
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Facility Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter registered facility email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- REGISTRATION NUMBER -->
+
+            <div class="form-group">
+
+                <label for="registrationNumber">
+                    Registration Number
+                </label>
+
+                <input
+                    type="text"
+                    id="registrationNumber"
+                    placeholder="Enter facility registration number"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <span
+                        class="password-toggle"
+                        onclick="togglePassword()"
+                        id="passwordToggle"
+                    >
+                        Show
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- REMEMBER -->
+
+            <div class="remember-row">
+
+                <label class="remember">
+                    <input
+                        type="checkbox"
+                        id="remember"
+                    >
+                    Remember me
+                </label>
+
+                <span
+                    class="forgot"
+                    onclick="showForgotMessage()"
+                >
+                    Forgot password?
+                </span>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn"
+            >
+                Login to Facility Portal
+            </button>
+
+        </form>
+
+
+        <!-- REGISTER -->
+
+        <div class="register-link">
+
+            Don't have a facility account?
+
+            <a href="facility-register.html">
+                Register Facility
+            </a>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="back-link">
+
+            <a href="index.html">
+                ← Back to MediAI
+            </a>
+
+        </div>
+
+
+        <!-- DEMO -->
+
+        <div class="demo-box">
+
+            <strong>Prototype testing:</strong><br>
+
+            Register a hospital or blood bank first using
+            <strong>facility-register.html</strong>.
+
+            Then use the same email and registration number
+            to login.
+
+            <br><br>
+
+            <strong>Note:</strong>
+            This frontend prototype stores facility information
+            locally in your browser. A secure backend authentication
+            system should be added before production use.
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    /* ==========================================
+       GLOBAL STATE
+    ========================================== */
+
+    let selectedType = "hospital";
+
+
+    /* ==========================================
+       FACILITY TYPE
+    ========================================== */
+
+    function selectType(type) {
+
+        selectedType = type;
+
+        const hospital = document.getElementById("hospitalType");
+        const bloodBank = document.getElementById("bloodBankType");
+
+        hospital.classList.remove("active");
+        bloodBank.classList.remove("active");
+
+        if (type === "hospital") {
+            hospital.classList.add("active");
+        } else {
+            bloodBank.classList.add("active");
+        }
+
+    }
+
+
+    /* ==========================================
+       MESSAGE
+    ========================================== */
+
+    function showMessage(message, type) {
+
+        const box = document.getElementById("message");
+
+        box.textContent = message;
+
+        box.className = "message " + type;
+
+    }
+
+
+    function clearMessage() {
+
+        const box = document.getElementById("message");
+
+        box.textContent = "";
+
+        box.className = "message";
+
+    }
+
+
+    /* ==========================================
+       PASSWORD TOGGLE
+    ========================================== */
+
+    function togglePassword() {
+
+        const password = document.getElementById("password");
+
+        const toggle = document.getElementById("passwordToggle");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            toggle.textContent = "Hide";
+
+        } else {
+
+            password.type = "password";
+
+            toggle.textContent = "Show";
+
+        }
+
+    }
+
+
+    /* ==========================================
+       GET FACILITIES
+    ========================================== */
+
+    function getFacilities() {
+
+        try {
+
+            const stored =
+                localStorage.getItem("mediAI_facilities");
+
+            if (!stored) {
+                return [];
+            }
+
+            const facilities = JSON.parse(stored);
+
+            return Array.isArray(facilities)
+                ? facilities
+                : [];
+
+        } catch (error) {
+
+            console.error(
+                "Unable to read facility data:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* ==========================================
+       SAVE CURRENT FACILITY
+    ========================================== */
+
+    function saveCurrentFacility(facility) {
+
+        localStorage.setItem(
+            "mediAI_current_facility",
+            JSON.stringify(facility)
+        );
+
+        if (facility.id) {
+
+            localStorage.setItem(
+                "mediAI_current_facility_id",
+                facility.id
+            );
+
+        } else if (facility.facilityId) {
+
+            localStorage.setItem(
+                "mediAI_current_facility_id",
+                facility.facilityId
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    function handleLogin(event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+        const email =
+            document.getElementById("email")
+                .value
+                .trim()
+                .toLowerCase();
+
+        const registrationNumber =
+            document.getElementById("registrationNumber")
+                .value
+                .trim()
+                .toLowerCase();
+
+        const password =
+            document.getElementById("password")
+                .value;
+
+        const loginButton =
+            document.getElementById("loginBtn");
+
+
+        if (!email ||
+            !registrationNumber ||
+            !password) {
+
+            showMessage(
+                "Please fill in all required fields.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        loginButton.disabled = true;
+
+        loginButton.textContent = "Checking...";
+
+
+        /*
+            Small delay gives the interface
+            a realistic login experience.
+        */
+
+        setTimeout(function () {
+
+            const facilities = getFacilities();
+
+
+            /* ======================================
+               FIND FACILITY
+            ====================================== */
+
+            const facility = facilities.find(function(item) {
+
+                if (!item) {
+                    return false;
+                }
+
+
+                const itemEmail =
+                    String(item.email || "")
+                        .trim()
+                        .toLowerCase();
+
+
+                const itemRegistration =
+                    String(
+                        item.registrationNumber ||
+                        item.registrationNo ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                const itemType =
+                    String(
+                        item.type ||
+                        item.facilityType ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                /*
+                    Password support:
+                    If password exists in the registered
+                    profile, compare it.
+
+                    Older registrations that do not have
+                    a password can still be accessed using
+                    the registration number.
+                */
+
+                const itemPassword =
+                    String(item.password || "");
+
+
+                const emailMatches =
+                    itemEmail === email;
+
+
+                const registrationMatches =
+                    itemRegistration ===
+                    registrationNumber;
+
+
+                const typeMatches =
+                    itemType === selectedType ||
+                    (
+                        selectedType === "blood-bank" &&
+                        (
+                            itemType === "bloodbank" ||
+                            itemType === "blood bank"
+                        )
+                    );
+
+
+                if (
+                    !emailMatches ||
+                    !registrationMatches ||
+                    !typeMatches
+                ) {
+                    return false;
+                }
+
+
+                /*
+                    If the facility has a password,
+                    verify it.
+                */
+
+                if (itemPassword) {
+
+                    return itemPassword === password;
+
+                }
+
+
+                /*
+                    Compatibility for facilities
+                    registered by an older version
+                    of the prototype.
+
+                    The registration number acts as
+                    the temporary prototype password.
+                */
+
+                return password ===
+                    item.registrationNumber;
+
+            });
+
+
+            /* ======================================
+               FACILITY NOT FOUND
+            ====================================== */
+
+            if (!facility) {
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Login to Facility Portal";
+
+
+                showMessage(
+                    "Facility not found. Check your facility type, email, registration number and password. If you have not registered yet, please register your facility first.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* ======================================
+               CHECK STATUS
+            ====================================== */
+
+            const status =
+                String(
+                    facility.status ||
+                    facility.verificationStatus ||
+                    ""
+                )
+                .toLowerCase();
+
+
+            /*
+                We allow login even while verification
+                is pending because this is a prototype.
+
+                The dashboard will clearly show the
+                verification status.
+            */
+
+
+            /* ======================================
+               SAVE SESSION
+            ====================================== */
+
+            facility.lastLogin =
+                new Date().toISOString();
+
+
+            saveCurrentFacility(facility);
+
+
+            localStorage.setItem(
+                "mediAI_facility_logged_in",
+                "true"
+            );
+
+
+            localStorage.setItem(
+                "mediAI_facility_session",
+                JSON.stringify({
+                    facilityId:
+                        facility.id ||
+                        facility.facilityId ||
+                        "",
+                    email:
+                        facility.email || "",
+                    loginTime:
+                        new Date().toISOString()
+                })
+            );
+
+
+            /* ======================================
+               SUCCESS
+            ====================================== */
+
+            showMessage(
+                "Login successful! Opening facility dashboard...",
+                "success"
+            );
+
+
+            loginButton.textContent =
+                "Login Successful ✓";
+
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "facility-dashboard.html";
+
+            }, 900);
+
+
+        }, 400);
+
+    }
+
+
+    /* ==========================================
+       FORGOT PASSWORD
+    ========================================== */
+
+    function showForgotMessage() {
+
+        showMessage(
+            "For this prototype, password recovery is not connected to an email service. Please contact the system administrator or re-register the facility.",
+            "error"
+        );
+
+    }
+
+
+    /* ==========================================
+       ENTER KEY SUPPORT
+    ========================================== */
+
+    document
+        .getElementById("email")
+        .addEventListener("input", clearMessage);
+
+    document
+        .getElementById("registrationNumber")
+        .addEventListener("input", clearMessage);
+
+    document
+        .getElementById("password")
+        .addEventListener("input", clearMessage);
+
+
+    /* ==========================================
+       PAGE LOAD
+    ========================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            /*
+                If a facility is already logged in,
+                we do not automatically redirect.
+                This allows the user to choose another
+                facility account.
+            */
+
+            const existing =
+                localStorage.getItem(
+                    "mediAI_current_facility"
+                );
+
+            if (existing) {
+
+                try {
+
+                    const facility =
+                        JSON.parse(existing);
+
+                    if (facility &&
+                        facility.type) {
+
+                        const type =
+                            String(
+                                facility.type
+                            ).toLowerCase();
+
+                        if (
+                            type === "blood-bank" ||
+                            type === "bloodbank" ||
+                            type === "blood bank"
+                        ) {
+
+                            selectType("blood-bank");
+
+                        } else {
+
+                            selectType("hospital");
+
+                        }
+
+                    }
+
+                } catch (error) {
+
+                    console.log(
+                        "No previous facility session."
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

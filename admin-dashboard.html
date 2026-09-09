@@ -1,0 +1,2829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediAI | Admin Control Center</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#1f2937;
+}
+
+.navbar{
+    background:#0f172a;
+    color:white;
+    padding:16px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.admin-badge{
+    background:#1e293b;
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.logout-btn{
+    border:none;
+    background:#ef4444;
+    color:white;
+    padding:9px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.container{
+    width:94%;
+    max-width:1400px;
+    margin:30px auto;
+}
+
+.header{
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#64748b;
+}
+
+/* STATS */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(15,23,42,.07);
+    border:1px solid #e2e8f0;
+}
+
+.stat-title{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.stat-value{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.stat-sub{
+    margin-top:7px;
+    font-size:12px;
+    color:#64748b;
+}
+
+/* CONTROL CARDS */
+
+.section-title{
+    font-size:21px;
+    margin:30px 0 15px;
+}
+
+.control-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.control-card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    border:1px solid #e2e8f0;
+    box-shadow:0 4px 15px rgba(15,23,42,.06);
+}
+
+.control-card h3{
+    margin-bottom:8px;
+}
+
+.control-card p{
+    color:#64748b;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
+
+.control-card button,
+.primary-btn{
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.control-card button:hover,
+.primary-btn:hover{
+    opacity:.9;
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.tab-btn{
+    border:none;
+    padding:11px 17px;
+    border-radius:8px;
+    cursor:pointer;
+    background:#e2e8f0;
+    color:#334155;
+    font-weight:bold;
+}
+
+.tab-btn.active{
+    background:#2563eb;
+    color:white;
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
+}
+
+/* PANEL */
+
+.panel{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(15,23,42,.06);
+}
+
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.search-box,
+.filter-select{
+    padding:11px 13px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    outline:none;
+    background:white;
+}
+
+.search-box{
+    min-width:260px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:13px 10px;
+    border-bottom:1px solid #e2e8f0;
+    text-align:left;
+    font-size:14px;
+}
+
+th{
+    background:#f8fafc;
+    color:#475569;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.verified{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.suspended{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.critical{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.urgent{
+    background:#ffedd5;
+    color:#9a3412;
+}
+
+.normal{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.action-btn{
+    border:none;
+    padding:7px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    margin:2px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.view-btn{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+.verify-btn{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.suspend-btn{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.arrange-btn{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+/* SECURITY */
+
+.security{
+    margin-top:25px;
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    padding:22px;
+}
+
+.security-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:15px;
+}
+
+.security-item{
+    padding:15px;
+    background:#f8fafc;
+    border-radius:10px;
+}
+
+.security-item strong{
+    display:block;
+    font-size:22px;
+    margin-bottom:5px;
+}
+
+.security-item span{
+    font-size:13px;
+    color:#64748b;
+}
+
+/* INVENTORY */
+
+.inventory-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.inventory-card{
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:18px;
+    background:#fff;
+}
+
+.blood-group{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.units{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.inventory-card small{
+    color:#64748b;
+}
+
+/* EMPTY */
+
+.empty{
+    padding:35px;
+    text-align:center;
+    color:#64748b;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.65);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:16px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    border:none;
+    background:#e2e8f0;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.detail-row{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.detail-label{
+    font-weight:bold;
+    color:#475569;
+}
+
+.warning-box{
+    margin-top:18px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    padding:15px;
+    border-radius:10px;
+    color:#9a3412;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+    .stats-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .control-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .inventory-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+    .navbar{
+        padding:14px 16px;
+    }
+
+    .container{
+        width:92%;
+    }
+
+    .stats-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .control-grid{
+        grid-template-columns:1fr;
+    }
+
+    .inventory-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .security-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header h1{
+        font-size:24px;
+    }
+
+    .search-box{
+        width:100%;
+        min-width:0;
+    }
+
+    .detail-row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+    <div class="logo">
+        Medi<span>AI</span> | Admin
+    </div>
+
+    <div class="nav-right">
+        <div class="admin-badge">Administrator</div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+        <h1>Admin Control Center</h1>
+        <p>
+            Manage MediAI healthcare services and BloodConnect emergency blood assistance.
+        </p>
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-title">Patients</div>
+            <div class="stat-value" id="patientCount">0</div>
+            <div class="stat-sub">Registered users</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Doctors</div>
+            <div class="stat-value" id="doctorCount">0</div>
+            <div class="stat-sub">Doctor accounts</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Hospitals</div>
+            <div class="stat-value" id="hospitalCount">0</div>
+            <div class="stat-sub">Healthcare facilities</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Donors</div>
+            <div class="stat-value" id="donorCount">0</div>
+            <div class="stat-sub">Blood donors</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Blood Requests</div>
+            <div class="stat-value" id="requestCount">0</div>
+            <div class="stat-sub">Emergency requests</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Facilities</div>
+            <div class="stat-value" id="facilityCount">0</div>
+            <div class="stat-sub">Blood facilities</div>
+        </div>
+
+    </div>
+
+
+    <!-- MEDI AI ADMIN -->
+
+    <h2 class="section-title">MediAI Management</h2>
+
+    <div class="control-grid">
+
+        <div class="control-card">
+            <h3>👥 Users</h3>
+            <p>
+                Manage registered patients and user accounts.
+            </p>
+            <button onclick="goTo('admin/users.html')">
+                Manage Users
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>👨‍⚕️ Doctors</h3>
+            <p>
+                Monitor doctor accounts and healthcare professionals.
+            </p>
+            <button onclick="goTo('admin/doctors.html')">
+                Manage Doctors
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>🏥 Hospitals</h3>
+            <p>
+                Manage hospitals registered in the MediAI system.
+            </p>
+            <button onclick="goTo('admin/hospitals.html')">
+                Manage Hospitals
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>📊 Analytics</h3>
+            <p>
+                View healthcare analytics and system performance.
+            </p>
+            <button onclick="goTo('admin/analytics.html')">
+                View Analytics
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>🦠 Outbreak Monitoring</h3>
+            <p>
+                Monitor symptom trends and potential disease outbreaks.
+            </p>
+            <button onclick="goTo('admin/outbreaks.html')">
+                Open Monitoring
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>💬 Feedback</h3>
+            <p>
+                Review feedback submitted by MediAI users.
+            </p>
+            <button onclick="goTo('admin/feedback.html')">
+                View Feedback
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>⚙️ Settings</h3>
+            <p>
+                Manage administrative settings.
+            </p>
+            <button onclick="goTo('admin/settings.html')">
+                Open Settings
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>📈 Admin Dashboard</h3>
+            <p>
+                Open the original MediAI administrative dashboard.
+            </p>
+            <button onclick="goTo('admin/dashboard.html')">
+                Open Dashboard
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- BLOODCONNECT -->
+
+    <h2 class="section-title">BloodConnect Management</h2>
+
+    <div class="control-grid">
+
+        <div class="control-card">
+            <h3>🩸 Blood Search</h3>
+            <p>
+                Search registered blood resources by blood group and location.
+            </p>
+            <button onclick="goTo('blood-search.html')">
+                Open Blood Search
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>🚨 Blood Requests</h3>
+            <p>
+                Create and monitor emergency blood requests.
+            </p>
+            <button onclick="goTo('blood-request.html')">
+                Open Requests
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>👤 Donor Portal</h3>
+            <p>
+                Open donor registration and donor dashboard.
+            </p>
+            <button onclick="goTo('donor-register.html')">
+                Donor Portal
+            </button>
+        </div>
+
+        <div class="control-card">
+            <h3>🏥 Facility Portal</h3>
+            <p>
+                Manage participating hospitals and blood banks.
+            </p>
+            <button onclick="goTo('facility-register.html')">
+                Facility Portal
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- TABS -->
+
+    <h2 class="section-title">BloodConnect Administration</h2>
+
+    <div class="tabs">
+
+        <button class="tab-btn active" onclick="openTab('donors',this)">
+            👤 Donors
+        </button>
+
+        <button class="tab-btn" onclick="openTab('facilities',this)">
+            🏥 Facilities
+        </button>
+
+        <button class="tab-btn" onclick="openTab('requests',this)">
+            🚨 Requests
+        </button>
+
+        <button class="tab-btn" onclick="openTab('inventory',this)">
+            🩸 Inventory
+        </button>
+
+    </div>
+
+
+    <!-- DONORS -->
+
+    <div id="donors" class="tab-content active">
+
+        <div class="panel">
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="donorSearch"
+                    class="search-box"
+                    placeholder="Search donors..."
+                    oninput="renderDonors()"
+                >
+
+                <select
+                    id="donorStatusFilter"
+                    class="filter-select"
+                    onchange="renderDonors()"
+                >
+                    <option value="all">All Status</option>
+                    <option value="verified">Verified</option>
+                    <option value="pending">Pending</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Blood Group</th>
+                            <th>Location</th>
+                            <th>Availability</th>
+                            <th>Verification</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="donorTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FACILITIES -->
+
+    <div id="facilities" class="tab-content">
+
+        <div class="panel">
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="facilitySearch"
+                    class="search-box"
+                    placeholder="Search facilities..."
+                    oninput="renderFacilities()"
+                >
+
+                <select
+                    id="facilityTypeFilter"
+                    class="filter-select"
+                    onchange="renderFacilities()"
+                >
+                    <option value="all">All Types</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="blood bank">Blood Bank</option>
+                </select>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Facility</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Phone</th>
+                            <th>Verification</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="facilityTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REQUESTS -->
+
+    <div id="requests" class="tab-content">
+
+        <div class="panel">
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="requestSearch"
+                    class="search-box"
+                    placeholder="Search requests..."
+                    oninput="renderRequests()"
+                >
+
+                <select
+                    id="requestStatusFilter"
+                    class="filter-select"
+                    onchange="renderRequests()"
+                >
+                    <option value="all">All Status</option>
+                    <option value="Request Created">Request Created</option>
+                    <option value="Donors Notified">Donors Notified</option>
+                    <option value="Response Pending">Response Pending</option>
+                    <option value="Donor Responded">Donor Responded</option>
+                    <option value="Blood Arranged">Blood Arranged</option>
+                    <option value="Completed">Completed</option>
+                </select>
+
+                <select
+                    id="requestUrgencyFilter"
+                    class="filter-select"
+                    onchange="renderRequests()"
+                >
+                    <option value="all">All Urgency</option>
+                    <option value="Critical">Critical</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="Normal">Normal</option>
+                </select>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Patient</th>
+                            <th>Blood</th>
+                            <th>Units</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                            <th>Risk</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="requestTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INVENTORY -->
+
+    <div id="inventory" class="tab-content">
+
+        <div class="panel">
+
+            <h3 style="margin-bottom:18px;">
+                Blood Inventory Overview
+            </h3>
+
+            <div class="inventory-grid" id="inventoryGrid"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SECURITY -->
+
+    <div class="security">
+
+        <h2>🔐 Security & Verification Monitoring</h2>
+
+        <p style="color:#64748b;margin-top:7px;">
+            BloodConnect administrative monitoring for verification,
+            duplicate requests and suspicious activity.
+        </p>
+
+        <div class="security-grid">
+
+            <div class="security-item">
+                <strong id="pendingVerificationCount">0</strong>
+                <span>Pending verifications</span>
+            </div>
+
+            <div class="security-item">
+                <strong id="duplicateCount">0</strong>
+                <span>Possible duplicate requests</span>
+            </div>
+
+            <div class="security-item">
+                <strong id="criticalCount">0</strong>
+                <span>Critical requests</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT REQUESTS -->
+
+    <h2 class="section-title">Recent Blood Requests</h2>
+
+    <div class="panel">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Patient</th>
+                        <th>Blood Group</th>
+                        <th>Hospital</th>
+                        <th>Urgency</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+
+                <tbody id="recentRequestsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- DETAILS MODAL -->
+
+<div class="modal" id="detailsModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Details
+            </h2>
+
+            <button class="close" onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   STORAGE HELPERS
+========================================= */
+
+function getData(key){
+
+    try{
+
+        const data = localStorage.getItem(key);
+
+        if(!data){
+            return [];
+        }
+
+        const parsed = JSON.parse(data);
+
+        return Array.isArray(parsed) ? parsed : [];
+
+    }catch(error){
+
+        console.error("Storage error:",key,error);
+
+        return [];
+
+    }
+
+}
+
+
+function saveData(key,data){
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goTo(page){
+
+    window.location.href = page;
+
+}
+
+
+function logout(){
+
+    window.location.href = "index.html";
+
+}
+
+
+/* =========================================
+   DEMO DATA
+========================================= */
+
+function ensureDemoData(){
+
+    let donors = getData("mediAI_donors");
+
+    if(donors.length === 0){
+
+        donors = [
+
+            {
+                id:"D001",
+                fullName:"Demo Donor Rahul",
+                bloodGroup:"O+",
+                location:"Nandyal",
+                phone:"Demo contact",
+                email:"demo@example.com",
+                available:true,
+                verificationStatus:"Verified"
+            },
+
+            {
+                id:"D002",
+                fullName:"Demo Donor Priya",
+                bloodGroup:"A+",
+                location:"Nandyal",
+                phone:"Demo contact",
+                email:"demo@example.com",
+                available:true,
+                verificationStatus:"Pending"
+            }
+
+        ];
+
+        saveData(
+            "mediAI_donors",
+            donors
+        );
+
+    }
+
+
+    let facilities =
+        getData("mediAI_facilities");
+
+    if(facilities.length === 0){
+
+        facilities = [
+
+            {
+                id:"F001",
+                facilityName:"Demo Blood Bank",
+                type:"Blood Bank",
+                location:"Nandyal",
+                phone:"Demo contact",
+                verificationStatus:"Verified"
+            },
+
+            {
+                id:"F002",
+                facilityName:"Demo Hospital",
+                type:"Hospital",
+                location:"Nandyal",
+                phone:"Demo contact",
+                verificationStatus:"Pending"
+            }
+
+        ];
+
+        saveData(
+            "mediAI_facilities",
+            facilities
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   COUNTS
+========================================= */
+
+function getPatientCount(){
+
+    const a = getData("mediAI_patients");
+    const b = getData("patients");
+
+    return Math.max(
+        a.length,
+        b.length
+    );
+
+}
+
+
+function getDoctorCount(){
+
+    const a = getData("mediAI_doctors");
+    const b = getData("doctors");
+
+    return Math.max(
+        a.length,
+        b.length
+    );
+
+}
+
+
+function getHospitalCount(){
+
+    const a = getData("mediAI_hospitals");
+    const b = getData("hospitals");
+
+    return Math.max(
+        a.length,
+        b.length
+    );
+
+}
+
+
+function updateStats(){
+
+    const donors =
+        getData("mediAI_donors");
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+    document.getElementById(
+        "patientCount"
+    ).textContent = getPatientCount();
+
+    document.getElementById(
+        "doctorCount"
+    ).textContent = getDoctorCount();
+
+    document.getElementById(
+        "hospitalCount"
+    ).textContent = getHospitalCount();
+
+    document.getElementById(
+        "donorCount"
+    ).textContent = donors.length;
+
+    document.getElementById(
+        "requestCount"
+    ).textContent = requests.length;
+
+    document.getElementById(
+        "facilityCount"
+    ).textContent = facilities.length;
+
+}
+
+
+/* =========================================
+   TABS
+========================================= */
+
+function openTab(tabId,button){
+
+    document
+        .querySelectorAll(".tab-content")
+        .forEach(tab=>{
+            tab.classList.remove("active");
+        });
+
+    document
+        .querySelectorAll(".tab-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    document
+        .getElementById(tabId)
+        .classList.add("active");
+
+    button.classList.add("active");
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   DONOR STATUS
+========================================= */
+
+function donorStatus(donor){
+
+    return donor.verificationStatus ||
+           donor.verification ||
+           "Pending";
+
+}
+
+
+function renderDonors(){
+
+    const donors =
+        getData("mediAI_donors");
+
+    const search =
+        document
+        .getElementById("donorSearch")
+        .value
+        .toLowerCase();
+
+    const filter =
+        document
+        .getElementById("donorStatusFilter")
+        .value
+        .toLowerCase();
+
+    const table =
+        document.getElementById("donorTable");
+
+    const filtered =
+        donors.filter(donor=>{
+
+            const name =
+                String(
+                    donor.fullName ||
+                    donor.name ||
+                    ""
+                ).toLowerCase();
+
+            const blood =
+                String(
+                    donor.bloodGroup ||
+                    ""
+                ).toLowerCase();
+
+            const location =
+                String(
+                    donor.location ||
+                    ""
+                ).toLowerCase();
+
+            const status =
+                donorStatus(donor)
+                .toLowerCase();
+
+            const matchesSearch =
+                name.includes(search) ||
+                blood.includes(search) ||
+                location.includes(search);
+
+            const matchesStatus =
+                filter === "all" ||
+                status === filter;
+
+            return matchesSearch &&
+                   matchesStatus;
+
+        });
+
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    No donors found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        filtered.map((donor,index)=>{
+
+            const status =
+                donorStatus(donor);
+
+            const statusClass =
+                status.toLowerCase() === "verified"
+                ? "verified"
+                : status.toLowerCase() === "suspended"
+                ? "suspended"
+                : "pending";
+
+            const available =
+                donor.available === false
+                ? "Unavailable"
+                : "Available";
+
+            return `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                donor.fullName ||
+                                donor.name ||
+                                "Unknown"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            donor.bloodGroup || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            donor.location || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${available}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${escapeHTML(status)}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewDonor(${index})">
+                            View
+                        </button>
+
+                        ${
+                            status !== "Verified"
+                            ?
+                            `<button
+                                class="action-btn verify-btn"
+                                onclick="verifyDonor(${index})">
+                                Verify
+                            </button>`
+                            :
+                            ""
+                        }
+
+                        ${
+                            status !== "Suspended"
+                            ?
+                            `<button
+                                class="action-btn suspend-btn"
+                                onclick="suspendDonor(${index})">
+                                Suspend
+                            </button>`
+                            :
+                            ""
+                        }
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function verifyDonor(index){
+
+    const donors =
+        getData("mediAI_donors");
+
+    if(!donors[index]){
+        return;
+    }
+
+    donors[index].verificationStatus =
+        "Verified";
+
+    donors[index].verifiedAt =
+        new Date().toISOString();
+
+    saveData(
+        "mediAI_donors",
+        donors
+    );
+
+    alert("Donor verified successfully.");
+
+    refreshAll();
+
+}
+
+
+function suspendDonor(index){
+
+    const donors =
+        getData("mediAI_donors");
+
+    if(!donors[index]){
+        return;
+    }
+
+    donors[index].verificationStatus =
+        "Suspended";
+
+    donors[index].available =
+        false;
+
+    saveData(
+        "mediAI_donors",
+        donors
+    );
+
+    alert("Donor suspended.");
+
+    refreshAll();
+
+}
+
+
+function viewDonor(index){
+
+    const donors =
+        getData("mediAI_donors");
+
+    const donor =
+        donors[index];
+
+    if(!donor){
+        return;
+    }
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Donor Details";
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+        ${detail(
+            "Name",
+            donor.fullName || donor.name
+        )}
+
+        ${detail(
+            "Blood Group",
+            donor.bloodGroup
+        )}
+
+        ${detail(
+            "Age",
+            donor.age || "-"
+        )}
+
+        ${detail(
+            "Gender",
+            donor.gender || "-"
+        )}
+
+        ${detail(
+            "Location",
+            donor.location || "-"
+        )}
+
+        ${detail(
+            "Phone",
+            donor.phone || "-"
+        )}
+
+        ${detail(
+            "Email",
+            donor.email || "-"
+        )}
+
+        ${detail(
+            "Availability",
+            donor.available === false
+            ? "Unavailable"
+            : "Available"
+        )}
+
+        ${detail(
+            "Verification",
+            donorStatus(donor)
+        )}
+
+        <div class="warning-box">
+            Donor eligibility, blood-group compatibility,
+            cross-matching and transfusion decisions must
+            be confirmed by qualified medical professionals
+            and authorized blood-bank staff.
+        </div>
+
+    `;
+
+    showModal();
+
+}
+
+
+/* =========================================
+   FACILITIES
+========================================= */
+
+function facilityStatus(facility){
+
+    return facility.verificationStatus ||
+           facility.verification ||
+           "Pending";
+
+}
+
+
+function renderFacilities(){
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    const search =
+        document
+        .getElementById("facilitySearch")
+        .value
+        .toLowerCase();
+
+    const filter =
+        document
+        .getElementById("facilityTypeFilter")
+        .value
+        .toLowerCase();
+
+    const table =
+        document.getElementById("facilityTable");
+
+    const filtered =
+        facilities.filter(facility=>{
+
+            const name =
+                String(
+                    facility.facilityName ||
+                    facility.name ||
+                    ""
+                ).toLowerCase();
+
+            const location =
+                String(
+                    facility.location ||
+                    ""
+                ).toLowerCase();
+
+            const type =
+                String(
+                    facility.type ||
+                    ""
+                ).toLowerCase();
+
+            const matchesSearch =
+                name.includes(search) ||
+                location.includes(search) ||
+                type.includes(search);
+
+            const matchesType =
+                filter === "all" ||
+                type === filter;
+
+            return matchesSearch &&
+                   matchesType;
+
+        });
+
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    No facilities found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        filtered.map((facility,index)=>{
+
+            const status =
+                facilityStatus(facility);
+
+            const statusClass =
+                status.toLowerCase() === "verified"
+                ? "verified"
+                : status.toLowerCase() === "suspended"
+                ? "suspended"
+                : "pending";
+
+            return `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                facility.facilityName ||
+                                facility.name ||
+                                "Unknown"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            facility.type || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            facility.location || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            facility.phone || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${escapeHTML(status)}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewFacility(${index})">
+                            View
+                        </button>
+
+                        ${
+                            status !== "Verified"
+                            ?
+                            `<button
+                                class="action-btn verify-btn"
+                                onclick="verifyFacility(${index})">
+                                Verify
+                            </button>`
+                            :
+                            ""
+                        }
+
+                        ${
+                            status !== "Suspended"
+                            ?
+                            `<button
+                                class="action-btn suspend-btn"
+                                onclick="suspendFacility(${index})">
+                                Suspend
+                            </button>`
+                            :
+                            ""
+                        }
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function verifyFacility(index){
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    if(!facilities[index]){
+        return;
+    }
+
+    facilities[index].verificationStatus =
+        "Verified";
+
+    facilities[index].verifiedAt =
+        new Date().toISOString();
+
+    saveData(
+        "mediAI_facilities",
+        facilities
+    );
+
+    alert("Facility verified successfully.");
+
+    refreshAll();
+
+}
+
+
+function suspendFacility(index){
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    if(!facilities[index]){
+        return;
+    }
+
+    facilities[index].verificationStatus =
+        "Suspended";
+
+    saveData(
+        "mediAI_facilities",
+        facilities
+    );
+
+    alert("Facility suspended.");
+
+    refreshAll();
+
+}
+
+
+function viewFacility(index){
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    const facility =
+        facilities[index];
+
+    if(!facility){
+        return;
+    }
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Facility Details";
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+        ${detail(
+            "Facility",
+            facility.facilityName ||
+            facility.name
+        )}
+
+        ${detail(
+            "Type",
+            facility.type || "-"
+        )}
+
+        ${detail(
+            "Location",
+            facility.location || "-"
+        )}
+
+        ${detail(
+            "Phone",
+            facility.phone || "-"
+        )}
+
+        ${detail(
+            "Email",
+            facility.email || "-"
+        )}
+
+        ${detail(
+            "Verification",
+            facilityStatus(facility)
+        )}
+
+        ${detail(
+            "Registration ID",
+            facility.registrationId ||
+            facility.id ||
+            "-"
+        )}
+
+        <div class="warning-box">
+            Facility verification shown here is a prototype
+            administrative status. Real blood-bank and hospital
+            verification should be completed through authorized
+            institutional processes.
+        </div>
+
+    `;
+
+    showModal();
+
+}
+
+
+/* =========================================
+   BLOOD REQUESTS
+========================================= */
+
+function requestStatus(request){
+
+    return request.status ||
+           "Request Created";
+
+}
+
+
+function urgencyClass(urgency){
+
+    const value =
+        String(urgency || "Normal")
+        .toLowerCase();
+
+    if(value === "critical"){
+        return "critical";
+    }
+
+    if(value === "urgent"){
+        return "urgent";
+    }
+
+    return "normal";
+
+}
+
+
+function isDuplicateRequest(request,all){
+
+    const blood =
+        String(
+            request.bloodGroup || ""
+        ).toLowerCase();
+
+    const hospital =
+        String(
+            request.hospital || ""
+        ).toLowerCase();
+
+    const location =
+        String(
+            request.location || ""
+        ).toLowerCase();
+
+    const patient =
+        String(
+            request.patientName || ""
+        ).toLowerCase();
+
+    const created =
+        new Date(
+            request.createdAt ||
+            request.created ||
+            Date.now()
+        ).getTime();
+
+
+    return all.some(other=>{
+
+        if(other === request){
+            return false;
+        }
+
+        const otherCreated =
+            new Date(
+                other.createdAt ||
+                other.created ||
+                Date.now()
+            ).getTime();
+
+        const withinTime =
+            Math.abs(
+                created - otherCreated
+            ) <= 30 * 60 * 1000;
+
+        const sameBlood =
+            String(
+                other.bloodGroup || ""
+            ).toLowerCase() === blood;
+
+        const sameHospital =
+            String(
+                other.hospital || ""
+            ).toLowerCase() === hospital;
+
+        const sameLocation =
+            String(
+                other.location || ""
+            ).toLowerCase() === location;
+
+        const samePatient =
+            String(
+                other.patientName || ""
+            ).toLowerCase() === patient;
+
+
+        return withinTime &&
+               sameBlood &&
+               (
+                   sameHospital ||
+                   sameLocation ||
+                   samePatient
+               );
+
+    });
+
+}
+
+
+function renderRequests(){
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+    const search =
+        document
+        .getElementById("requestSearch")
+        .value
+        .toLowerCase();
+
+    const statusFilter =
+        document
+        .getElementById("requestStatusFilter")
+        .value;
+
+    const urgencyFilter =
+        document
+        .getElementById("requestUrgencyFilter")
+        .value;
+
+    const table =
+        document.getElementById("requestTable");
+
+
+    const filtered =
+        requests.filter(request=>{
+
+            const searchable =
+                (
+                    String(
+                        request.requestId ||
+                        request.id ||
+                        ""
+                    )
+                    + " " +
+                    String(
+                        request.patientName ||
+                        ""
+                    )
+                    + " " +
+                    String(
+                        request.hospital ||
+                        ""
+                    )
+                    + " " +
+                    String(
+                        request.bloodGroup ||
+                        ""
+                    )
+                )
+                .toLowerCase();
+
+            const matchesSearch =
+                searchable.includes(search);
+
+            const matchesStatus =
+                statusFilter === "all" ||
+                requestStatus(request) ===
+                statusFilter;
+
+            const matchesUrgency =
+                urgencyFilter === "all" ||
+                String(
+                    request.urgency ||
+                    "Normal"
+                ) === urgencyFilter;
+
+            return matchesSearch &&
+                   matchesStatus &&
+                   matchesUrgency;
+
+        });
+
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No blood requests found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        filtered.map(request=>{
+
+            const actualIndex =
+                requests.indexOf(request);
+
+            const duplicate =
+                isDuplicateRequest(
+                    request,
+                    requests
+                );
+
+            const urgency =
+                request.urgency ||
+                "Normal";
+
+            const status =
+                requestStatus(request);
+
+            return `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                request.requestId ||
+                                request.id ||
+                                "N/A"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            request.patientName ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                request.bloodGroup ||
+                                "-"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            request.units ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        <span class="status ${urgencyClass(urgency)}">
+                            ${escapeHTML(urgency)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(status)}
+                    </td>
+
+                    <td>
+
+                        ${
+                            duplicate
+                            ?
+                            `<span class="status critical">
+                                Possible Duplicate
+                            </span>`
+                            :
+                            `<span class="status verified">
+                                Normal
+                            </span>`
+                        }
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewRequest(${actualIndex})">
+                            View
+                        </button>
+
+                        ${
+                            status !== "Completed"
+                            ?
+                            `<button
+                                class="action-btn arrange-btn"
+                                onclick="markCompleted(${actualIndex})">
+                                Complete
+                            </button>`
+                            :
+                            ""
+                        }
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function viewRequest(index){
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+    const request =
+        requests[index];
+
+    if(!request){
+        return;
+    }
+
+    const duplicate =
+        isDuplicateRequest(
+            request,
+            requests
+        );
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Blood Request Details";
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+        ${detail(
+            "Request ID",
+            request.requestId ||
+            request.id ||
+            "-"
+        )}
+
+        ${detail(
+            "Patient",
+            request.patientName || "-"
+        )}
+
+        ${detail(
+            "Contact",
+            request.contact || "-"
+        )}
+
+        ${detail(
+            "Blood Group",
+            request.bloodGroup || "-"
+        )}
+
+        ${detail(
+            "Units Required",
+            request.units || "-"
+        )}
+
+        ${detail(
+            "Hospital",
+            request.hospital || "-"
+        )}
+
+        ${detail(
+            "Location",
+            request.location || "-"
+        )}
+
+        ${detail(
+            "Urgency",
+            request.urgency || "Normal"
+        )}
+
+        ${detail(
+            "Status",
+            requestStatus(request)
+        )}
+
+        ${detail(
+            "Created",
+            formatDate(
+                request.createdAt ||
+                request.created
+            )
+        )}
+
+        ${detail(
+            "Arranged By",
+            request.arrangedBy || "-"
+        )}
+
+        ${
+            duplicate
+            ?
+            `
+            <div class="warning-box">
+                ⚠️ This request resembles another request
+                created within a short time window with
+                similar blood group and patient/facility
+                information. Admin verification is required.
+            </div>
+            `
+            :
+            ""
+        }
+
+        <div class="warning-box">
+            This platform is a coordination prototype.
+            Medical urgency, donor eligibility,
+            compatibility, cross-matching and transfusion
+            decisions must be handled by qualified
+            healthcare professionals and authorized
+            blood-bank staff.
+        </div>
+
+    `;
+
+    showModal();
+
+}
+
+
+function markCompleted(index){
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+    if(!requests[index]){
+        return;
+    }
+
+    requests[index].status =
+        "Completed";
+
+    requests[index].completedAt =
+        new Date().toISOString();
+
+    requests[index].completedBy =
+        "Administrator";
+
+    saveData(
+        "mediAI_blood_requests",
+        requests
+    );
+
+    const latest =
+        requests[index];
+
+    saveData(
+        "mediAI_latest_blood_request",
+        latest
+    );
+
+    alert(
+        "Request marked as completed."
+    );
+
+    refreshAll();
+
+}
+
+
+/* =========================================
+   INVENTORY
+========================================= */
+
+const bloodGroups = [
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "AB+",
+    "AB-",
+    "O+",
+    "O-"
+];
+
+
+function renderInventory(){
+
+    const inventory =
+        getData("mediAI_blood_inventory");
+
+    const grid =
+        document.getElementById(
+            "inventoryGrid"
+        );
+
+
+    grid.innerHTML =
+        bloodGroups.map(group=>{
+
+            let units = 0;
+
+            inventory.forEach(item=>{
+
+                if(
+                    item.bloodGroup === group
+                ){
+
+                    units += Number(
+                        item.units || 0
+                    );
+
+                }
+
+            });
+
+
+            return `
+
+                <div class="inventory-card">
+
+                    <div class="blood-group">
+                        ${group}
+                    </div>
+
+                    <div class="units">
+                        ${units} units
+                    </div>
+
+                    <small>
+                        Registered inventory
+                    </small>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================
+   SECURITY COUNTS
+========================================= */
+
+function updateSecurity(){
+
+    const donors =
+        getData("mediAI_donors");
+
+    const facilities =
+        getData("mediAI_facilities");
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+
+    let pending = 0;
+
+    donors.forEach(donor=>{
+
+        if(
+            donorStatus(donor)
+            .toLowerCase() ===
+            "pending"
+        ){
+
+            pending++;
+
+        }
+
+    });
+
+
+    facilities.forEach(facility=>{
+
+        if(
+            facilityStatus(facility)
+            .toLowerCase() ===
+            "pending"
+        ){
+
+            pending++;
+
+        }
+
+    });
+
+
+    let duplicates = 0;
+
+    requests.forEach(request=>{
+
+        if(
+            isDuplicateRequest(
+                request,
+                requests
+            )
+        ){
+
+            duplicates++;
+
+        }
+
+    });
+
+
+    const critical =
+        requests.filter(request=>
+            String(
+                request.urgency || ""
+            ).toLowerCase() ===
+            "critical"
+        ).length;
+
+
+    document.getElementById(
+        "pendingVerificationCount"
+    ).textContent = pending;
+
+    document.getElementById(
+        "duplicateCount"
+    ).textContent = duplicates;
+
+    document.getElementById(
+        "criticalCount"
+    ).textContent = critical;
+
+}
+
+
+/* =========================================
+   RECENT REQUESTS
+========================================= */
+
+function renderRecentRequests(){
+
+    const requests =
+        getData("mediAI_blood_requests");
+
+    const table =
+        document.getElementById(
+            "recentRequestsTable"
+        );
+
+
+    const recent =
+        [...requests]
+        .sort((a,b)=>{
+
+            const dateA =
+                new Date(
+                    a.createdAt ||
+                    a.created ||
+                    0
+                );
+
+            const dateB =
+                new Date(
+                    b.createdAt ||
+                    b.created ||
+                    0
+                );
+
+            return dateB - dateA;
+
+        })
+        .slice(0,8);
+
+
+    if(recent.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    No blood requests yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        recent.map(request=>{
+
+            return `
+
+                <tr>
+
+                    <td>
+                        ${escapeHTML(
+                            request.requestId ||
+                            request.id ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            request.patientName ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                request.bloodGroup ||
+                                "-"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            request.hospital ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        <span class="status ${urgencyClass(
+                            request.urgency
+                        )}">
+                            ${escapeHTML(
+                                request.urgency ||
+                                "Normal"
+                            )}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            requestStatus(request)
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            request.createdAt ||
+                            request.created
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================
+   MODAL HELPERS
+========================================= */
+
+function detail(label,value){
+
+    return `
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                ${escapeHTML(label)}
+            </div>
+
+            <div>
+                ${escapeHTML(
+                    value || "-"
+                )}
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function showModal(){
+
+    document
+        .getElementById("detailsModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("detailsModal")
+        .classList
+        .remove("show");
+
+}
+
+
+document
+    .getElementById("detailsModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+                closeModal();
+            }
+
+        }
+    );
+
+
+function formatDate(value){
+
+    if(!value){
+        return "-";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        isNaN(date.getTime())
+    ){
+
+        return String(value);
+
+    }
+
+    return date.toLocaleString();
+
+}
+
+
+/* =========================================
+   REFRESH
+========================================= */
+
+function refreshAll(){
+
+    ensureDemoData();
+
+    updateStats();
+
+    renderDonors();
+
+    renderFacilities();
+
+    renderRequests();
+
+    renderInventory();
+
+    updateSecurity();
+
+    renderRecentRequests();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        refreshAll();
+
+    }
+);
+
+
+/* =========================================
+   AUTO REFRESH
+========================================= */
+
+setInterval(
+    function(){
+
+        refreshAll();
+
+    },
+    5000
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MediAI BloodConnect - Find blood donors, blood banks and hospitals near you.">
+    <title>BloodConnect | MediAI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f8fc;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e5eaf1;
+            padding: 16px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #0b5ed7;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #eaf3ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4c5870;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #0b5ed7;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #0b5ed7;
+            color: white !important;
+            padding: 11px 18px;
+            border-radius: 10px;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            background: linear-gradient(135deg, #eaf4ff, #f8fbff);
+            padding: 65px 7% 75px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #ffffff;
+            color: #0b5ed7;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid #dbe8f8;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 1.1;
+            margin-bottom: 18px;
+            color: #152238;
+        }
+
+        .hero h1 span {
+            color: #d62828;
+        }
+
+        .hero p {
+            max-width: 760px;
+            margin: auto;
+            color: #61708a;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* =========================
+           SEARCH SECTION
+        ========================== */
+
+        .search-container {
+            width: 86%;
+            max-width: 1150px;
+            margin: -35px auto 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 45px rgba(31, 65, 114, 0.12);
+            border: 1px solid #e5ebf3;
+        }
+
+        .search-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .search-title-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #fff0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .search-title h2 {
+            font-size: 22px;
+            color: #172033;
+        }
+
+        .search-title p {
+            color: #78849a;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #3f4b61;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px;
+            border: 1px solid #d9e1eb;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #29354a;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #0b5ed7;
+            box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.08);
+        }
+
+        .location-wrapper {
+            position: relative;
+        }
+
+        .location-wrapper input {
+            padding-right: 125px;
+        }
+
+        .location-btn {
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            height: 38px;
+            padding: 0 12px;
+            border: none;
+            background: #edf5ff;
+            color: #0b5ed7;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .location-btn:hover {
+            background: #dcecff;
+        }
+
+        .search-button-wrapper {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .search-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            background: #0b5ed7;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #084eae;
+            transform: translateY(-1px);
+        }
+
+        .quick-info {
+            margin-top: 20px;
+            padding: 14px;
+            background: #f7faff;
+            border-radius: 10px;
+            color: #68768c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           BLOOD GROUP QUICK SELECT
+        ========================== */
+
+        .blood-groups {
+            margin-top: 25px;
+        }
+
+        .blood-groups-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #3f4b61;
+            margin-bottom: 12px;
+        }
+
+        .blood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .blood-btn {
+            min-width: 58px;
+            height: 40px;
+            border: 1px solid #dce3ec;
+            background: #ffffff;
+            color: #4b586d;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .blood-btn:hover {
+            border-color: #d62828;
+            color: #d62828;
+        }
+
+        .blood-btn.active {
+            background: #d62828;
+            border-color: #d62828;
+            color: white;
+        }
+
+        /* =========================
+           RESULTS
+        ========================== */
+
+        .results-section {
+            width: 86%;
+            max-width: 1150px;
+            margin: 0 auto 70px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            gap: 20px;
+        }
+
+        .results-header h2 {
+            font-size: 24px;
+            color: #172033;
+        }
+
+        .results-header p {
+            color: #738097;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .result-count {
+            background: #eaf3ff;
+            color: #0b5ed7;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 22px;
+            overflow-x: auto;
+        }
+
+        .filter-tab {
+            border: 1px solid #dce3ec;
+            background: #ffffff;
+            color: #59667c;
+            padding: 10px 17px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .filter-tab.active {
+            background: #172033;
+            color: #ffffff;
+            border-color: #172033;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        /* =========================
+           RESULT CARD
+        ========================== */
+
+        .result-card {
+            background: #ffffff;
+            border: 1px solid #e3e8ef;
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.25s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(29, 58, 96, 0.1);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .profile-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #edf5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .profile-icon.donor {
+            background: #fff0f0;
+        }
+
+        .profile-icon.bank {
+            background: #eefaf2;
+        }
+
+        .profile-info h3 {
+            font-size: 15px;
+            color: #202c40;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            color: #7b8799;
+            font-size: 11px;
+        }
+
+        .verified {
+            font-size: 10px;
+            font-weight: 700;
+            color: #18864b;
+            background: #eaf8f0;
+            padding: 5px 8px;
+            border-radius: 15px;
+        }
+
+        .blood-display {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .blood-type {
+            width: 60px;
+            height: 60px;
+            background: #fff1f1;
+            color: #d62828;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .availability {
+            text-align: right;
+        }
+
+        .availability strong {
+            display: block;
+            color: #18864b;
+            font-size: 14px;
+        }
+
+        .availability span {
+            color: #8a95a7;
+            font-size: 11px;
+        }
+
+        .card-details {
+            border-top: 1px solid #edf0f4;
+            border-bottom: 1px solid #edf0f4;
+            padding: 13px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            font-size: 12px;
+        }
+
+        .detail-label {
+            color: #8994a5;
+        }
+
+        .detail-value {
+            color: #465268;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .request-btn {
+            width: 100%;
+            margin-top: 15px;
+            height: 42px;
+            border: none;
+            border-radius: 9px;
+            background: #0b5ed7;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .request-btn:hover {
+            background: #084eae;
+        }
+
+        .call-btn {
+            width: 100%;
+            margin-top: 8px;
+            height: 40px;
+            border: 1px solid #dce3ec;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #4b586d;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .call-btn:hover {
+            border-color: #0b5ed7;
+            color: #0b5ed7;
+        }
+
+        /* =========================
+           LOADING
+        ========================== */
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 45px 20px;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e3e8ef;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #e7edf5;
+            border-top-color: #0b5ed7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================== */
+
+        .empty-state {
+            display: none;
+            background: #ffffff;
+            border: 1px solid #e3e8ef;
+            border-radius: 16px;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            color: #273348;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #7c8799;
+            font-size: 13px;
+        }
+
+        /* =========================
+           SAFETY NOTE
+        ========================== */
+
+        .safety-section {
+            width: 86%;
+            max-width: 1150px;
+            margin: 0 auto 60px;
+        }
+
+        .safety-card {
+            background: #fffaf0;
+            border: 1px solid #f2dfb4;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .safety-icon {
+            font-size: 24px;
+        }
+
+        .safety-card h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+            color: #5d4b20;
+        }
+
+        .safety-card p {
+            color: #756741;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 25, 43, 0.65);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            background: #f2f5f8;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            color: #667286;
+        }
+
+        .modal h2 {
+            font-size: 22px;
+            margin-bottom: 7px;
+            color: #172033;
+        }
+
+        .modal-subtitle {
+            color: #7b8799;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .modal-form label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #47546a;
+            margin-bottom: -7px;
+        }
+
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            border: 1px solid #dce3eb;
+            border-radius: 9px;
+            padding: 12px;
+            font-family: inherit;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .modal-form textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .modal-form input:focus,
+        .modal-form select:focus,
+        .modal-form textarea:focus {
+            border-color: #0b5ed7;
+        }
+
+        .submit-request {
+            border: none;
+            height: 46px;
+            background: #d62828;
+            color: white;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .submit-request:hover {
+            background: #b71f1f;
+        }
+
+        /* =========================
+           TOAST
+        ========================== */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #172033;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 3000;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #111b2d;
+            color: #ffffff;
+            padding: 45px 7%;
+        }
+
+        .footer-content {
+            max-width: 1150px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-brand h2 {
+            margin-bottom: 10px;
+        }
+
+        .footer-brand p {
+            color: #aab4c4;
+            max-width: 450px;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .footer-links a {
+            color: #cbd3df;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-bottom {
+            max-width: 1150px;
+            margin: 30px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #2b3547;
+            color: #8995a8;
+            font-size: 11px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 950px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-button-wrapper {
+                grid-column: 1 / -1;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 13px 5%;
+            }
+
+            .nav-links a:not(.back-btn) {
+                display: none;
+            }
+
+            .hero {
+                padding: 50px 5% 70px;
+            }
+
+            .search-container,
+            .results-section,
+            .safety-section {
+                width: 92%;
+            }
+
+            .search-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-button-wrapper {
+                grid-column: auto;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🩸</span>
+            MediAI
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#results">Results</a>
+            <a href="#safety">Safety</a>
+            <a href="index.html" class="back-btn">← Back to MediAI</a>
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            🩸 MediAI BloodConnect
+        </div>
+
+        <h1>
+            Find the <span>Blood</span> You Need
+        </h1>
+
+        <p>
+            Search for registered blood donors, participating blood banks
+            and nearby hospitals based on blood group, location and urgency.
+            BloodConnect helps connect people faster during emergencies.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         SEARCH CARD
+    ========================== -->
+
+    <section class="search-container">
+
+        <div class="search-card">
+
+            <div class="search-title">
+
+                <div class="search-title-icon">
+                    🔎
+                </div>
+
+                <div>
+                    <h2>Search for Blood</h2>
+                    <p>
+                        Enter the blood group and location to find available resources.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- Blood Group -->
+
+                <div class="form-group">
+
+                    <label for="bloodGroup">
+                        Blood Group
+                    </label>
+
+                    <select id="bloodGroup">
+
+                        <option value="">Select blood group</option>
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Location -->
+
+                <div class="form-group">
+
+                    <label for="location">
+                        Location
+                    </label>
+
+                    <div class="location-wrapper">
+
+                        <input
+                            type="text"
+                            id="location"
+                            placeholder="Enter city, area or PIN code"
+                        >
+
+                        <button
+                            type="button"
+                            class="location-btn"
+                            onclick="useCurrentLocation()"
+                        >
+                            📍 Use Location
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Urgency -->
+
+                <div class="form-group">
+
+                    <label for="urgency">
+                        Urgency
+                    </label>
+
+                    <select id="urgency">
+
+                        <option value="normal">
+                            Normal
+                        </option>
+
+                        <option value="urgent">
+                            Urgent
+                        </option>
+
+                        <option value="critical">
+                            Critical / Emergency
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Search Button -->
+
+                <div class="search-button-wrapper">
+
+                    <button
+                        type="button"
+                        class="search-btn"
+                        onclick="searchBlood()"
+                    >
+                        🔎 Search Available Blood
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quick Blood Groups -->
+
+            <div class="blood-groups">
+
+                <div class="blood-groups-title">
+                    Quick Select Blood Group
+                </div>
+
+                <div class="blood-buttons">
+
+                    <button class="blood-btn" onclick="selectBlood('A+')">
+                        A+
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('A-')">
+                        A-
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('B+')">
+                        B+
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('B-')">
+                        B-
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('AB+')">
+                        AB+
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('AB-')">
+                        AB-
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('O+')">
+                        O+
+                    </button>
+
+                    <button class="blood-btn" onclick="selectBlood('O-')">
+                        O-
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-info">
+
+                ℹ️ <strong>How it works:</strong>
+                Select your required blood group, enter your location and choose
+                the urgency level. BloodConnect will display matching registered
+                donors and participating facilities.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         RESULTS
+    ========================== -->
+
+    <section class="results-section" id="results">
+
+        <div class="results-header">
+
+            <div>
+                <h2>Available Blood Resources</h2>
+                <p id="resultsDescription">
+                    Search to find matching donors and facilities near you.
+                </p>
+            </div>
+
+            <div class="result-count" id="resultCount">
+                Ready to search
+            </div>
+
+        </div>
+
+
+        <!-- Filters -->
+
+        <div class="filter-tabs">
+
+            <button
+                class="filter-tab active"
+                onclick="filterResults('all', this)"
+            >
+                All
+            </button>
+
+            <button
+                class="filter-tab"
+                onclick="filterResults('donor', this)"
+            >
+                🧑 Donors
+            </button>
+
+            <button
+                class="filter-tab"
+                onclick="filterResults('blood-bank', this)"
+            >
+                🏥 Blood Banks
+            </button>
+
+            <button
+                class="filter-tab"
+                onclick="filterResults('hospital', this)"
+            >
+                🏨 Hospitals
+            </button>
+
+        </div>
+
+
+        <!-- Loading -->
+
+        <div class="loading" id="loading">
+
+            <div class="spinner"></div>
+
+            <h3>
+                Searching BloodConnect...
+            </h3>
+
+            <p style="color:#7c8799; font-size:13px; margin-top:7px;">
+                Looking for matching blood resources.
+            </p>
+
+        </div>
+
+
+        <!-- Empty -->
+
+        <div class="empty-state" id="emptyState">
+
+            <div class="empty-icon">
+                🩸
+            </div>
+
+            <h3>
+                No matching resources found
+            </h3>
+
+            <p>
+                Try another location or blood group.
+            </p>
+
+        </div>
+
+
+        <!-- Results -->
+
+        <div class="results-grid" id="resultsGrid">
+
+            <!-- Results are inserted by JavaScript -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SAFETY
+    ========================== -->
+
+    <section class="safety-section" id="safety">
+
+        <div class="safety-card">
+
+            <div class="safety-icon">
+                ⚠️
+            </div>
+
+            <div>
+
+                <h3>
+                    Important Safety Information
+                </h3>
+
+                <p>
+                    BloodConnect is a coordination and discovery platform.
+                    Blood-group matching, eligibility, cross-matching and
+                    transfusion decisions must be confirmed by qualified
+                    healthcare professionals and authorized blood-bank staff.
+                    Do not rely on this website alone for medical decisions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         REQUEST MODAL
+    ========================== -->
+
+    <div class="modal-overlay" id="requestModal">
+
+        <div class="modal">
+
+            <button
+                class="modal-close"
+                onclick="closeRequestModal()"
+            >
+                ×
+            </button>
+
+            <h2>
+                🩸 Request Blood
+            </h2>
+
+            <p class="modal-subtitle">
+                Submit an emergency blood request. The selected donor or
+                facility details will be included with your request.
+            </p>
+
+
+            <form
+                class="modal-form"
+                onsubmit="submitBloodRequest(event)"
+            >
+
+                <label>
+                    Patient Name
+                </label>
+
+                <input
+                    type="text"
+                    id="patientName"
+                    placeholder="Enter patient name"
+                    required
+                >
+
+
+                <label>
+                    Required Blood Group
+                </label>
+
+                <select id="requestBloodGroup" required>
+
+                    <option value="">
+                        Select blood group
+                    </option>
+
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+
+                </select>
+
+
+                <label>
+                    Required Units
+                </label>
+
+                <input
+                    type="number"
+                    id="units"
+                    min="1"
+                    max="20"
+                    placeholder="Example: 2"
+                    required
+                >
+
+
+                <label>
+                    Hospital / Treatment Location
+                </label>
+
+                <input
+                    type="text"
+                    id="hospitalName"
+                    placeholder="Enter hospital name"
+                    required
+                >
+
+
+                <label>
+                    Contact Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="contactNumber"
+                    placeholder="Enter contact number"
+                    required
+                >
+
+
+                <label>
+                    Urgency
+                </label>
+
+                <select id="requestUrgency" required>
+
+                    <option value="normal">
+                        Normal
+                    </option>
+
+                    <option value="urgent">
+                        Urgent
+                    </option>
+
+                    <option value="critical">
+                        Critical / Emergency
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Additional Information
+                </label>
+
+                <textarea
+                    id="additionalInfo"
+                    placeholder="Add any useful information..."
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="submit-request"
+                >
+                    🚨 Submit Blood Request
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         TOAST
+    ========================== -->
+
+    <div class="toast" id="toast"></div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h2>
+                    🩸 MediAI BloodConnect
+                </h2>
+
+                <p>
+                    Connecting blood seekers, donors, blood banks and hospitals
+                    to make emergency blood coordination faster and easier.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    MediAI Home
+                </a>
+
+                <a href="#results">
+                    Search
+                </a>
+
+                <a href="#safety">
+                    Safety
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 MediAI BloodConnect · Frontend Prototype
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        /* =========================================
+           DEMO DATA
+        ========================================== */
+
+        const bloodResources = [
+
+            {
+                id: 1,
+                type: "donor",
+                name: "Rahul Kumar",
+                blood: "O+",
+                availability: "Available",
+                distance: "2.1 km",
+                location: "Nandyal",
+                detail: "Individual Donor",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 2,
+                type: "donor",
+                name: "Priya Reddy",
+                blood: "A+",
+                availability: "Available",
+                distance: "3.4 km",
+                location: "Nandyal",
+                detail: "Individual Donor",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 3,
+                type: "donor",
+                name: "Arjun Singh",
+                blood: "B+",
+                availability: "Available",
+                distance: "4.8 km",
+                location: "Nandyal",
+                detail: "Individual Donor",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 4,
+                type: "donor",
+                name: "Ananya Sharma",
+                blood: "O-",
+                availability: "Available",
+                distance: "5.2 km",
+                location: "Nandyal",
+                detail: "Universal Red Cell Donor",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 5,
+                type: "blood-bank",
+                name: "Government Blood Bank",
+                blood: "O+",
+                availability: "12 Units Available",
+                distance: "3.8 km",
+                location: "Nandyal",
+                detail: "Blood Bank",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 6,
+                type: "blood-bank",
+                name: "Red Cross Blood Centre",
+                blood: "A+",
+                availability: "8 Units Available",
+                distance: "6.2 km",
+                location: "Nandyal",
+                detail: "Blood Centre",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 7,
+                type: "hospital",
+                name: "City Care Hospital",
+                blood: "B+",
+                availability: "Blood Support Available",
+                distance: "4.5 km",
+                location: "Nandyal",
+                detail: "Hospital",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 8,
+                type: "hospital",
+                name: "MediCare Hospital",
+                blood: "O+",
+                availability: "Blood Support Available",
+                distance: "7.1 km",
+                location: "Nandyal",
+                detail: "Hospital",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            },
+
+            {
+                id: 9,
+                type: "blood-bank",
+                name: "LifeLine Blood Centre",
+                blood: "AB+",
+                availability: "5 Units Available",
+                distance: "8.4 km",
+                location: "Nandyal",
+                detail: "Blood Centre",
+                phone: "+91 XXXXX XXXXX",
+                verified: true
+            }
+
+        ];
+
+
+        let currentBloodGroup = "";
+
+        let currentFilter = "all";
+
+
+        /* =========================================
+           SELECT BLOOD GROUP
+        ========================================== */
+
+        function selectBlood(bloodGroup) {
+
+            currentBloodGroup = bloodGroup;
+
+            document.getElementById("bloodGroup").value = bloodGroup;
+
+            document.querySelectorAll(".blood-btn").forEach(button => {
+
+                button.classList.remove("active");
+
+                if (button.textContent.trim() === bloodGroup) {
+                    button.classList.add("active");
+                }
+
+            });
+
+            showToast(
+                bloodGroup + " selected"
+            );
+
+        }
+
+
+        /* =========================================
+           BLOOD GROUP CHANGE
+        ========================================== */
+
+        document
+            .getElementById("bloodGroup")
+            .addEventListener("change", function () {
+
+                currentBloodGroup = this.value;
+
+                document.querySelectorAll(".blood-btn").forEach(button => {
+
+                    button.classList.remove("active");
+
+                    if (button.textContent.trim() === this.value) {
+                        button.classList.add("active");
+                    }
+
+                });
+
+            });
+
+
+        /* =========================================
+           CURRENT LOCATION
+        ========================================== */
+
+        function useCurrentLocation() {
+
+            if (!navigator.geolocation) {
+
+                showToast(
+                    "Location services are not supported by your browser."
+                );
+
+                return;
+            }
+
+
+            showToast(
+                "Getting your current location..."
+            );
+
+
+            navigator.geolocation.getCurrentPosition(
+
+                function(position) {
+
+                    const latitude =
+                        position.coords.latitude;
+
+                    const longitude =
+                        position.coords.longitude;
+
+
+                    /*
+                       Frontend prototype:
+                       We display coordinates for now.
+
+                       Later this will be connected to a
+                       geocoding/location API.
+                    */
+
+                    document.getElementById("location").value =
+                        latitude.toFixed(4) +
+                        ", " +
+                        longitude.toFixed(4);
+
+
+                    showToast(
+                        "Current location detected."
+                    );
+
+                },
+
+                function() {
+
+                    showToast(
+                        "Unable to access your location. Please enter it manually."
+                    );
+
+                }
+
+            );
+
+        }
+
+
+        /* =========================================
+           SEARCH BLOOD
+        ========================================== */
+
+        function searchBlood() {
+
+            const bloodGroup =
+                document.getElementById("bloodGroup").value;
+
+            const location =
+                document.getElementById("location").value.trim();
+
+            const urgency =
+                document.getElementById("urgency").value;
+
+
+            if (!bloodGroup) {
+
+                showToast(
+                    "Please select a blood group."
+                );
+
+                return;
+            }
+
+
+            if (!location) {
+
+                showToast(
+                    "Please enter your location."
+                );
+
+                return;
+            }
+
+
+            currentBloodGroup = bloodGroup;
+
+
+            const loading =
+                document.getElementById("loading");
+
+            const resultsGrid =
+                document.getElementById("resultsGrid");
+
+            const emptyState =
+                document.getElementById("emptyState");
+
+
+            resultsGrid.innerHTML = "";
+
+            emptyState.style.display = "none";
+
+            loading.style.display = "block";
+
+
+            setTimeout(function() {
+
+                loading.style.display = "none";
+
+                displayResults(
+                    bloodGroup,
+                    urgency
+                );
+
+            }, 800);
+
+        }
+
+
+        /* =========================================
+           DISPLAY RESULTS
+        ========================================== */
+
+        function displayResults(
+            bloodGroup,
+            urgency
+        ) {
+
+            const resultsGrid =
+                document.getElementById("resultsGrid");
+
+            let matchingResources =
+                bloodResources.filter(resource => {
+
+                    return resource.blood === bloodGroup;
+
+                });
+
+
+            if (currentFilter !== "all") {
+
+                matchingResources =
+                    matchingResources.filter(resource => {
+
+                        return resource.type === currentFilter;
+
+                    });
+
+            }
+
+
+            resultsGrid.innerHTML = "";
+
+
+            if (matchingResources.length === 0) {
+
+                document.getElementById(
+                    "emptyState"
+                ).style.display = "block";
+
+                document.getElementById(
+                    "resultCount"
+                ).textContent = "0 results";
+
+                document.getElementById(
+                    "resultsDescription"
+                ).textContent =
+                    "No matching resources found for " +
+                    bloodGroup +
+                    ".";
+
+                return;
+            }
+
+
+            matchingResources.forEach(resource => {
+
+                resultsGrid.appendChild(
+                    createResourceCard(resource)
+                );
+
+            });
+
+
+            document.getElementById(
+                "resultCount"
+            ).textContent =
+                matchingResources.length +
+                " matches";
+
+
+            document.getElementById(
+                "resultsDescription"
+            ).textContent =
+                "Showing matching resources for " +
+                bloodGroup +
+                " • " +
+                urgencyText(urgency);
+
+        }
+
+
+        /* =========================================
+           CREATE RESULT CARD
+        ========================================== */
+
+        function createResourceCard(resource) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "result-card";
+
+
+            let icon = "🧑";
+
+            let iconClass = "donor";
+
+
+            if (resource.type === "blood-bank") {
+
+                icon = "🩸";
+
+                iconClass = "bank";
+
+            }
+
+
+            if (resource.type === "hospital") {
+
+                icon = "🏥";
+
+                iconClass = "bank";
+
+            }
+
+
+            let title =
+                resource.type === "donor"
+                    ? "Blood Donor"
+                    : resource.detail;
+
+
+            card.innerHTML = `
+
+                <div class="card-top">
+
+                    <div class="profile-info">
+
+                        <div class="profile-icon ${iconClass}">
+                            ${icon}
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                ${resource.name}
+                            </h3>
+
+                            <p>
+                                ${title}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    ${
+                        resource.verified
+                        ?
+                        `<span class="verified">
+                            ✓ Verified
+                        </span>`
+                        :
+                        ""
+                    }
+
+                </div>
+
+
+                <div class="blood-display">
+
+                    <div class="blood-type">
+                        ${resource.blood}
+                    </div>
+
+                    <div class="availability">
+
+                        <strong>
+                            ${resource.availability}
+                        </strong>
+
+                        <span>
+                            Blood availability
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-details">
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            📍 Distance
+                        </span>
+
+                        <span class="detail-value">
+                            ${resource.distance}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            📌 Location
+                        </span>
+
+                        <span class="detail-value">
+                            ${resource.location}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            👤 Type
+                        </span>
+
+                        <span class="detail-value">
+                            ${resource.detail}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="request-btn"
+                    onclick="openRequestModal('${resource.blood}', '${resource.name}')"
+                >
+                    🩸 Request Blood
+                </button>
+
+
+                <button
+                    class="call-btn"
+                    onclick="callResource('${resource.name}')"
+                >
+                    📞 Contact
+                </button>
+
+            `;
+
+
+            return card;
+
+        }
+
+
+        /* =========================================
+           FILTER RESULTS
+        ========================================== */
+
+        function filterResults(
+            filter,
+            button
+        ) {
+
+            currentFilter = filter;
+
+
+            document
+                .querySelectorAll(".filter-tab")
+                .forEach(tab => {
+
+                    tab.classList.remove("active");
+
+                });
+
+
+            button.classList.add("active");
+
+
+            if (!currentBloodGroup) {
+
+                showToast(
+                    "Select a blood group and search first."
+                );
+
+                return;
+
+            }
+
+
+            displayResults(
+                currentBloodGroup,
+                document.getElementById("urgency").value
+            );
+
+        }
+
+
+        /* =========================================
+           REQUEST MODAL
+        ========================================== */
+
+        function openRequestModal(
+            bloodGroup,
+            resourceName
+        ) {
+
+            document.getElementById(
+                "requestModal"
+            ).classList.add("show");
+
+
+            document.getElementById(
+                "requestBloodGroup"
+            ).value = bloodGroup;
+
+
+            showToast(
+                "Requesting blood from " +
+                resourceName
+            );
+
+        }
+
+
+        function closeRequestModal() {
+
+            document.getElementById(
+                "requestModal"
+            ).classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           SUBMIT BLOOD REQUEST
+        ========================================== */
+
+        function submitBloodRequest(event) {
+
+            event.preventDefault();
+
+
+            const request = {
+
+                patientName:
+                    document.getElementById(
+                        "patientName"
+                    ).value,
+
+                bloodGroup:
+                    document.getElementById(
+                        "requestBloodGroup"
+                    ).value,
+
+                units:
+                    document.getElementById(
+                        "units"
+                    ).value,
+
+                hospital:
+                    document.getElementById(
+                        "hospitalName"
+                    ).value,
+
+                contact:
+                    document.getElementById(
+                        "contactNumber"
+                    ).value,
+
+                urgency:
+                    document.getElementById(
+                        "requestUrgency"
+                    ).value,
+
+                additionalInfo:
+                    document.getElementById(
+                        "additionalInfo"
+                    ).value,
+
+                createdAt:
+                    new Date().toISOString()
+
+            };
+
+
+            /*
+                TEMPORARY FRONTEND STORAGE
+
+                Later this will be replaced with
+                a real backend/database.
+            */
+
+            const existingRequests =
+                JSON.parse(
+                    localStorage.getItem(
+                        "mediAI_blood_requests"
+                    )
+                ) || [];
+
+
+            request.id =
+                "REQ-" +
+                Date.now();
+
+
+            existingRequests.push(request);
+
+
+            localStorage.setItem(
+                "mediAI_blood_requests",
+                JSON.stringify(existingRequests)
+            );
+
+
+            closeRequestModal();
+
+
+            showToast(
+                "Blood request submitted successfully. Request ID: " +
+                request.id
+            );
+
+
+            event.target.reset();
+
+        }
+
+
+        /* =========================================
+           CONTACT
+        ========================================== */
+
+        function callResource(name) {
+
+            showToast(
+                "Contact information for " +
+                name +
+                " will be available after backend integration."
+            );
+
+        }
+
+
+        /* =========================================
+           URGENCY TEXT
+        ========================================== */
+
+        function urgencyText(
+            urgency
+        ) {
+
+            if (urgency === "critical") {
+
+                return "Critical / Emergency";
+
+            }
+
+            if (urgency === "urgent") {
+
+                return "Urgent";
+
+            }
+
+            return "Normal";
+
+        }
+
+
+        /* =========================================
+           TOAST
+        ========================================== */
+
+        let toastTimer;
+
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById("toast");
+
+
+            toast.textContent =
+                message;
+
+
+            toast.classList.add("show");
+
+
+            clearTimeout(toastTimer);
+
+
+            toastTimer =
+                setTimeout(function() {
+
+                    toast.classList.remove("show");
+
+                }, 3500);
+
+        }
+
+
+        /* =========================================
+           CLOSE MODAL OUTSIDE CLICK
+        ========================================== */
+
+        document
+            .getElementById("requestModal")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target === this
+                    ) {
+
+                        closeRequestModal();
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================
+           LOAD SAVED BLOOD GROUP
+        ========================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const savedBloodGroup =
+                    localStorage.getItem(
+                        "mediAI_selected_blood_group"
+                    );
+
+
+                if (savedBloodGroup) {
+
+                    const validGroups = [
+                        "A+",
+                        "A-",
+                        "B+",
+                        "B-",
+                        "AB+",
+                        "AB-",
+                        "O+",
+                        "O-"
+                    ];
+
+
+                    if (
+                        validGroups.includes(
+                            savedBloodGroup
+                        )
+                    ) {
+
+                        selectBlood(
+                            savedBloodGroup
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           ESC KEY TO CLOSE MODAL
+        ========================================== */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeRequestModal();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
